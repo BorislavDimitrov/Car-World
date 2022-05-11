@@ -1,0 +1,55 @@
+﻿@using CarWorld.Web.ViewModels.Administration.Regions
+@using CarWorld.Web.ViewModels.Paging
+@model RegionsListViewModel
+@{
+    ViewData["Title"] = "Manage Regions";
+    ViewData["Action"] = "ManageRegions";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Regions</h3>
+                <form asp-action="ManageRegions" method="get">
+                    <div class="form-actions no-color">
+                        <p>
+                            Find by name: <input type="text" name="searchText" value="@ViewData["CurrentFilter"]" />
+                            <input type="submit" value="Search" class="btn btn-default" /> |
+                            <a asp-action="ManageRegions">Back to Full List</a>
+                        </p>
+                    </div>
+                </form>
+            </div>
+
+            <div class="card-body table-responsive p-0">
+                <table class="table table-hover text-nowrap">
+                    <thead>
+                        <tr>
+                            <th>Region name</th>
+                            <th>Is Deleted</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var region in Model.Regions)
+                        {
+                            <tr>
+                                <td>@region.Name</td>
+                                <td>@region.IsDeleted</td>
+                                <td>
+                                    <a asp-area="admin" asp-action="recover" asp-controller="regions" asp-route-id="@region.Id" class="btn btn-primary btn-success">Recover region</a>
+                                    <a asp-area="admin" asp-action="delete" asp-controller="regions" asp-route-id="@region.Id" class="btn btn-primary btn-danger">Delete region</a>
+                                    <a asp-area="admin" asp-action="edit" asp-controller="regions" asp-route-id="@region.Id" class="btn btn-primary btn-dark">Edit region</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+  
+
+        </div>
+    </div>
+</div>
+     <partial name="_PartialPaging" model="@Model" />

@@ -1,0 +1,197 @@
+﻿@using CarWorld.Data.Models.Enums
+@using CarWorld.Web.ViewModels.Cars
+
+@model CreateCarInputModel
+@{
+    ViewData["Title"] = "Publish your car";
+    //var makes = Model.Makes.Select(x => new SelectListItem(x.Key, x.Value.ToString()));
+    //var regions = Model.Regions.Select(x => new SelectListItem(x.Key, x.Value.ToString()));
+}
+
+<h3>@ViewData["Title"]</h3>
+
+<div>
+    <form method="post" class="col-md-10" enctype="multipart/form-data">
+        <div asp-validation-summary="All" class="text-danger"></div>
+
+        <div class="form-group">
+            <label>Make</label>
+            <select asp-for="MakeId" class="form-control" asp-items="@Model.Makes"></select>
+            <span asp-validation-for="MakeId" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label>Model</label>
+            <select asp-for="ModelId" asp-items="@(new SelectList(@Model.Models, "ModelId", "ModelName"))" class="form-control"></select>
+            <span asp-validation-for="ModelId" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Title"></label>
+            <input asp-for="Title" class="form-control" />
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Price"></label>
+            <input asp-for="Price" class="form-control" />
+            <span asp-validation-for="Price" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="PhoneNumber"></label>
+            <input asp-for="PhoneNumber" class="form-control" />
+            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="TankFuel"></label>
+            <input asp-for="TankFuel" class="form-control" />
+            <span asp-validation-for="TankFuel" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="HorsePower"></label>
+            <input asp-for="HorsePower" class="form-control" />
+            <span asp-validation-for="HorsePower" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Color"></label>
+            <input asp-for="Color" class="form-control" />
+            <span asp-validation-for="Color" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="CreationYear"></label>
+            <input asp-for="CreationYear" class="form-control" />
+            <span asp-validation-for="CreationYear" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Mileage"></label>
+            <input asp-for="Mileage" class="form-control" />
+            <span asp-validation-for="Mileage" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="CubicCapacity"></label>
+            <input asp-for="CubicCapacity" class="form-control" />
+            <span asp-validation-for="CubicCapacity" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Description"></label>
+            <textarea asp-for="Description" class="form-control"></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+
+
+        <div class="form-group">
+            <label asp-for="City"></label>
+            <input asp-for="City" class="form-control" />
+            <span asp-validation-for="City" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="CarType"></label>
+            <select asp-for="CarType" class="form-control" asp-items="@Html.GetEnumSelectList<CarType>()">
+            </select>
+            <span asp-validation-for="CarType" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="HandDrive"></label>
+            <select asp-for="HandDrive" class="form-control" asp-items="@Html.GetEnumSelectList<HandDrive>()">
+            </select>
+            <span asp-validation-for="HandDrive" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="EmissionClass"></label>
+            <select asp-for="EmissionClass" class="form-control" asp-items="@Html.GetEnumSelectList<EmissionClass>()">
+            </select>
+            <span asp-validation-for="EmissionClass" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Transmission"></label>
+            <select asp-for="Transmission" class="form-control" asp-items="@Html.GetEnumSelectList<Transmission>()">
+            </select>
+            <span asp-validation-for="Transmission" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Condition"></label>
+            <select asp-for="Condition" class="form-control" asp-items="@Html.GetEnumSelectList<Condition>()">
+            </select>
+            <span asp-validation-for="Condition" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="FuelType"></label>
+            <select asp-for="FuelType" class="form-control" asp-items="@Html.GetEnumSelectList<FuelType>()">
+            </select>
+            <span asp-validation-for="FuelType" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="DoorsCount"></label>
+            <select asp-for="DoorsCount" class="form-control" asp-items="@Html.GetEnumSelectList<DoorsCount>()">
+            </select>
+            <span asp-validation-for="DoorsCount" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="SeatsCount"></label>
+            <select asp-for="SeatsCount" class="form-control" asp-items="@Html.GetEnumSelectList<SeatsCount>()">
+            </select>
+            <span asp-validation-for="SeatsCount" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label>Region</label>
+            <select asp-for="RegionId" asp-items="@Model.Regions" class="form-control"></select>
+            <span asp-validation-for="RegionId" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="ThumbnailPicture"></label>
+            <input asp-for="ThumbnailPicture" />
+            <span asp-validation-for="ThumbnailPicture" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Pictures"></label>
+            <input asp-for="Pictures" />
+            <span asp-validation-for="Pictures" class="text-danger"></span>
+        </div>
+
+        <input type="submit" class="btn btn-primary" />
+    </form>
+</div>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#MakeId').change(function () {
+            var url = '@Url.Content("~/")' + "Cars/GetModels";
+            var ddlsource = "#MakeId";
+            $.getJSON(url, { MakeId: $(ddlsource).val() }, function (data) {
+                var items = '';
+                $("#ModelId").empty();
+                $.each(data, function (i, model) {
+                    items += "<option value='" + model.value + "'>" + model.text + "</option>";
+                });
+                $('#ModelId').html(items);
+            });
+        });
+    });
+</script>
+
+@section Scripts {
+<partial name="_ValidationScriptsPartial" />
+}
+
+
+

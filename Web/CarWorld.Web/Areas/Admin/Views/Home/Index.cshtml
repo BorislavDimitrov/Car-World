@@ -1,0 +1,21 @@
+﻿@{
+    ViewData["Title"] = "Admin area home page";
+    var message = TempData["Message"];
+}
+
+@if (message != null)
+{
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+  <strong>@message</strong> 
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+}
+
+<div class="text-center">
+    <h1 class="display-6">Welcome to Admin area </h1>
+    <p class="text-danger">
+        <strong>Here is the place where you can manage everything in the site. You can create, delete or restore most of the data in the site.The control is in your hands. Be careful what you do, it might lead to serious consequences for the normal users!</strong>
+    </p>
+</div>

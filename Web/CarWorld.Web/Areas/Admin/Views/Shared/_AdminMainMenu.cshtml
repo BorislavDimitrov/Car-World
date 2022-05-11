@@ -1,0 +1,75 @@
+﻿@using CarWorld.Data.Models
+@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        @if (SignInManager.IsSignedIn(User) && User.IsInRole("Administrator"))
+        {
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <a class="nav-link text-White" asp-area="admin" asp-controller="home" asp-action="index">
+                        Home
+                    </a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Makes</a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                            <a class="nav-link text-black" asp-area="admin" asp-controller="makes" asp-action="manageMakes">
+                                Manage makes
+                            </a>
+                            <a class="nav-link text-black" asp-area="admin" asp-controller="makes" asp-action="create">
+                                Create make
+                            </a>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Models</a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                            <a class="nav-link text-black" asp-area="admin" asp-controller="models" asp-action="manageModels">
+                                Manage models
+                            </a>
+                            <a class="nav-link text-black" asp-area="admin" asp-controller="models" asp-action="create">
+                                Create model
+                            </a>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Regions</a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                            <a class="nav-link text-black" asp-area="admin" asp-controller="regions" asp-action="manageRegions">
+                                Manage regions
+                            </a>
+                            <a class="nav-link text-black" asp-area="admin" asp-controller="regions" asp-action="create">
+                                Create region
+                            </a>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Users</a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                            <a class="nav-link text-black" asp-area="admin" asp-controller="users" asp-action="manageUsers">
+                                Manage users
+                            </a>
+                            <li><hr class="dropdown-divider" /></li>
+                            <a class="nav-link text-black" asp-area="admin" asp-controller="users" asp-action="createRole">
+                                Create role
+                            </a>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Cars</a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                            <a class="nav-link text-black" asp-area="admin" asp-controller="cars" asp-action="manageCars">
+                                Manage cars
+                            </a>                          
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        }
+    </div>
+</nav>
+

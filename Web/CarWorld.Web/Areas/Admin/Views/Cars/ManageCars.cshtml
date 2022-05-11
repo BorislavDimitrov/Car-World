@@ -1,0 +1,91 @@
+﻿@using CarWorld.Web.Infrastructure.Extensions
+@using CarWorld.Web.ViewModels.Administration.Cars
+@using CarWorld.Web.ViewModels.Paging
+@model PaginationList<CarsListViewModel>
+@{
+    ViewData["Title"] = "Manage Cars";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Makes</h3>
+                <form asp-action="ManageCars" method="get">
+                    <div class="form-actions no-color">
+                        <p>
+                            Search by make/model/title/creator username: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
+                            <input type="submit" value="Search" class="btn btn-default" /> |
+                            <a asp-action="ManageCars">Back to Full List</a>
+                        </p>
+                    </div>
+                </form>
+            </div>
+
+            <div class="card-body table-responsive p-0">
+                <table class="table table-hover text-nowrap">
+                    <thead>
+                        <tr>
+                            <th>Make</th>
+                            <th>Is Deleted</th>
+                            <th>Model</th>
+                            <th>Title</th>
+                            <th>Price</th>
+                            <th>Year</th>
+                            <th>Creator username</th>
+                            <th>City</th>
+                            <th>Color</th>
+                            <th>Car type</th>
+                            <th>Created on</th>
+                            <th>Horsepower</th>
+                            <th>Mileage</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var car in Model)
+                        {
+                            <tr>
+                                <td>@car.Make</td>
+                                <td>@car.IsDeleted</td>
+                                <td>@car.Model</td>
+                                <td>@car.Title</td>
+                                <td>@car.Price</td>
+                                <td>@car.Year</td>
+                                <td>@car.UserName</td>
+                                <td>@car.City</td>
+                                <td>@car.Color</td>
+                                <td>@car.CarType.GetDisplayName()</td>
+                                <td>@car.CreateDate</td>
+                                <td>@car.HorsePower</td>
+                                <td>@car.Mileage</td>
+                                <td>
+                                    <a asp-area="admin" asp-action="delete" asp-controller="cars" asp-route-id="@car.Id" class="btn btn-block btn-danger">Delete car</a>                                  
+                                </td>
+                                <td>
+                                    <a asp-area="admin" asp-action="details" asp-controller="cars" asp-route-id="@car.Id" class="btn btn-block btn-info">View car</a>                                  
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+             @{
+                var prevDisabled = !Model.PreviousPage ? "disabled" : "";
+                var nextDisabled = !Model.NextPage ? "disabled" : "";
+            }
+
+            <a asp-action="ManageCars"
+                asp-route-pageNumber="@(Model.PageIndex - 1)"
+                class="btn btn-default @prevDisabled">
+                Previous
+            </a>
+            <a asp-action="ManageCars"
+                asp-route-pageNumber="@(Model.PageIndex + 1)"
+                class="btn btn-default @nextDisabled">
+                Next
+            </a>
+
+        </div>
+    </div>
+</div>

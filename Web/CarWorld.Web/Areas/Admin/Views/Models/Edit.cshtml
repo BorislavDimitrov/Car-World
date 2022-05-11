@@ -1,0 +1,32 @@
+﻿@using CarWorld.Web.ViewModels.Administration.Models
+@model EditModelInputModel
+@{
+    ViewData["Title"] = "Edit Model";
+}
+
+<h3>@ViewData["Title"]</h3>
+
+<div class="d-flex justify-content-center align-items-center">
+    <form method="post" class="col-md-5 align-content-center" enctype="multipart/form-data">
+        <input type="hidden" name="id" value="@Model.Id"/>
+        <div asp-validation-summary="All" class="text-danger"></div>
+
+        <div class="form-group">
+            <label asp-for="Name"></label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+
+         <div class="form-group">
+            <label>Make</label>
+            <select asp-for="MakeId" asp-items="@Model.Makes" class="form-control"></select>
+            <span asp-validation-for="MakeId" class="text-danger"></span>
+        </div>
+
+        <input type="submit" class="btn btn-primary" />
+    </form>
+</div>
+
+@section Scripts {
+<partial name="_ValidationScriptsPartial" />
+}

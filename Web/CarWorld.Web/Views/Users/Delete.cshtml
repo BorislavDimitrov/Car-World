@@ -1,0 +1,32 @@
+﻿@using CarWorld.Web.ViewModels.Users
+@model DeleteUserInputModel
+@{
+    ViewData["Title"] = "Delete Personal Data";
+}
+
+<h3>@ViewData["Title"]</h3>
+
+<div class="alert alert-warning" role="alert">
+    <p>
+        <strong>Deleting this data will most likely permanently remove your account! We do not promise to recover your account in the future. Deleting your account is at your own risk !!!</strong>
+    </p>
+</div>
+
+<div>
+    <form method="post" class="col-md-6" enctype="multipart/form-data">
+        <div asp-validation-summary="All" class="text-danger"></div>
+
+        <div class="form-group">
+            <label asp-for="Password"></label>
+            <input asp-for="Password" class="form-control" />
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+
+        <input type="submit" class="btn btn-primary" />
+    </form>
+</div>
+
+@section Scripts {
+<partial name="_ValidationScriptsPartial" />
+}
+

@@ -1,0 +1,15 @@
+﻿@page
+@using CarWorld.Data.Models
+@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<ApplicationUser> SignInManager
+
+
+<ul class="nav nav-pills flex-column">
+    <li class="nav-item"><a class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Email">Change Email</a></li>
+    <li class="nav-item"><a class="nav-link" id="change-password"asp-area="Identity" asp-page="/Account/Manage/ChangePassword">Change Password</a></li>
+    <li class="nav-item"><a class="nav-link" id="account-delete" asp-area="" asp-controller="Users" asp-action="Delete">Account Delete</a></li>
+     <li class="nav-item"><a class="nav-link" id="personal-data" asp-area="" asp-controller="Users" asp-action="Edit">Change Personal Information</a></li>
+</ul>
+
+

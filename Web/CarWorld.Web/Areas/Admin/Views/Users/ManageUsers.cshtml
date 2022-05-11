@@ -1,0 +1,64 @@
+﻿@using CarWorld.Web.ViewModels.Administration.Users
+@model UserListViewModel
+@{
+    ViewData["Title"] = "Manage Users";
+    ViewData["Action"] = "ManageUsers";
+}
+
+<div class="row">
+    <div class="col-10">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Users</h3>
+                <form asp-action="ManageUsers" method="get">
+                    <div class="form-actions no-color">
+                        <p>
+                            Find by username, first or last name: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
+                            <input type="submit" value="Search" class="btn btn-default" /> |
+                            <a asp-action="ManageUsers">Back to Full List</a>
+                        </p>
+                    </div>
+                </form>
+            </div>
+
+            <div class="card-body table-responsive p-0">
+                <table class="table table-hover text-nowrap">
+                    <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>First name</th>
+                            <th>Last name</th>
+                            <th>Email</th>
+                            <th>Phone number</th>
+                            <th>Is deleted</th>
+                            <th>Operations</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var user in Model.Users)
+                        {
+                            <tr>
+                                <td>@user.UserName</td>
+                                <td>@user.FirstName</td>
+                                <td>@user.LastName</td>
+                                <td>@user.Email</td>
+                                <td>@user.PhoneNumber</td>
+                                <td>@user.IsDeleted</td>
+                                <td>
+                                    <a asp-area="admin" asp-action="recover" asp-controller="users" asp-route-id="@user.Id" class="btn btn-primary btn-success">Recover account</a>
+                                    <a asp-area="admin" asp-action="delete" asp-controller="users" asp-route-id="@user.Id" class="btn btn-primary btn-danger">Delete account</a>
+                                    <a asp-area="admin" asp-action="roles" asp-controller="users" asp-route-id="@user.Id" class="btn btn-primary btn-dark">Manage roles</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+      <partial name="_PartialPaging" model="@Model"/>
+

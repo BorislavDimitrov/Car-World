@@ -1,0 +1,109 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+  <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+
+<div id="myCarousel" class="carousel slide" data-ride="carousel">
+    <ol class="carousel-indicators">
+        <li data-target="#myCarousel" data-slide-to="0" class=""></li>
+        <li data-target="#myCarousel" data-slide-to="1" class=""></li>
+        <li data-target="#myCarousel" data-slide-to="2" class="active"></li>
+    </ol>
+    <div class="carousel-inner">
+        <div class="carousel-item">
+            <img class="first-slide" src="~/img/99325.jpg" style="width:100%; height: 200px;" alt="First slide">
+            <div class="container">
+                <div class="carousel-caption text-left">
+                    <h1 >Welcome to Car World</h1>
+                    <p >The place for professionals , enthusiasts or simply people with flame and desire in the heart for the automobile world.</p>
+                       
+                </div>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <img class="second-slide" src="~/img/carousel.jpg" style="width:100%; height: 200px;" alt="Second slide">
+            <div class="container">
+                <div class="carousel-caption">
+                    <h1>Search for a car or sell your old one</h1>
+                    <p>You can put your old car for sale , meanwhile you can search for your new dream car.</p>
+                </div>
+            </div>
+        </div>
+        <div class="carousel-item active">
+            <img class="third-slide" src="~/img/carousel3.jpg" style="width:100%; height: 200px;" alt="Third slide">
+            <div class="container">
+                <div class="carousel-caption text-right">
+                    <h1>Meet new people</h1>
+                    <p>Use our forum to meet new people and share experience.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+    </a>
+</div>
+ 
+
+    <hr class="featurette-divider">
+
+    <div class="row featurette">
+        <div class="col-md-7">
+            <h2 class="featurette-heading">Find your dream car</h2>
+            <p class="lead">Our site provides the opportunity for people to search for a car or post their own.
+                You can choose your car out of many makes and models. After you like a car you can contact the seller by the provided phone number.
+                Pay attention! We can not guarantee about the legitness of any car published or about the seller intentions.
+                Although we try to keep our site clear. 
+            </p>
+             <p><a class="btn btn-secondary" asp-area="" asp-controller="Cars" asp-action="Search" role="button">Search »</a></p>
+        </div>
+        <div class="col-md-5">
+            <img class="featurette-image img-fluid mx-auto" data-src="holder.js/500x500/auto" alt="500x500" style="width: 500px; height: 500px;" src="~/img/porsche500x500.jpg" data-holder-rendered="ue">
+        </div>
+    </div>
+
+    <hr class="featurette-divider">
+
+    <div class="row featurette">
+        <div class="col-md-7 order-md-2">
+            <h2 class="featurette-heading">About forum</h2>
+            <p class="lead">In our forum you can ask about anything connected with the automobile wrold , it not necessary have to be about just cars.
+                If you willing to help others , you can also answer to questions. You can publish and read news, just share your experience or look for an inspiration about your next car.
+                We insist for an appropriate attitude and want to keep our community friendly. Bad language and behavior wont be tolerated!
+            </p>
+            <p><a class="btn btn-secondary" asp-area="" asp-controller="Cars" asp-action="UserCars" role="button">View details »</a></p>
+        </div>
+        <div class="col-md-5 order-md-1">
+            <img class="featurette-image img-fluid mx-auto" data-src="holder.js/500x500/auto" alt="500x500" src="~/img/cars.jpg" data-holder-rendered="true" style="width: 500px; height: 500px;">
+        </div>
+    </div>
+
+    <hr class="featurette-divider">
+
+    <div class="row featurette">
+        <div class="col-md-7">
+            <h2 class="featurette-heading">Sell your car</h2>
+            <p class="lead">You provide information about the car you want to sell. The more information you give about the car and yourself the better chance to find a buyer for it.
+                We hope the published information is a hundred percent valid and nothing illegal is meant to happen.
+            </p>
+            <p><a class="btn btn-secondary" asp-area="" asp-controller="Cars" asp-action="Create" role="button">Publish »</a></p>
+        </div>
+        <div class="col-md-5">
+            <img class="featurette-image img-fluid mx-auto" data-src="holder.js/500x500/auto" alt="500x500" src="~/img/used_vehicle_department.jpg" data-holder-rendered="true" style="width: 500px; height: 500px;">
+        </div> 
+    </div>
+
+    <hr class="featurette-divider">
+
