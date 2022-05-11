@@ -43,6 +43,11 @@ namespace CarWorld.Web.Areas.Admin.Controllers
                 return View();
             }
 
+            if (await roleManager.RoleExistsAsync(model.Name))
+            {
+                ModelState.AddModelError(string.Empty, $"Role with the name {model.Name} already exists.");
+            }
+
             await roleManager.CreateAsync(new ApplicationRole()
             {
                 Name = model.Name
@@ -51,21 +56,21 @@ namespace CarWorld.Web.Areas.Admin.Controllers
             return View();
         }
 
-        public async Task<IActionResult> ManageUsers(int id = 1)
+        public async Task<IActionResult> ManageUsers(string searchText, int id = 1)
         {
             const int itemsPerPage = 12;
 
-            var users = await usersService.GetUsersAsync();
+            var users = await usersService.GetUsersAsync(searchText);
 
             var viewModel = new UserListViewModel()
             {
                 PageNumber = id,
-                Users = users,
+                Users = users.Skip((id - 1) * itemsPerPage).Take(itemsPerPage),
                 ItemsCount = users.Count(),
                 ItemsPerPage = itemsPerPage,
             };
 
-            //ViewData["CurrentFilter"] = searchString;
+            ViewData["CurrentFilter"] = searchText;
 
             return View(viewModel);
         }

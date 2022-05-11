@@ -13,7 +13,7 @@
                 <form asp-action="ManageUsers" method="get">
                     <div class="form-actions no-color">
                         <p>
-                            Find by username, first or last name: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
+                            Find by username, first or last name: <input type="text" name="searchText" value="@ViewData["CurrentFilter"]" />
                             <input type="submit" value="Search" class="btn btn-default" /> |
                             <a asp-action="ManageUsers">Back to Full List</a>
                         </p>

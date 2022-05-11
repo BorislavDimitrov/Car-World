@@ -62,11 +62,21 @@
                 .FirstOrDefaultAsync(x => x.Id == userId);
         }
 
-        public async Task<IEnumerable<UserInListViewModel>> GetUsersAsync()
+        public async Task<IEnumerable<UserInListViewModel>> GetUsersAsync(string searchText)
         {
-            return await userRepo.AllWithDeleted()
+            var users = await userRepo.AllWithDeleted()
                 .To<UserInListViewModel>()
                 .ToListAsync();
+
+            if (searchText != null)
+            {
+                users = users.Where(x => (x.UserName != null && x.UserName.Contains(searchText)) ||
+                (x.FirstName != null && x.FirstName.Contains(searchText)) ||
+                (x.LastName != null && x.LastName.Contains(searchText)))
+                 .ToList();
+            }
+
+            return users;
         }
 
         public async Task<EditUserInputModel> GetUserSelfInfoAsync(string userId)

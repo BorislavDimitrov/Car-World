@@ -70,7 +70,7 @@
         [HttpPost]
         public async Task<IActionResult> Create(CreateModelModel model)
         {
-            IEnumerable<SelectListItem> makes = await makesService.GetExistingMakesAsSelectListItemAsync();
+            IEnumerable<SelectListItem> makes = await makesService.GetMakesAsSelectListItemAsync();
 
             if (!ModelState.IsValid)
             {
@@ -102,7 +102,7 @@
             }
 
             var model = await modelsService.GetModelByIdAsync<EditModelInputModel>(id);
-            var makes = await makesService.GetExistingMakesAsSelectListItemAsync();
+            var makes = await makesService.GetMakesAsSelectListItemAsync();
 
             model.Makes = makes;
 
@@ -114,7 +114,7 @@
         {
             if (!ModelState.IsValid)
             {
-                var makes = await makesService.GetExistingMakesAsSelectListItemAsync();
+                var makes = await makesService.GetMakesAsSelectListItemAsync();
                 model.Makes = makes;
                 return View(model);
             }
@@ -126,7 +126,7 @@
             catch (InvalidOperationException ex)
             {
                 ModelState.AddModelError(string.Empty, ex.Message);
-                var makes = await makesService.GetExistingMakesAsSelectListItemAsync();
+                var makes = await makesService.GetMakesAsSelectListItemAsync();
                 model.Makes = makes;
                 return View(model);
             }
