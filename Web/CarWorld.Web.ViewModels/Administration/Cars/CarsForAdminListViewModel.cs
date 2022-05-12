@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CarWorld.Web.ViewModels.Administration.Cars
 {
-    public class CarsListViewModel : PagingViewModel
+    public class CarsForAdminListViewModel : PagingViewModel
     {
         public IEnumerable<CarsForAdminInListViewModel> Cars { get; set; }
     }

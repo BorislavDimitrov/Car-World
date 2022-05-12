@@ -26,7 +26,7 @@
 
             var cars = await carsService.GetCarsForAdminAsync<CarsForAdminInListViewModel>();
 
-            var viewModel = new CarsListViewModel()
+            var viewModel = new CarsForAdminListViewModel()
             {
                 PageNumber = id,
                 Cars = cars.Skip((id - 1) * itemsPerPage).Take(itemsPerPage),

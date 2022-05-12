@@ -1,9 +1,10 @@
 ﻿@using CarWorld.Web.Infrastructure.Extensions
 @using CarWorld.Web.ViewModels.Administration.Cars
-@using CarWorld.Web.ViewModels.Paging
-@model PaginationList<CarsForAdminInListViewModel>
+@model CarsForAdminListViewModel
 @{
-    ViewData["Title"] = "Manage Cars";
+    ViewData["Title"] = "Manage cars, peage " + @Model.PageNumber;
+    ViewData["Controller"] = "Cars";
+    ViewData["Action"] = "ManageCars";
 }
 
 <div class="row">
@@ -14,7 +15,7 @@
                 <form asp-action="ManageCars" method="get">
                     <div class="form-actions no-color">
                         <p>
-                            Search by make/model/title/creator username: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
+                            Search by make/model/title/creator username: <input type="text" name="searchText" value="@ViewData["CurrentFilter"]" />
                             <input type="submit" value="Search" class="btn btn-default" /> |
                             <a asp-action="ManageCars">Reset search</a>
                         </p>
@@ -42,7 +43,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var car in Model)
+                        @foreach (var car in @Model.Cars)
                         {
                             <tr>
                                 <td>@car.Make</td>
@@ -70,21 +71,7 @@
                 </table>
             </div>
 
-             @{
-                var prevDisabled = !Model.PreviousPage ? "disabled" : "";
-                var nextDisabled = !Model.NextPage ? "disabled" : "";
-            }
-
-            <a asp-action="ManageCars"
-                asp-route-pageNumber="@(Model.PageIndex - 1)"
-                class="btn btn-default @prevDisabled">
-                Previous
-            </a>
-            <a asp-action="ManageCars"
-                asp-route-pageNumber="@(Model.PageIndex + 1)"
-                class="btn btn-default @nextDisabled">
-                Next
-            </a>
+             <partial name="_PartialPaging" model="@Model" />
 
         </div>
     </div>
