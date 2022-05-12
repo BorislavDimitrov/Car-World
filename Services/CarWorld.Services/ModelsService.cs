@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-
+    using AutoMapper;
     using CarWorld.Data.Common.Repositories;
     using CarWorld.Data.Models;
     using CarWorld.Services.Contracts;
@@ -16,10 +16,12 @@
     public class ModelsService : IModelsService
     {
         private readonly IDeletableEntityRepository<Model> modelsRepo;
+        private readonly IMapper mapper;
 
         public ModelsService(IDeletableEntityRepository<Model> modelsRepo)
         {
             this.modelsRepo = modelsRepo;
+            this.mapper = AutoMapperConfig.MapperInstance;
         }
 
         public async Task CreateModelAsync(CreateModelModel model)
@@ -29,11 +31,7 @@
                 throw new InvalidOperationException($"Model with the name {model.Name} of this make already exists.");
             }
 
-            var newModel = new Model
-            {
-                Name = model.Name,
-                MakeId = model.MakeId,
-            };
+            var newModel = mapper.Map<Model>(model);
 
             await modelsRepo.AddAsync(newModel);
 
@@ -74,7 +72,7 @@
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<ModelInListViewModel>> GetModelsAsync(string searchText, int makeId)
+        public async Task<IEnumerable<ModelInListViewModel>> GetModelsAsync(string searchText, int? makeId)
         {
             var models = await modelsRepo.AllWithDeleted()
                 .OrderBy(x => x.Make.Name)
@@ -86,7 +84,7 @@
                 models = models.Where(x => x.Name.Contains(searchText)).ToList();
             }
 
-            if (makeId > 0)
+            if (makeId != null)
             {
                 models = models.Where(x => x.MakeId == makeId).ToList();
             }

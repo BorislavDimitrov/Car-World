@@ -3,6 +3,7 @@
     using AutoMapper;
     using CarWorld.Data.Models;
     using CarWorld.Data.Models.Enums;
+    using CarWorld.Services.Mapping;
     using CarWorld.Web.Infrastructure.ValidationAttributes;
     using CarWorld.Web.ViewModels.Models;
     using Microsoft.AspNetCore.Http;
@@ -11,7 +12,7 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
-    public class CreateCarInputModel 
+    public class CreateCarInputModel : IMapTo<Car>, IHaveCustomMappings
     {
         public int MakeId { get; set; }
 

@@ -10,6 +10,6 @@ namespace CarWorld.Web.ViewModels.Administration.Models
 
         public List<SelectListItem> Makes { get; set; } = new List<SelectListItem>();
 
-        public int MakeId { get; set; }
+        public int? MakeId { get; set; }
     }
 }

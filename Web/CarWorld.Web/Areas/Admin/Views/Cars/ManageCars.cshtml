@@ -1,7 +1,7 @@
 ﻿@using CarWorld.Web.Infrastructure.Extensions
 @using CarWorld.Web.ViewModels.Administration.Cars
 @using CarWorld.Web.ViewModels.Paging
-@model PaginationList<CarsListViewModel>
+@model PaginationList<CarsForAdminInListViewModel>
 @{
     ViewData["Title"] = "Manage Cars";
 }
@@ -16,7 +16,7 @@
                         <p>
                             Search by make/model/title/creator username: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
                             <input type="submit" value="Search" class="btn btn-default" /> |
-                            <a asp-action="ManageCars">Back to Full List</a>
+                            <a asp-action="ManageCars">Reset search</a>
                         </p>
                     </div>
                 </form>

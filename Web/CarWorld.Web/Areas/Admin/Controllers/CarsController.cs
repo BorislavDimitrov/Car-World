@@ -1,5 +1,6 @@
 ﻿namespace CarWorld.Web.Areas.Admin.Controllers
 {
+    using System.Linq;
     using System.Threading.Tasks;
 
     using CarWorld.Common;
@@ -19,15 +20,23 @@
         }
 
         [HttpGet]
-        public async Task<IActionResult> ManageCars(string searchString, int? pageNumber = 1)
+        public async Task<IActionResult> ManageCars(string searchText, int id = 1)
         {
-            var cars = carsService.GetCarsForAdminAsync();
+            const int itemsPerPage = 12;
 
-            ViewData["CurrentFilter"] = searchString;
+            var cars = await carsService.GetCarsForAdminAsync<CarsForAdminInListViewModel>();
 
-            int pageSize = 10;
+            var viewModel = new CarsListViewModel()
+            {
+                PageNumber = id,
+                Cars = cars.Skip((id - 1) * itemsPerPage).Take(itemsPerPage),
+                ItemsCount = cars.Count(),
+                ItemsPerPage = itemsPerPage,
+            };
 
-            return View(await PaginationList<CarsListViewModel>.CreateAsync(cars, pageNumber ?? 1, pageSize));
+            ViewData["CurrentFilter"] = searchText;
+
+            return View(viewModel);
         }
 
         public async Task<IActionResult> Delete(int id)

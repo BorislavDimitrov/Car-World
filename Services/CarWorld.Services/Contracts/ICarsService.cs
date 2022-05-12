@@ -21,7 +21,7 @@ namespace CarWorld.Services.Contracts
 
         Task<DetailsCarViewModel> GetCarDetails(int carId);
 
-        IQueryable<CarsListViewModel> GetCarsForAdminAsync();
+        Task<IEnumerable<T>> GetCarsForAdminAsync<T>();
 
         Task<IEnumerable<T>> GetSearchCarsAsync<T>();
 

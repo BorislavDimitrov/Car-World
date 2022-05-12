@@ -22,42 +22,46 @@
     {
         private readonly IDeletableEntityRepository<Car> carsRepo;
         private readonly IDeletableEntityRepository<Picture> picturesRepo;
+        private readonly IMapper mapper;
 
         public CarsService(IDeletableEntityRepository<Car> carsRepo,
             IDeletableEntityRepository<Picture> picturesRepo)
         {
             this.carsRepo = carsRepo;
             this.picturesRepo = picturesRepo;
+            this.mapper = AutoMapperConfig.MapperInstance;
         }
 
         public async Task CreateCarAsync(CreateCarInputModel model, string wwwrootPath)
         {
-            var car = new Car()
-            {
-                CreatorId = model.UserId,
-                MakeId = model.MakeId,
-                RegionId = model.RegionId,
-                ModelId = model.ModelId,
-                CarType = model.CarType,
-                Color = model.Color,
-                Condition = model.Condition,
-                CreationYear = model.CreationYear,
-                Description = model.Description,
-                FuelType = model.FuelType,
-                DoorsCount = model.DoorsCount,
-                CubicCapacity = model.CubicCapacity,
-                HandDrive = model.HandDrive,
-                EmissionClass = model.EmissionClass,
-                Mileage = model.Mileage,
-                SeatsCount = model.SeatsCount,
-                TankFuel = model.TankFuel,
-                Transmission = model.Transmission,
-                Title = model.Title,
-                HorsePower = model.HorsePower,
-                Price = model.Price,
-                PhoneNumber = model.PhoneNumber,
-                City = model.City,
-            };
+            //var car = new Car()
+            //{
+            //    CreatorId = model.UserId,
+            //    MakeId = model.MakeId,
+            //    RegionId = model.RegionId,
+            //    ModelId = model.ModelId,
+            //    CarType = model.CarType,
+            //    Color = model.Color,
+            //    Condition = model.Condition,
+            //    CreationYear = model.CreationYear,
+            //    Description = model.Description,
+            //    FuelType = model.FuelType,
+            //    DoorsCount = model.DoorsCount,
+            //    CubicCapacity = model.CubicCapacity,
+            //    HandDrive = model.HandDrive,
+            //    EmissionClass = model.EmissionClass,
+            //    Mileage = model.Mileage,
+            //    SeatsCount = model.SeatsCount,
+            //    TankFuel = model.TankFuel,
+            //    Transmission = model.Transmission,
+            //    Title = model.Title,
+            //    HorsePower = model.HorsePower,
+            //    Price = model.Price,
+            //    PhoneNumber = model.PhoneNumber,
+            //    City = model.City,
+            //};
+
+            var car = mapper.Map<Car>(model);
 
             string thumbnailPicturePath = String.Empty;
 
@@ -185,26 +189,30 @@
                 .FirstOrDefaultAsync();
         }
 
-        public IQueryable<CarsListViewModel> GetCarsForAdminAsync()
+        public async Task<IEnumerable<T>> GetCarsForAdminAsync<T>()
         {
-            return carsRepo.AllWithDeleted()
-                .Select(x => new CarsListViewModel
-                {
-                    CarType = x.CarType,
-                    City = x.City,
-                    Color = x.Color,
-                    CreateDate = x.CreateDate.ToString("MM/dd/yyyy"),
-                    HorsePower = x.HorsePower,
-                    Make = x.Make.Name,
-                    Id = x.Id,
-                    Mileage = x.Mileage,
-                    Model = x.Model.Name,
-                    Price = x.Price,
-                    Title = x.Title,
-                    Year = x.CreationYear,
-                    UserName = !String.IsNullOrWhiteSpace(x.Creator.FirstName + " " + x.Creator.LastName) ? x.Creator.FirstName + " " + x.Creator.LastName : x.Creator.UserName,
-                    IsDeleted = x.IsDeleted,
-                });
+            //return carsRepo.AllWithDeleted()
+            //    .Select(x => new CarsForAdminInListViewModel
+            //    {
+            //        CarType = x.CarType,
+            //        City = x.City,
+            //        Color = x.Color,
+            //        CreateDate = x.CreateDate.ToString("MM/dd/yyyy"),
+            //        HorsePower = x.HorsePower,
+            //        Make = x.Make.Name,
+            //        Id = x.Id,
+            //        Mileage = x.Mileage,
+            //        Model = x.Model.Name,
+            //        Price = x.Price,
+            //        Title = x.Title,
+            //        Year = x.CreationYear,
+            //        UserName = !String.IsNullOrWhiteSpace(x.Creator.FirstName + " " + x.Creator.LastName) ? x.Creator.FirstName + " " + x.Creator.LastName : x.Creator.UserName,
+            //        IsDeleted = x.IsDeleted,
+            //    });
+            
+            return await carsRepo.AllWithDeleted()
+                .To<T>()
+                .ToListAsync();
         }
 
         public async Task<IEnumerable<T>> GetSearchCarsAsync<T>()

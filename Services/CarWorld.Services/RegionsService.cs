@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-
+    using AutoMapper;
     using CarWorld.Data.Common.Repositories;
     using CarWorld.Data.Models;
     using CarWorld.Services.Contracts;
@@ -16,10 +16,11 @@
     public class RegionsService : IRegionsService
     {
         private readonly IDeletableEntityRepository<Region> regionsRepo;
-
+        private readonly IMapper mapper;
         public RegionsService(IDeletableEntityRepository<Region> regionsRepo)
         {
             this.regionsRepo = regionsRepo;
+            this.mapper = AutoMapperConfig.MapperInstance;
         }
 
         public async Task CreateRegionAsync(CreateRegionInputModel model)
@@ -29,10 +30,7 @@
                 throw new InvalidOperationException($"Region with the name {model.Name} already exists.");
             }
 
-            var newRegion = new Region
-            {
-                Name = model.Name,
-            };
+            var newRegion = mapper.Map<Region>(model);
 
             await regionsRepo.AddAsync(newRegion);
 

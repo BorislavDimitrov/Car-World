@@ -1,5 +1,6 @@
 ﻿namespace CarWorld.Services
 {
+    using AutoMapper;
     using CarWorld.Data.Common.Repositories;
     using CarWorld.Data.Models;
     using CarWorld.Services.Contracts;
@@ -16,10 +17,11 @@
     public class MakesService : IMakesService
     {
         private readonly IDeletableEntityRepository<Make> makeRepo;
-
+        private readonly IMapper mapper;
         public MakesService(IDeletableEntityRepository<Make> makeRepo)
         {
             this.makeRepo = makeRepo;
+            this.mapper = AutoMapperConfig.MapperInstance;
         }
 
         public async Task CreateMakeAsync(CreateMakeInputModel model)

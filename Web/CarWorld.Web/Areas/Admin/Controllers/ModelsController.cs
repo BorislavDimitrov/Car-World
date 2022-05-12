@@ -23,7 +23,7 @@
             this.makesService = makesService;
         }
 
-        public async Task<IActionResult> ManageModels(string searchText,int makeId, int id = 1)
+        public async Task<IActionResult> ManageModels(string searchText,int? makeId, int id = 1)
         {
             const int itemsPerPage = 12;
 
@@ -34,7 +34,7 @@
             SelectListItem defaultSelectItem = new SelectListItem
             {
                 Text = "Select make",
-                Value = "0",
+                Value = "",
             };
             
             makes.Insert(0, defaultSelectItem);
@@ -46,7 +46,7 @@
                 ItemsCount = models.Count(),
                 ItemsPerPage = itemsPerPage,
                 Makes = makes,
-                MakeId = makeId,
+                MakeId = makeId ?? null,
             };
 
             ViewData["CurrentFilter"] = searchText;
