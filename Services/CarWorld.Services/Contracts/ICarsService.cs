@@ -21,7 +21,7 @@ namespace CarWorld.Services.Contracts
 
         Task<DetailsCarViewModel> GetCarDetails(int carId);
 
-        Task<IEnumerable<T>> GetCarsForAdminAsync<T>();
+        Task<IEnumerable<CarsForAdminInListViewModel>> GetCarsForAdminAsync(string searchText);
 
         Task<IEnumerable<T>> GetSearchCarsAsync<T>();
 
@@ -29,8 +29,6 @@ namespace CarWorld.Services.Contracts
 
         Task<bool> IsCarExistingForAdminByIdAsync(int carId);
 
-        Task<bool> IsCarMadeByUserAsync(int carId, string userId);
-
-        int GetCount();     
+        Task<bool> IsCarMadeByUserAsync(int carId, string userId);  
     }
 }

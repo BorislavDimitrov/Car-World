@@ -1,6 +1,7 @@
 ﻿namespace CarWorld.Web
 {
     using System;
+    using System.Configuration;
     using System.Reflection;
     using AutoMapper;
     using CarWorld.Data;
@@ -80,6 +81,23 @@
             services.AddTransient<ICarsService, CarsService>();
 
             services.AddMvc();
+
+            // Cache config
+
+            services.AddDistributedSqlServerCache(options =>
+            {
+                options.ConnectionString = this.configuration.GetConnectionString("DefaultConnection");
+                options.SchemaName = "dbo";
+                options.TableName = "CacheRecords";
+            });
+
+            //
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = new TimeSpan(365, 0, 0, 0);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

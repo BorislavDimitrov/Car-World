@@ -189,30 +189,18 @@
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<T>> GetCarsForAdminAsync<T>()
-        {
-            //return carsRepo.AllWithDeleted()
-            //    .Select(x => new CarsForAdminInListViewModel
-            //    {
-            //        CarType = x.CarType,
-            //        City = x.City,
-            //        Color = x.Color,
-            //        CreateDate = x.CreateDate.ToString("MM/dd/yyyy"),
-            //        HorsePower = x.HorsePower,
-            //        Make = x.Make.Name,
-            //        Id = x.Id,
-            //        Mileage = x.Mileage,
-            //        Model = x.Model.Name,
-            //        Price = x.Price,
-            //        Title = x.Title,
-            //        Year = x.CreationYear,
-            //        UserName = !String.IsNullOrWhiteSpace(x.Creator.FirstName + " " + x.Creator.LastName) ? x.Creator.FirstName + " " + x.Creator.LastName : x.Creator.UserName,
-            //        IsDeleted = x.IsDeleted,
-            //    });
-            
-            return await carsRepo.AllWithDeleted()
-                .To<T>()
+        public async Task<IEnumerable<CarsForAdminInListViewModel>> GetCarsForAdminAsync(string searchText)
+        {                    
+            var cars = await carsRepo.AllWithDeleted()
+                .To<CarsForAdminInListViewModel>()
                 .ToListAsync();
+
+            if (searchText != null)
+            {
+                cars = cars.Where(x => x.Title.Contains(searchText)).ToList();
+            }
+
+            return cars;
         }
 
         public async Task<IEnumerable<T>> GetSearchCarsAsync<T>()

@@ -188,7 +188,7 @@
             {
                 PageNumber = id,
                 Cars = cars.Skip((id - 1) * itemsPerPage).Take(itemsPerPage),
-                ItemsCount = carsService.GetCount(),
+                ItemsCount = cars.Count(),
                 ItemsPerPage = itemsPerPage,
             };
 

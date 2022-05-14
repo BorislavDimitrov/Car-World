@@ -15,7 +15,7 @@
                 <form asp-action="ManageCars" method="get">
                     <div class="form-actions no-color">
                         <p>
-                            Search by make/model/title/creator username: <input type="text" name="searchText" value="@ViewData["CurrentFilter"]" />
+                            Search by title: <input type="text" name="searchText" value="@ViewData["CurrentFilter"]" />
                             <input type="submit" value="Search" class="btn btn-default" /> |
                             <a asp-action="ManageCars">Reset search</a>
                         </p>
@@ -46,9 +46,9 @@
                         @foreach (var car in @Model.Cars)
                         {
                             <tr>
-                                <td>@car.Make</td>
+                                <td>@car.MakeName</td>
                                 <td>@car.IsDeleted</td>
-                                <td>@car.Model</td>
+                                <td>@car.ModelName</td>
                                 <td>@car.Title</td>
                                 <td>@car.Price</td>
                                 <td>@car.Year</td>

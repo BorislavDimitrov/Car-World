@@ -9,14 +9,18 @@
     using CarWorld.Web.ViewModels.Administration.Cars;
     using CarWorld.Web.ViewModels.Paging;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Caching.Distributed;
 
     public class CarsController : AdministrationController
     {
         private readonly ICarsService carsService;
+        private readonly IDistributedCache cache;
 
-        public CarsController(ICarsService carsService)
+        public CarsController(ICarsService carsService,
+            IDistributedCache cache)
         {
             this.carsService = carsService;
+            this.cache = cache;
         }
 
         [HttpGet]
@@ -24,7 +28,7 @@
         {
             const int itemsPerPage = 12;
 
-            var cars = await carsService.GetCarsForAdminAsync<CarsForAdminInListViewModel>();
+            var cars = await carsService.GetCarsForAdminAsync(searchText);
 
             var viewModel = new CarsForAdminListViewModel()
             {
