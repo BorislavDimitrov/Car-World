@@ -1,4 +1,5 @@
-﻿using CarWorld.Data.Models;
+﻿using CarWorld.Common;
+using CarWorld.Data.Models;
 using CarWorld.Services.Contracts;
 using CarWorld.Web.Areas.Administration.Controllers;
 using CarWorld.Web.ViewModels.Administration.Users;
@@ -53,6 +54,8 @@ namespace CarWorld.Web.Areas.Admin.Controllers
                 Name = model.Name
             });
 
+            TempData["CreateMessage"] = GlobalConstants.SuccessfulCreate;
+
             return View();
         }
 
@@ -83,12 +86,16 @@ namespace CarWorld.Web.Areas.Admin.Controllers
 
             await userManager.UpdateSecurityStampAsync(user);
 
+            TempData["DeleteMessage"] = GlobalConstants.SuccessfulDelete;
+
             return RedirectToAction(nameof(ManageUsers));
         }
 
         public async Task<IActionResult> Recover(string id)
         {
             await usersService.RecoverAccountAsync(id);
+
+            TempData["RecoverMessage"] = GlobalConstants.SuccessfulRecover;
 
             return RedirectToAction(nameof(ManageUsers));
         }

@@ -24,11 +24,13 @@
         {
             if (!await makesService.IsMakeExistingByIdAsync(id))
             {
-                TempData["Message"] = GlobalConstants.RedirectToHomepageAlertMessage;
+                TempData["ErrorMessage"] = GlobalConstants.RedirectToHomepageAlertMessage;
                 return Redirect("/Admin/Home/index");
             }
 
             await makesService.DeleteMakeAsync(id);
+
+            TempData["DeleteMessage"] = GlobalConstants.SuccessfulDelete;
 
             return RedirectToAction(nameof(ManageMakes));
         }
@@ -57,6 +59,8 @@
                 return View(model);
             }
 
+            TempData["CreateMessage"] = GlobalConstants.SuccessfulCreate;
+
             return RedirectToAction(nameof(ManageMakes));
         }
 
@@ -83,11 +87,13 @@
         {
             if (!await makesService.IsMakeExistingByIdAsync(id))
             {
-                TempData["Message"] = GlobalConstants.RedirectToHomepageAlertMessage;
+                TempData["ErrorMessage"] = GlobalConstants.RedirectToHomepageAlertMessage;
                 return Redirect("/Admin/Home/index");
             }
 
             await makesService.RecoverMakeAsync(id);
+
+            TempData["RecoverMessage"] = GlobalConstants.SuccessfulRecover;
 
             return RedirectToAction(nameof(ManageMakes));
         }
@@ -97,7 +103,7 @@
         {
             if (!await makesService.IsMakeExistingByIdAsync(id))
             {
-                TempData["Message"] = GlobalConstants.RedirectToHomepageAlertMessage;
+                TempData["ErrorMessage"] = GlobalConstants.RedirectToHomepageAlertMessage;
                 return Redirect("/Admin/Home/index");
             }
 
@@ -123,7 +129,9 @@
                 ModelState.AddModelError(string.Empty, ex.Message);
                 return View(model);
             }
-         
+
+            TempData["EditMessage"] = GlobalConstants.SuccessfulEdit;
+
             return RedirectToAction(nameof(ManageMakes));
         }
     }

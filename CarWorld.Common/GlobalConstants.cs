@@ -17,5 +17,7 @@
         public const string SuccessfulCreate = "The create was successful.";
 
         public const string SuccessfulDelete = "The delete was successful.";
+
+        public const string SuccessfulRecover = "The recover was successful.";
     }
 }

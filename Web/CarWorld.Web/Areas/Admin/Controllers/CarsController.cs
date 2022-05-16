@@ -47,11 +47,13 @@
         {
             if (!await carsService.IsCarExistingForAdminByIdAsync(id))
             {
-                TempData["Message"] = GlobalConstants.RedirectToHomepageAlertMessage;
+                TempData["ErrorMessage"] = GlobalConstants.RedirectToHomepageAlertMessage;
                 return Redirect("/Admin/Home/Index");
             }
 
             await carsService.DeleteCarAsync(id);
+
+            TempData["DeleteMessage"] = GlobalConstants.SuccessfulDelete;
 
             return RedirectToAction(nameof(ManageCars));
         }
@@ -60,7 +62,7 @@
         {
             if (!await carsService.IsCarExistingForAdminByIdAsync(id))
             {
-                TempData["Message"] = GlobalConstants.RedirectToHomepageAlertMessage;
+                TempData["ErrorMessage"] = GlobalConstants.RedirectToHomepageAlertMessage;
                 return Redirect("/Admin/Home/Index");
             }
 

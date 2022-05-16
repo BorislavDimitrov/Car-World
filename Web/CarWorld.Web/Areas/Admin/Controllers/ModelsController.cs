@@ -88,7 +88,9 @@
                 model.Makes = makes;
                 return View(model);
             }
-        
+
+            TempData["CreateMessage"] = GlobalConstants.SuccessfulCreate;
+
             return RedirectToAction("ManageModels");
         }
 
@@ -97,7 +99,7 @@
         {
             if (!await modelsService.IsModelExistingByIdAsync(id))
             {
-                TempData["Message"] = GlobalConstants.RedirectToHomepageAlertMessage;
+                TempData["ErrorMessage"] = GlobalConstants.RedirectToHomepageAlertMessage;
                 return Redirect("/Admin/Home/Index");
             }
 
@@ -131,6 +133,8 @@
                 return View(model);
             }
 
+            TempData["EditMessage"] = GlobalConstants.SuccessfulEdit;
+
             return RedirectToAction(nameof(ManageModels));
         }
 
@@ -138,11 +142,13 @@
         {
             if (!await modelsService.IsModelExistingByIdAsync(id))
             {
-                TempData["Message"] = GlobalConstants.RedirectToHomepageAlertMessage;
+                TempData["ErrorMessage"] = GlobalConstants.RedirectToHomepageAlertMessage;
                 return Redirect("/Admin/Home/Index");
             }
 
             await modelsService.DeleteModelAsync(id);
+
+            TempData["DeleteMessage"] = GlobalConstants.SuccessfulDelete;
 
             return RedirectToAction(nameof(ManageModels));
         }
@@ -151,11 +157,13 @@
         {
             if (!await modelsService.IsModelExistingByIdAsync(id))
             {
-                TempData["Message"] = GlobalConstants.RedirectToHomepageAlertMessage;
+                TempData["ErrorMessage"] = GlobalConstants.RedirectToHomepageAlertMessage;
                 return Redirect("/Admin/Home/Index");
             }
 
             await modelsService.RecoverModelAsync(id);
+
+            TempData["RecoverMessage"] = GlobalConstants.SuccessfulRecover;
 
             return RedirectToAction(nameof(ManageModels));
         }

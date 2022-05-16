@@ -3,6 +3,7 @@
     var createMessage = TempData["CreateMessage"];
     var deleteMessage = TempData["DeleteMessage"];
     var editMessage = TempData["EditMessage"];
+    var recoverMessage = TempData["RecoverMessage"];
 }
 
 
@@ -40,6 +41,16 @@
 {
     <div class="alert alert-success alert-dismissible fade show" role="alert">
         <strong>@editMessage</strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+
+@if (recoverMessage != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>@recoverMessage</strong>
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>

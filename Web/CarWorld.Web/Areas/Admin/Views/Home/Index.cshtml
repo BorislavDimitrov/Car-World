@@ -1,17 +1,8 @@
 ﻿@{
     ViewData["Title"] = "Admin area home page";
-    var message = TempData["Message"];
 }
 
-@if (message != null)
-{
-    <div class="alert alert-warning alert-dismissible fade show" role="alert">
-  <strong>@message</strong> 
-  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-    <span aria-hidden="true">&times;</span>
-  </button>
-</div>
-}
+<partial name="_AlertsPartial" />
 
 <div class="text-center">
     <h1 class="display-6">Welcome to Admin area </h1>

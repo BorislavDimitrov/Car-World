@@ -62,7 +62,9 @@
                 this.ModelState.AddModelError(string.Empty, ex.Message);
                 return View(model);
             }
-            
+
+            TempData["CreateMessage"] = GlobalConstants.SuccessfulCreate;
+
             return RedirectToAction(nameof(ManageRegions));
         }
 
@@ -71,11 +73,13 @@
 
             if (!await regionsService.IsRegionExistingByIdAsync(id))
             {
-                TempData["Message"] = GlobalConstants.RedirectToHomepageAlertMessage;
+                TempData["ErrorMessage"] = GlobalConstants.RedirectToHomepageAlertMessage;
                 return Redirect("/Admin/Home/index");
             }
 
             await regionsService.DeleteRegionAsync(id);
+
+            TempData["DeleteMessage"] = GlobalConstants.SuccessfulDelete;
 
             return RedirectToAction(nameof(ManageRegions));
         }
@@ -84,11 +88,13 @@
         {
             if (!await regionsService.IsRegionExistingByIdAsync(id))
             {
-                TempData["Message"] = GlobalConstants.RedirectToHomepageAlertMessage;
+                TempData["ErrorMessage"] = GlobalConstants.RedirectToHomepageAlertMessage;
                 return Redirect("/Admin/Home/index");
             }
 
             await regionsService.RecoverRegionAsync(id);
+
+            TempData["RecoverMessage"] = GlobalConstants.SuccessfulRecover;
 
             return RedirectToAction(nameof(ManageRegions));
         }
@@ -98,7 +104,7 @@
         {
             if (!await regionsService.IsRegionExistingByIdAsync(id))
             {
-                TempData["Message"] = GlobalConstants.RedirectToHomepageAlertMessage;
+                TempData["ErrorMessage"] = GlobalConstants.RedirectToHomepageAlertMessage;
                 return Redirect("/Admin/Home/index");
             }
 
@@ -124,6 +130,8 @@
                 ModelState.AddModelError(string.Empty, ex.Message);
                 return View(model);
             }
+
+            TempData["EditMessage"] = GlobalConstants.SuccessfulEdit;
 
             return RedirectToAction(nameof(ManageRegions));
         }
