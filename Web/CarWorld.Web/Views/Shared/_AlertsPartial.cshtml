@@ -1,0 +1,47 @@
+﻿@{
+    var errorMessage = TempData["ErrorMessage"];
+    var createMessage = TempData["CreateMessage"];
+    var deleteMessage = TempData["DeleteMessage"];
+    var editMessage = TempData["EditMessage"];
+}
+
+
+@if (errorMessage != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>@errorMessage</strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+
+@if (createMessage != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>@createMessage</strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+
+@if (deleteMessage != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>@deleteMessage</strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+
+@if (editMessage != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>@editMessage</strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}

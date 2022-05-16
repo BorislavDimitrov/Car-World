@@ -76,7 +76,9 @@
 
             await carsService.CreateCarAsync(model, wwwrootPath);
 
-            return RedirectToAction("UserCars");
+            TempData["CreateMessage"] = GlobalConstants.SuccessfulCreate;
+
+            return RedirectToAction(nameof(UserCars));
         }
         
         [HttpGet]
@@ -87,7 +89,7 @@
 
             if (!await carsService.IsCarMadeByUserAsync(id, userId))
             {
-                TempData["Message"] = GlobalConstants.RedirectToHomepageAlertMessage;
+                TempData["ErrorMessage"] = GlobalConstants.RedirectToHomepageAlertMessage;
                 return Redirect("/Home/index");
             }          
 
@@ -123,7 +125,9 @@
 
             await carsService.EditCarAsync(model, wwwroot);
 
-            return RedirectToAction(nameof(UserCars));
+            TempData["EditMessage"] = GlobalConstants.SuccessfulEdit;
+
+            return RedirectToAction(nameof(Details), new { model.Id });
         }   
 
         [HttpGet]
@@ -155,13 +159,13 @@
 
             if (!await carsService.IsCarMadeByUserAsync(id, userId))
             {
-                TempData["Message"] = GlobalConstants.RedirectToHomepageAlertMessage;
+                TempData["ErrorMessage"] = GlobalConstants.RedirectToHomepageAlertMessage;
                 return Redirect("/Home/index");
             }
 
             await carsService.DeleteCarAsync(id);
 
-            return RedirectToAction(nameof(UserCars));
+            return RedirectToAction($"Home/index");
         }
 
         public async Task<IActionResult> Details(int id)
@@ -170,7 +174,7 @@
 
             if (!await carsService.IsCarExistingForUserByIdAsync(id))
             {
-                TempData["Message"] = GlobalConstants.RedirectToHomepageAlertMessage;
+                TempData["ErrorMessage"] = GlobalConstants.RedirectToHomepageAlertMessage;
                 return Redirect("/Home/index");
             }
 

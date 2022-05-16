@@ -5,8 +5,10 @@
 @inject UserManager<ApplicationUser> UserManager
 @model DetailsCarViewModel
 @{
-
+    ViewData["Title"] = $"Details - {Model.Title}";
 }
+
+<partial name="_AlertsPartial" />
 
 <div class="content mdc-layout-grid" style="padding-bottom: 0">
 
@@ -17,11 +19,11 @@
                     <div class="blur-text" style="float: left;font-style: normal;"> @Model.CreateDate &nbsp;</div>
                 </td>
                 <td valign="top" align="right">
-                    @if ( @User.Identity.IsAuthenticated)
+                    @if (@User.Identity.IsAuthenticated)
                     {
                         @if (@Model.CreatorId != @UserManager.GetUserAsync(User).Result.Id)
                         {
-                            <a asp-area="admin" asp-action="delete" asp-controller="models" asp-route-id="@Model.Id" class="btn btn-block btn-danger" style="width: 100px" >Report</a>
+                            <a asp-area="admin" asp-action="delete" asp-controller="models" asp-route-id="@Model.Id" class="btn btn-block btn-danger" style="width: 100px">Report</a>
                         }
                     }
                 </td>
@@ -151,9 +153,9 @@
             <h3>Contact the seller</h3>
         </div>
 
-        <div class="image">         
-                <img src="@Model.CreatorImagePath" class="img-circle" height=60 width=100 alt="User Image">
-                <a type="button" class="btn btn-info btn-sm" asp-area="" asp-action="users" asp-controller="cars" asp-route-id="@Model.Id" >View account</a>
+        <div class="image">
+            <img src="@Model.CreatorImagePath" class="img-circle" height=60 width=100 alt="User Image">
+            <a type="button" class="btn btn-info btn-sm" asp-area="" asp-action="users" asp-controller="cars" asp-route-id="@Model.Id">View account</a>
         </div>
 
         <div class="">
