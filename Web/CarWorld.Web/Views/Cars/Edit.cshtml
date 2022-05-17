@@ -11,8 +11,9 @@
 <h3>@ViewData["Title"]</h3>
 
 <div>
-    <form method="post" class="col-md-10" enctype="multipart/form-data">
-        <input type="hidden" name="id" value="@Model.Id" />
+    <form method="post" class="col-md-10" enctype="multipart/form-data" id="editForm">
+        @*<input type="hidden" name="id" value="@Model.Id" />*@
+        <inpout type="hidden" asp-for="Id"></inpout>
         <div asp-validation-summary="All" class="text-danger"></div>
 
         <div class="form-group">
@@ -162,9 +163,37 @@
             <span asp-validation-for="Images" class="text-danger"></span>
         </div>
 
-        <input type="submit" class="btn btn-primary" />
+@*        <input type="submit" class="btn btn-primary" />*@
     </form>
 </div>
+
+<button type="submit" class="btn btn-success" data-toggle="modal" data-target="#modalEdit">Save changes</button>
+
+
+<!-- Modal -->
+<div class="modal" id="modalEdit" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirm edit</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    Do you confirm this changes?
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="editForm.submit()">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <script src="~/lib/jquery/dist/jquery.js"></script>
 
 <script type="text/javascript">
