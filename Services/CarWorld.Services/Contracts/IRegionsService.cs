@@ -11,7 +11,7 @@
     {
         Task<IEnumerable<SelectListItem>> GetExistingRegionsAsync();
 
-        Task<IEnumerable<RegionsInListViewModel>> GetRegionsAsync(string searchText);
+        Task<IEnumerable<T>> GetRegionsAsync<T>(string search, string orderBy);
 
         Task CreateRegionAsync(CreateRegionInputModel model);
 

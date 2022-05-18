@@ -86,19 +86,28 @@
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<RegionsInListViewModel>> GetRegionsAsync(string searchText)
+        public async Task<IEnumerable<T>> GetRegionsAsync<T>(string search, string orderBy)
         {
-            var regions =  await regionsRepo.AllWithDeleted()
-                .OrderBy(x => x.Name)
-                .To<RegionsInListViewModel>()
-                .ToListAsync();
+            var regions = regionsRepo.AllWithDeleted()
+                .AsQueryable();
 
-            if (searchText != null)
+            if (search != null)
             {
-                regions = regions.Where(x => x.Name.Contains(searchText)).ToList();
+                regions = regions.Where(x => x.Name.Contains(search)).AsQueryable();
             }
 
-            return regions;
+            switch (orderBy)
+            {
+                case "NameDesc":
+                    regions = regions.OrderByDescending(x => x.Name);
+                    break;
+                default:
+                    regions = regions.OrderBy(x => x.Name);
+                    break;
+            }
+
+            return await regions.To<T>()
+                .ToListAsync();
         }
 
         public async Task RecoverRegionAsync(int regionId)

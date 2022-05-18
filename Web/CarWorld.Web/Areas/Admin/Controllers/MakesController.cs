@@ -64,11 +64,11 @@
             return RedirectToAction(nameof(ManageMakes));
         }
 
-        public async Task<IActionResult> ManageMakes(string search, int id = 1)
+        public async Task<IActionResult> ManageMakes(string search, string orderBy, int id = 1)
         {
             const int itemsPerPage = 12;
 
-            var makes = await makesService.GetMakesAsync(search);
+            var makes = await makesService.GetMakesAsync<MakeInListViewModel>(search, orderBy);
 
             var viewModel = new MakeListViewModel()
             {
@@ -77,6 +77,7 @@
                 ItemsCount = makes.Count(),
                 ItemsPerPage = itemsPerPage,
                 Search = search,
+                OrderBy = orderBy,
             };
 
             return View(viewModel);

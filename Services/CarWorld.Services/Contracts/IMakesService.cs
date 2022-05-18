@@ -15,7 +15,7 @@
 
         Task CreateMakeAsync(CreateMakeInputModel model);
 
-        Task<IEnumerable<MakeInListViewModel>> GetMakesAsync(string searchText);
+        Task<IEnumerable<T>> GetMakesAsync<T>(string search, string orderBy);
 
         Task RecoverMakeAsync(int makeId);
 

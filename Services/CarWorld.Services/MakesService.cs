@@ -87,19 +87,28 @@
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<MakeInListViewModel>> GetMakesAsync(string searchText)
+        public async Task<IEnumerable<T>> GetMakesAsync<T>(string search, string orderBy)
         {
-            var makes = await makeRepo.AllWithDeleted()
-                .OrderBy(x => x.Name)
-                .To<MakeInListViewModel>()
-                .ToListAsync();
+            var makes = makeRepo.AllWithDeleted()
+                .AsQueryable();
 
-            if (searchText != null)
+            if (search != null)
             {
-                makes = makes.Where(x => x.Name.Contains(searchText)).ToList();
+                makes = makes.Where(x => x.Name.Contains(search)).AsQueryable();
             }
 
-            return makes;
+            switch (orderBy)
+            {
+                case "NameDesc":
+                    makes = makes.OrderByDescending(x => x.Name);
+                    break;
+                default:
+                    makes = makes.OrderBy(x => x.Name);
+                    break;
+            }
+
+            return await makes.To<T>()
+                .ToListAsync();
         }
 
         public async Task RecoverMakeAsync(int makeId)

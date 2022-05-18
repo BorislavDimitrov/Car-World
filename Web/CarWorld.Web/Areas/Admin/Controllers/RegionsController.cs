@@ -20,11 +20,11 @@
         }
 
         [HttpGet]
-        public async Task<IActionResult> ManageRegions(string searchText, int id = 1)
+        public async Task<IActionResult> ManageRegions(string search, string orderBy, int id = 1)
         {
             const int itemsPerPage = 12;
 
-            var regions = await regionsService.GetRegionsAsync(searchText);
+            var regions = await regionsService.GetRegionsAsync<RegionsInListViewModel>(search, orderBy);
 
             var viewModel = new RegionsListViewModel()
             {
@@ -32,9 +32,9 @@
                 Regions = regions.Skip((id - 1) * itemsPerPage).Take(itemsPerPage),
                 ItemsCount = regions.Count(),
                 ItemsPerPage = itemsPerPage,
+                Search = search,
+                OrderBy = orderBy,
             };
-
-            ViewData["CurrentFilter"] = searchText;
 
             return View(viewModel);
         }

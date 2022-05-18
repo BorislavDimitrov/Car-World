@@ -3,7 +3,6 @@
 @model RegionsListViewModel
 @{
     ViewData["Title"] = "Manage Regions";
-    ViewData["Action"] = "ManageRegions";
 }
 
 <partial name="_AlertsPartial" />
@@ -11,16 +10,29 @@
 <div class="row">
     <div class="col-12">
         <div class="card">
+            <h3 class="card-title">Regions</h3>
             <div class="card-header">
-                <h3 class="card-title">Regions</h3>
+
                 <form asp-action="ManageRegions" method="get">
-                    <div class="form-actions no-color">
-                        <p>
-                            Find by name: <input type="text" name="searchText" value="@ViewData["CurrentFilter"]" />
-                            <input type="submit" value="Search" class="btn btn-default" /> |
-                            <a asp-action="ManageRegions">Reset search</a>
-                        </p>
+
+                    <div class="form-row">
+
+                        <div class="col-md-6">
+                            <label>Search</label>
+                            <input type="text" name="Search" class="form-control" placeholder="Search ......" value="@Model.Search">
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label>Order by</label>
+                            <select name="OrderBy" asp-for="OrderBy" value="@Model.OrderBy" class="form-control" style="width: 100%">
+                                <option value="NameAsc">Name ascending</option>
+                                <option value="NameDesc">Name descending</option>
+                            </select>
+                        </div>
+
                     </div>
+
+                    <button type="submit" asp-route-id="1" class="btn btn-outline-secondary">Search</button>
                 </form>
             </div>
 
