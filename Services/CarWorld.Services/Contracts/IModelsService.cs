@@ -9,7 +9,7 @@ namespace CarWorld.Services.Contracts
     {
         Task<IEnumerable<ModelsDropDown>> GetModelsByMakeIdAsync(int makeId);
 
-        Task<IEnumerable<ModelInListViewModel>> GetModelsAsync(string searchText, int? makeId);
+        Task<IEnumerable<T>> GetModelsAsync<T>(string search, int? MakeId);
 
         Task CreateModelAsync(CreateModelModel model);
 

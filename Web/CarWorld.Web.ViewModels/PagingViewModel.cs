@@ -19,5 +19,15 @@ namespace CarWorld.Web.ViewModels.Cars
         public int NextPageNumber => PageNumber + 1;
 
         public int PagesCount => (int)Math.Ceiling((double)ItemsCount / ItemsPerPage);
+
+        public string Search { get; set; }
+
+        public int? MakeId { get; set; }
+
+        public int? ModelId { get; set; }
+
+        public int? RegionId { get; set; }
+
+        public string OrderBy { get; set; }
     }
 }

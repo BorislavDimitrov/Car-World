@@ -23,11 +23,12 @@
             this.makesService = makesService;
         }
 
-        public async Task<IActionResult> ManageModels(string searchText,int? makeId, int id = 1)
+        [HttpGet]
+        public async Task<IActionResult> ManageModels(string search, int? MakeId, int id = 1)
         {
             const int itemsPerPage = 12;
 
-            var models = await modelsService.GetModelsAsync(searchText, makeId);
+            var models = await modelsService.GetModelsAsync<ModelInListViewModel>(search, MakeId);
 
             var makes = await makesService.GetMakesAsSelectListItemAsync();
 
@@ -46,10 +47,9 @@
                 ItemsCount = models.Count(),
                 ItemsPerPage = itemsPerPage,
                 Makes = makes,
-                MakeId = makeId ?? null,
+                MakeId = MakeId ?? null,
+                Search = search,
             };
-
-            ViewData["CurrentFilter"] = searchText;
 
             return View(viewModel);
         }

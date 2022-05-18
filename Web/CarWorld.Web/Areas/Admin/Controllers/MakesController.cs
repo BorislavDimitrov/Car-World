@@ -64,11 +64,11 @@
             return RedirectToAction(nameof(ManageMakes));
         }
 
-        public async Task<IActionResult> ManageMakes(string searchText, int id = 1)
+        public async Task<IActionResult> ManageMakes(string search, int id = 1)
         {
             const int itemsPerPage = 12;
 
-            var makes = await makesService.GetMakesAsync(searchText);
+            var makes = await makesService.GetMakesAsync(search);
 
             var viewModel = new MakeListViewModel()
             {
@@ -76,9 +76,8 @@
                 Makes = makes.Skip((id - 1) * itemsPerPage).Take(itemsPerPage),
                 ItemsCount = makes.Count(),
                 ItemsPerPage = itemsPerPage,
+                Search = search,
             };
-
-            ViewData["CurrentFilter"] = searchText;
 
             return View(viewModel);
         }

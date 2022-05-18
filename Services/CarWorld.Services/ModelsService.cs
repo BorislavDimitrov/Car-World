@@ -72,24 +72,26 @@
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<ModelInListViewModel>> GetModelsAsync(string searchText, int? makeId)
+        public async Task<IEnumerable<T>> GetModelsAsync<T>(string search, int? makeId )
         {
-            var models = await modelsRepo.AllWithDeleted()
-                .OrderBy(x => x.Make.Name)
-                .To<ModelInListViewModel>()
-                .ToListAsync();
+            var models = modelsRepo.AllWithDeleted()
+                .OrderByDescending(x => x.Name)
+                .AsQueryable();
 
-            if (searchText != null)
+            if (search != null)
             {
-                models = models.Where(x => x.Name.Contains(searchText)).ToList();
+                models = models.Where(x => x.Name.Contains(search)).AsQueryable();
             }
 
             if (makeId != null)
             {
-                models = models.Where(x => x.MakeId == makeId).ToList();
+                models = models.Where(x => x.MakeId == makeId).AsQueryable();
             }
 
-            return models;
+            //var querybleModels = models.AsQueryable();
+
+            return await models.To<T>()
+                .ToListAsync();
         }
 
         public async Task<IEnumerable<ModelsDropDown>> GetModelsByMakeIdAsync(int makeId)

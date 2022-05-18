@@ -12,15 +12,22 @@
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">Makes</h3>
+                <div class="card-header">
+
                 <form asp-action="ManageMakes" method="get">
-                    <div class="form-actions no-color">
-                        <p>
-                            Find by name: <input type="text" name="searchText" value="@ViewData["CurrentFilter"]" />
-                            <input type="submit" value="Search" class="btn btn-default" /> |
-                            <a asp-action="ManageMakes">Reset search</a>
-                        </p>
+
+                    <div class="form-row">
+
+                        <div class="col-md-6">
+                            <label>Search</label>
+                            <input type="text" name="Search" class="form-control" placeholder="Search ......" value="@Model.Search">
+                        </div>
+                        
                     </div>
+
+                    <button type="submit" asp-route-id="1" class="btn btn-outline-secondary">Search</button>
                 </form>
+            </div>
             </div>
 
             <div class="card-body table-responsive p-0">

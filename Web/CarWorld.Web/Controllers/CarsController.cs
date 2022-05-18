@@ -1,16 +1,15 @@
 ﻿namespace CarWorld.Web.Controllers
 {
-    using System.Linq;
-    using System.Security.Claims;
-    using System.Threading.Tasks;
     using CarWorld.Common;
     using CarWorld.Services.Contracts;
     using CarWorld.Web.ViewModels.Cars;
-    using CarWorld.Web.ViewModels.Paging;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
+    using System.Linq;
+    using System.Security.Claims;
+    using System.Threading.Tasks;
 
     public class CarsController : Controller
     {
@@ -165,7 +164,9 @@
 
             await carsService.DeleteCarAsync(id);
 
-            return RedirectToAction($"Home/index");
+            TempData["DeleteMessage"] = GlobalConstants.SuccessfulDelete;
+
+            return Redirect("/Home/index");
         }
 
         public async Task<IActionResult> Details(int id)

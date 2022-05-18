@@ -2,7 +2,6 @@
 @model ModelListViewModel
 @{
     ViewData["Title"] = "Manage Models";
-    ViewData["Action"] = "ManageModels";
 }
 
 <partial name="_AlertsPartial" />
@@ -12,30 +11,27 @@
         <div class="card">
             <h3 class="card-title">Models</h3>
             <div class="card-header">
-                
+
                 <form asp-action="ManageModels" method="get">
 
                     <div class="form-row">
 
-                        <div class=" col-md-6">
-                        <p>
-                            Find by model name: <input type="text" name="searchText" value="@ViewData["CurrentFilter"]" />
-                            <input type="submit" value="Search" class="btn btn-default" /> |
-                            <a asp-action="ManageModels">Reset search</a>
-                        </p>
-                    </div>
-
-
-                        <div class="form-group col-md-4">
-                            
-                                <select asp-for="MakeId" name="MakeId" class="form-control" asp-items="@Model.Makes"></select>
-                                <span asp-validation-for="MakeId" class="text-danger"></span>
-                            
-                            
+                        <div class="col-md-6">
+                            <label>Search</label>
+                            <input type="text" name="Search" class="form-control" placeholder="Search ......" value="@Model.Search">
                         </div>
 
+
+                        <div class="form-group col-md-6">
+                            <label>Make</label>
+                            <select asp-for="MakeId" name="MakeId" class="form-control" asp-items="@Model.Makes"></select>
+                            <span asp-validation-for="MakeId" class="text-danger"></span>
+                        </div>
+
+               
                     </div>
-  
+
+                    <button type="submit" asp-route-id="1" class="btn btn-outline-secondary">Search</button>
                 </form>
             </div>
 
