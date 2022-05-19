@@ -155,7 +155,13 @@
 
         <div class="image">
             <img src="@Model.CreatorImagePath" class="img-circle" height=60 width=100 alt="User Image">
-            <a type="button" class="btn btn-info btn-sm" asp-area="" asp-action="users" asp-controller="cars" asp-route-id="@Model.Id">View account</a>
+            
+
+            @if (@Model.CreatorId != @UserManager.GetUserAsync(User).Result.Id)
+            {
+                <a type="button" class="btn btn-info btn-sm" asp-area="" asp-action="Users" asp-controller="ViewProfile" asp-route-userId="@Model.CreatorId">View account</a>
+            }
+
         </div>
 
         <div class="">

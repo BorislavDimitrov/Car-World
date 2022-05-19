@@ -2,6 +2,7 @@
 {
     using System.Security.Claims;
     using System.Threading.Tasks;
+    using CarWorld.Common;
     using CarWorld.Data.Models;
     using CarWorld.Services.Contracts;
     using CarWorld.Web.ViewModels.Users;
@@ -91,5 +92,7 @@
             editModel.ImagePath = user.ImagePath;
             return View(editModel);
         }
+
+       
     }
 }

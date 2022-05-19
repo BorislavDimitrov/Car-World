@@ -11,7 +11,7 @@ namespace CarWorld.Services.Contracts
     {
         Task CreateCarAsync(CreateCarInputModel model, string wwwrootPath);
 
-        Task<IEnumerable<UserCarsInListViewModel>> GetUserCarsAsync(string userId);
+        Task<IEnumerable<UserCarsInListViewModel>> GetUserCarsAsync(string userId, string search, int? makeId, int? modelId, int? regionId, string orderBy);
 
         Task<T> GetCarByIdAsync<T>(int carId);
 

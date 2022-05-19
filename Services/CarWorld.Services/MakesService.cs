@@ -76,7 +76,7 @@
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<SelectListItem>> GetExistingMakesAsSelectListItemAsync()
+        public async Task<List<SelectListItem>> GetExistingMakesAsSelectListItemAsync()
         {
             return await makeRepo.AllAsNoTracking()
                 .Select(x => new SelectListItem

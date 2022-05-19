@@ -39,7 +39,7 @@
             var regions = await regionsService.GetExistingRegionsAsSelectItemListAsync();
             var makes = await makesService.GetExistingMakesAsSelectListItemAsync();
             var makeId = makes.FirstOrDefault().Value;
-            var models = await modelsService.GetModelsByMakeIdAsync(int.Parse(makeId));
+            var models = await modelsService.GetModelsForDropdownByMakeIdAsync(int.Parse(makeId));
 
             var model = new CreateCarInputModel()
             {
@@ -60,7 +60,7 @@
                 var regions = await regionsService.GetExistingRegionsAsSelectItemListAsync();
                 var makes =  await makesService.GetExistingMakesAsSelectListItemAsync();
                 var makeId = makes.FirstOrDefault().Value;
-                var models = await modelsService.GetModelsByMakeIdAsync(int.Parse(makeId));
+                var models = await modelsService.GetModelsForDropdownByMakeIdAsync(int.Parse(makeId));
 
                 model.Regions = regions;
                 model.Makes = makes;
@@ -96,7 +96,7 @@
 
             var regions = await regionsService.GetExistingRegionsAsSelectItemListAsync();
             var makes = await makesService.GetExistingMakesAsSelectListItemAsync();
-            var models = await modelsService.GetModelsByMakeIdAsync(model.MakeId);        
+            var models = await modelsService.GetModelsForDropdownByMakeIdAsync(model.MakeId);        
             
             model.Regions = regions;
             model.Makes= makes;
@@ -112,7 +112,7 @@
             {
                 var cities = await regionsService.GetExistingRegionsAsSelectItemListAsync();
                 var makes = await makesService.GetExistingMakesAsSelectListItemAsync();
-                var models = await modelsService.GetModelsByMakeIdAsync(model.MakeId);
+                var models = await modelsService.GetModelsForDropdownByMakeIdAsync(model.MakeId);
                 model.Regions = cities;
                 model.Makes = makes;
                 model.Models = models;
@@ -131,13 +131,20 @@
 
         [HttpGet]
         [Authorize]
-        public async Task<ActionResult> UserCars(int id = 1)
+        public async Task<ActionResult> UserCars(string search, int? makeId, int? modelId, int? regionId, string orderBy, int id = 1)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             const int itemsPerPage = 12;
 
-            var cars = await carsService.GetUserCarsAsync(userId);
+            var cars = await carsService.GetUserCarsAsync(userId, search, makeId, modelId, regionId, orderBy);
+
+            var makes = await makesService.GetExistingMakesAsSelectListItemAsync();
+
+            var models = await modelsService.GetModelsForDropdownByMakeIdAsync(makeId);
+
+            var regions = await regionsService.GetExistingRegionsAsSelectItemListAsync();
+
 
             var viewModel = new UsersCarsListViewModel()
             {
@@ -145,6 +152,14 @@
                 Cars = cars.Skip((id - 1) * itemsPerPage).Take(itemsPerPage),
                 ItemsCount = cars.Count(),
                 ItemsPerPage = itemsPerPage,
+                Search = search,
+                OrderBy = orderBy,
+                MakeId = makeId,
+                RegionId = regionId,
+                ModelId = modelId,
+                Makes = makes,
+                Models = models,
+                Regions = regions
             };
 
             return View(viewModel);
@@ -183,9 +198,15 @@
         [HttpGet]
         public async Task<IActionResult> Search(string search, int? makeId, int? modelId, int? regionId, string orderBy, int id = 1)
         {
-            const int itemsPerPage = 1;
+            const int itemsPerPage = 12;
 
             var cars = await carsService.GetSearchCarsAsync<SearchCarsInListViewModel>(search, makeId, modelId, regionId, orderBy);
+
+            var makes = await makesService.GetExistingMakesAsSelectListItemAsync();
+
+            var models = await modelsService.GetModelsForDropdownByMakeIdAsync(makeId);
+
+            var regions = await regionsService.GetExistingRegionsAsSelectItemListAsync();
 
             var viewModel = new SearchCarsListViewModel()
             {
@@ -198,7 +219,9 @@
                 MakeId = makeId,
                 RegionId = regionId,
                 ModelId = modelId,
-
+                Makes = makes,
+                Models = models,
+                Regions = regions
             };
 
             return View(viewModel);
@@ -206,7 +229,7 @@
 
         public async Task<IActionResult> GetModels(int makeId)
         {
-            var models = await modelsService.GetModelsByMakeIdAsync(makeId);
+            var models = await modelsService.GetModelsForDropdownByMakeIdAsync(makeId);
 
             return Json(new SelectList(models, "ModelId", "ModelName"));
         }

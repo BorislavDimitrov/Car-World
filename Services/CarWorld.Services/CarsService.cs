@@ -1,22 +1,21 @@
 ﻿namespace CarWorld.Services
 {
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using System.Threading.Tasks;
     using AutoMapper;
     using CarWorld.Common;
     using CarWorld.Data.Common.Repositories;
     using CarWorld.Data.Models;
     using CarWorld.Services.Contracts;
     using CarWorld.Services.Mapping;
-    using CarWorld.Web.ViewModels.Administration.Cars;
     using CarWorld.Web.ViewModels.Cars;
     using Microsoft.AspNetCore.Http;
     using Microsoft.EntityFrameworkCore;
     using SixLabors.ImageSharp;
     using SixLabors.ImageSharp.Processing;
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Threading.Tasks;
 
     public class CarsService : ICarsService
     {
@@ -102,11 +101,54 @@
             await carsRepo.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<UserCarsInListViewModel>> GetUserCarsAsync(string userId)
+        public async Task<IEnumerable<UserCarsInListViewModel>> GetUserCarsAsync(string userId, string search, int? makeId, int? modelId, int? regionId, string orderBy)
         {
-            return await carsRepo.AllAsNoTracking()
+            var cars = carsRepo.AllAsNoTracking()
                 .Where(x => x.CreatorId == userId)
-                .OrderByDescending(x => x.Id)
+                .AsQueryable();
+
+            if (search != null)
+            {
+                cars = cars.Where(x => x.Title.Contains(search)).AsQueryable();
+            }
+
+            if (makeId != null)
+            {
+                cars = cars.Where(x => x.MakeId == makeId).AsQueryable();
+            }
+
+            if (modelId != null)
+            {
+                cars = cars.Where(x => x.ModelId == modelId).AsQueryable();
+            }
+
+            if (regionId != null)
+            {
+                cars = cars.Where(x => x.RegionId == regionId).AsQueryable();
+            }
+
+            if (modelId != null)
+            {
+                cars = cars.Where(x => x.ModelId == modelId).AsQueryable();
+            }
+
+            switch (orderBy)
+            {
+                case "DateAsc":
+                    cars = cars.OrderBy(x => x.CreateDate);
+                    break;
+                case "PriceDesc":
+                    cars = cars.OrderByDescending(x => x.Price);
+                    break;
+                case "PriceAsc":
+                    cars = cars.OrderBy(x => x.Price);
+                    break;
+                default:
+                    cars = cars.OrderByDescending(x => x.CreateDate);
+                    break;
+            }
+
+            return await cars 
                 .To<UserCarsInListViewModel>()
                 .ToListAsync();
         }
@@ -242,8 +284,51 @@
 
         public async Task<IEnumerable<T>> GetSearchCarsAsync<T>(string search, int? makeId, int? modelId, int? regionId, string orderBy)
         {
-            return await carsRepo.AllAsNoTracking()
-                .OrderByDescending(x => x.Id)
+            var cars = carsRepo.All()
+                .AsQueryable();
+
+            if (search != null)
+            {
+                cars = cars.Where(x => x.Title.Contains(search)).AsQueryable();
+            }
+
+            if (makeId != null)
+            {
+                cars = cars.Where(x => x.MakeId == makeId).AsQueryable();
+            }
+
+            if (modelId != null)
+            {
+                cars = cars.Where(x => x.ModelId == modelId).AsQueryable();
+            }
+
+            if (regionId != null)
+            {
+                cars = cars.Where(x => x.RegionId == regionId).AsQueryable();
+            }
+
+            if (modelId != null)
+            {
+                cars = cars.Where(x => x.ModelId == modelId).AsQueryable();
+            }
+
+            switch (orderBy)
+            {
+                case "DateAsc":
+                    cars = cars.OrderBy(x => x.CreateDate);
+                    break;
+                case "PriceDesc":
+                    cars = cars.OrderByDescending(x => x.Price);
+                    break;
+                case "PriceAsc":
+                    cars = cars.OrderBy(x => x.Price);
+                    break;
+                default:
+                    cars = cars.OrderByDescending(x => x.CreateDate);
+                    break;
+            }
+
+            return await cars
                 .To<T>()
                 .ToListAsync();
         }

@@ -3,30 +3,71 @@
 @model SearchCarsListViewModel
 @{
     ViewData["Title"] = "Search cars, page " + @Model.PageNumber;
-    SelectListItem defaultSelectMake = new SelectListItem
-            {
-                Text = "Select make",
-                Value = "",
-            };
-    Model.Makes.Insert(0, defaultSelectMake);
+
+    Model.Makes.Insert(0, new SelectListItem("Select make", ""));
 
     var defaultModel = new ModelsDropDown { ModelId = null, ModelName = "Select model" };
 
     Model.Models.Insert(0, defaultModel);
 
-    SelectListItem defaultSelectRegion = new SelectListItem
-            {
-                Text = "Select region",
-                Value = "",
-            };
-
-    Model.Regions.Insert(0, defaultSelectRegion);
+    Model.Regions.Insert(0, new SelectListItem("Select region", ""));
 }
 
+@*<div class="card">
+    <h3 class="text-center">Cars</h3>
+    <div class="card-header">
+
+        <form asp-action="Search" method="get">
+
+            <div class="form-row">
+
+                <div class="col-md-4">
+                    <label>Search</label>
+                    <input type="text" name="Search" class="form-control" placeholder="Search ......" value="@Model.Search">
+                </div>
+
+                <div class="form-group col-md-4">
+                    <label>Make</label>
+                    <select asp-for="MakeId" class="form-control" asp-items="@Model.Makes"></select>
+                </div>
+
+                <div class="form-group col-md-4">
+                    <label>Model</label>
+                    <select asp-for="ModelId" asp-items="@(new SelectList(@Model.Models, "ModelId", "ModelName"))" class="form-control">
+                    </select>
+                </div>
+
+                <div class="form-group col-md-4">
+                    <label>Region</label>
+                    <select asp-for="RegionId" asp-items="@Model.Regions" class="form-control"></select>
+                </div>
+
+                <div class="form-group col-md-4">
+                    <label>Order by</label>
+                    <select name="OrderBy" asp-for="OrderBy" value="@Model.OrderBy" class="form-control" style="width: 100%">
+                        <option value="DateDesc">Date descending</option>
+                        <option value="DateAsc">Date ascending</option>
+                        <option value="PriceDesc">Price descending</option>
+                        <option value="PriceAsc">Price ascending</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="d-flex justify-content-center align-items-center">
+                <button type="submit" asp-route-id="1" class="btn btn-outline-secondary ">Search</button>
+            </div>
+
+        </form>
 
 
+    </div>
 
 
+</div>*@
+
+
+<partial name="_FilterPartial" model="@Model" />
 
 
 <hr />
@@ -39,8 +80,8 @@
                 <input type="hidden" name="UserId" value="@car.CreatorId" />
                 <img class="card-img-top" src="@car.ThumbnailPicturePath" alt="@car.MakeName @car.ModelName @car.CreationYear">
                 <div class="card-body text-center">
-                    <h4 class="card-text text-center text-black text-truncate">Title- @car.Title</h4>
-                    <h5 class="card-text text-center text-black ">Make- @car.MakeName Model- @car.CreationYear Year- @car.CreationYear Price- @car.Price $</h5>
+                    <h4 class=" badge-pill bg-primary card-text text-center text-black text-truncate "> @car.Title</h4>
+                    <h5 class=" card-text text-center text-black ">Make- @car.MakeName Model- @car.ModelName Year- @car.CreationYear Price- @car.Price $</h5>
                     <a asp-controller="Cars" asp-action="Details" asp-route-id="@car.Id" class="btn btn-primary">View</a>
                 </div>
             </div>
@@ -51,3 +92,23 @@
 <hr />
 
 <partial name="_PartialPaging" model="@Model" />
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#MakeId').change(function () {
+            var url = '@Url.Content("~/")' + "Cars/GetModels";
+            var ddlsource = "#MakeId";
+            $.getJSON(url, { MakeId: $(ddlsource).val() }, function (data) {
+                var items = '';
+                $("#ModelId").empty();
+                items += "<option value='" + "" + "'>" + "Select model" + "</option>";
+                $.each(data, function (i, model) {
+                    items += "<option value='" + model.value + "'>" + model.text + "</option>";
+                });
+                $('#ModelId').html(items);
+            });
+        });
+    });
+</script>

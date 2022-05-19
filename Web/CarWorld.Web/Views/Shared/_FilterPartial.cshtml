@@ -1,0 +1,55 @@
+﻿@using CarWorld.Web.ViewModels.Cars
+@model PagingViewModel
+
+<div class="card">
+    <h3 class="text-center">Cars</h3>
+    <div class="card-header">
+
+        <form asp-action="Search" method="get">
+
+            <div class="form-row">
+
+                <div class="col-md-4">
+                    <label>Search</label>
+                    <input type="text" name="Search" class="form-control" placeholder="Search ......" value="@Model.Search">
+                </div>
+
+                <div class="form-group col-md-4">
+                    <label>Make</label>
+                    <select asp-for="MakeId" class="form-control" asp-items="@Model.Makes"></select>
+                </div>
+
+                <div class="form-group col-md-4">
+                    <label>Model</label>
+                    <select asp-for="ModelId" asp-items="@(new SelectList(@Model.Models, "ModelId", "ModelName"))" class="form-control">
+                    </select>
+                </div>
+
+                <div class="form-group col-md-4">
+                    <label>Region</label>
+                    <select asp-for="RegionId" asp-items="@Model.Regions" class="form-control"></select>
+                </div>
+
+                <div class="form-group col-md-4">
+                    <label>Order by</label>
+                    <select name="OrderBy" asp-for="OrderBy" value="@Model.OrderBy" class="form-control" style="width: 100%">
+                        <option value="DateDesc">Date descending</option>
+                        <option value="DateAsc">Date ascending</option>
+                        <option value="PriceDesc">Price descending</option>
+                        <option value="PriceAsc">Price ascending</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="d-flex justify-content-center align-items-center">
+                <button type="submit" asp-route-id="1" class="btn btn-outline-secondary ">Search</button>
+            </div>
+
+        </form>
+
+
+    </div>
+
+
+</div>

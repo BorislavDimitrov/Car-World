@@ -78,6 +78,7 @@
         public async Task<List<SelectListItem>> GetExistingRegionsAsSelectItemListAsync()
         {
             return await regionsRepo.AllAsNoTracking()
+                .OrderBy(x => x.Name)
                 .Select(x => new SelectListItem
                 {
                     Value = x.Id.ToString(),

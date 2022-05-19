@@ -1,46 +1,22 @@
 ﻿@using CarWorld.Web.ViewModels.Cars
+@using CarWorld.Web.ViewModels.Models
 @using CarWorld.Web.ViewModels.Paging
 @model UsersCarsListViewModel
 @{
-    ViewData["Controller"] = "Cars";
-    ViewData["Action"] = "UserCars";
+    ViewData["Title"] = "Manage cars, peage " + @Model.PageNumber;
+
+    Model.Makes.Insert(0, new SelectListItem("Select make", ""));
+
+    var defaultModel = new ModelsDropDown { ModelId = null, ModelName = "Select model" };
+
+    Model.Models.Insert(0, defaultModel);
+
+    Model.Regions.Insert(0, new SelectListItem("Select region", ""));
 }
 
 <partial name="_AlertsPartial" />
+<partial name="_FilterPartial" model="@Model" />
 
-@*<form asp-action="UserCars" method="get" class="col-md-10">
-    <div class="form-row">
-
-        <div class="col-md-6">
-            <p>
-                Search : <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
-                <input type="submit" value="Search" class="btn btn-default" /> |
-                <a asp-action="UserCars">Back to Full List</a>
-            </p>
-        </div>
-
-        <div class="col-md-3">
-            <label>Search by</label>
-            <select name="SearchBy" class="form-group" style="width: 100%;">
-                <option value="Title">Title</option>
-                <option value="Make">Make</option>
-                <option value="Model">Model</option>
-                <option value="City">City</option>
-            </select>
-        </div>
-
-        <div class="col-md-3">
-            <label>Order by</label>
-            <select name="OrderBy" class="form-group" style="width: 100%">
-                <option value="DateDesc">Date descending</option>
-                <option value="DateAsc">Date ascending</option>
-                <option value="PriceDesc">Price descending</option>
-                <option value="PriceAsc">Price ascending</option>
-            </select>
-        </div>
-    </div>
-
-</form>*@
 
 <hr />
 
@@ -65,3 +41,23 @@
 </div>
 
 <partial name="_PartialPaging" model="@Model" />
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#MakeId').change(function () {
+            var url = '@Url.Content("~/")' + "Admin/Cars/GetModels";
+            var ddlsource = "#MakeId";
+            $.getJSON(url, { MakeId: $(ddlsource).val() }, function (data) {
+                var items = '';
+                $("#ModelId").empty();
+                items += "<option value='" + "" + "'>" + "Select model" + "</option>";
+                $.each(data, function (i, model) {
+                    items += "<option value='" + model.value + "'>" + model.text + "</option>";
+                });
+                $('#ModelId').html(items);
+            });
+        });
+    });
+</script>

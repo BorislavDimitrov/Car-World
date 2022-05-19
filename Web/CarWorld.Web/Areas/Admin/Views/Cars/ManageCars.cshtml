@@ -5,24 +5,13 @@
 @{
     ViewData["Title"] = "Manage cars, peage " + @Model.PageNumber;
 
-    SelectListItem defaultSelectMake = new SelectListItem
-            {
-                Text = "Select make",
-                Value = "",
-            };
-    Model.Makes.Insert(0, defaultSelectMake);
+    Model.Makes.Insert(0, new SelectListItem("Select make", ""));
 
     var defaultModel = new ModelsDropDown { ModelId = null, ModelName = "Select model" };
 
     Model.Models.Insert(0, defaultModel);
 
-    SelectListItem defaultSelectRegion = new SelectListItem
-            {
-                Text = "Select region",
-                Value = "",
-            };
-
-    Model.Regions.Insert(0, defaultSelectRegion);
+    Model.Regions.Insert(0, new SelectListItem("Select region", ""));
 }
 
 <partial name="_AlertsPartial" />
@@ -46,19 +35,16 @@
                         <div class="form-group col-md-4">
                             <label>Make</label>
                             <select asp-for="MakeId" class="form-control" asp-items="@Model.Makes"></select>
-                            <span asp-validation-for="MakeId" class="text-danger"></span>
                         </div>
 
                         <div class="form-group col-md-4">
                             <label>Model</label>
                             <select asp-for="ModelId" asp-items="@(new SelectList(@Model.Models, "ModelId", "ModelName"))" class="form-control"></select>
-                            <span asp-validation-for="ModelId" class="text-danger"></span>
                         </div>
 
                         <div class="form-group col-md-4">
                             <label>Region</label>
                             <select asp-for="RegionId" asp-items="@Model.Regions" class="form-control"></select>
-                            <span asp-validation-for="RegionId" class="text-danger"></span>
                         </div>
 
                         <div class="form-group col-md-4">
@@ -70,8 +56,6 @@
                                 <option value="PriceAsc">Price ascending</option>
                             </select>
                         </div>
-
-
 
                     </div>
 
@@ -144,6 +128,7 @@
             $.getJSON(url, { MakeId: $(ddlsource).val() }, function (data) {
                 var items = '';
                 $("#ModelId").empty();
+                items += "<option value='" + "" + "'>" + "Select model" + "</option>";
                 $.each(data, function (i, model) {
                     items += "<option value='" + model.value + "'>" + model.text + "</option>";
                 });
@@ -152,8 +137,3 @@
         });
     });
 </script>
-
-
-@section Scripts {
-<partial name="_ValidationScriptsPartial" />
-}

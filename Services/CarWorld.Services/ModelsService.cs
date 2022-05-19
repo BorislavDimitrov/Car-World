@@ -72,7 +72,7 @@
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<T>> GetModelsAsync<T>(string search, int? makeId )
+        public async Task<List<T>> GetModelsAsync<T>(string search, int? makeId )
         {
             var models = modelsRepo.AllWithDeleted()
                 .OrderByDescending(x => x.Name)
@@ -88,13 +88,11 @@
                 models = models.Where(x => x.MakeId == makeId).AsQueryable();
             }
 
-            //var querybleModels = models.AsQueryable();
-
             return await models.To<T>()
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<ModelsDropDown>> GetModelsByMakeIdAsync(int makeId)
+        public async Task<List<ModelsDropDown>> GetModelsForDropdownByMakeIdAsync(int? makeId)
         {
             return await modelsRepo.AllAsNoTracking()
                 .Where(x => x.MakeId == makeId)

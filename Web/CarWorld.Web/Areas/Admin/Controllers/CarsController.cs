@@ -43,9 +43,7 @@
 
             var models = await modelsService.GetModelsByMakeIdForAdminAsync(makeId);
 
-            var regions = await regionsService.GetExistingRegionsAsSelectItemListAsync();
-
-            
+            var regions = await regionsService.GetExistingRegionsAsSelectItemListAsync();          
 
             var viewModel = new CarsForAdminListViewModel()
             {
@@ -97,10 +95,6 @@
         public async Task<IActionResult> GetModels(int? makeId)
         {
             var models = await modelsService.GetModelsByMakeIdForAdminAsync(makeId);
-
-            var defaultModel = new ModelsDropDown { ModelId = null, ModelName = "Select model" };
-
-            models.Insert(0, defaultModel);
 
             return Json(new SelectList(models, "ModelId", "ModelName"));
         }

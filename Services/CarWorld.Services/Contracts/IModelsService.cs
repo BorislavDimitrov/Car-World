@@ -7,10 +7,11 @@ namespace CarWorld.Services.Contracts
 {
     public interface IModelsService
     {
-        Task<IEnumerable<ModelsDropDown>> GetModelsByMakeIdAsync(int makeId);
+        Task<List<ModelsDropDown>> GetModelsForDropdownByMakeIdAsync(int? makeId);
+
         Task<List<ModelsDropDown>> GetModelsByMakeIdForAdminAsync(int? makeId);
 
-        Task<IEnumerable<T>> GetModelsAsync<T>(string search, int? MakeId);
+        Task<List<T>> GetModelsAsync<T>(string search, int? MakeId);
 
         Task CreateModelAsync(CreateModelModel model);
 

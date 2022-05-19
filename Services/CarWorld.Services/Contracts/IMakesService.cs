@@ -9,7 +9,7 @@
 
     public interface IMakesService
     {
-        Task<IEnumerable<SelectListItem>> GetExistingMakesAsSelectListItemAsync();
+        Task<List<SelectListItem>> GetExistingMakesAsSelectListItemAsync();
 
         Task DeleteMakeAsync(int makeId);
 
