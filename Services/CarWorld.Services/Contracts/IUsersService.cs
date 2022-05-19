@@ -17,7 +17,7 @@
 
         Task EditAccountAsync(string userId, EditUserInputModel editModel, string wwwrootPath);
 
-        Task<IEnumerable<UserInListViewModel>> GetUsersAsync(string searchText);
+        Task<IEnumerable<T>> GetUsersAsync<T>(string searchText, string orderBy);
 
         Task RecoverAccountAsync(string userId);
     }

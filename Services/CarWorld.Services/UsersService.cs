@@ -62,29 +62,43 @@
                 .FirstOrDefaultAsync(x => x.Id == userId);
         }
 
-        public async Task<IEnumerable<UserInListViewModel>> GetUsersAsync(string searchText)
+        public async Task<IEnumerable<T>> GetUsersAsync<T>(string searchText, string orderBy)
         {
-            var users = await userRepo.AllWithDeleted()
-                .To<UserInListViewModel>()
-                .ToListAsync();
+            var users = userRepo.AllWithDeleted()
+                .AsQueryable();
 
             if (searchText != null)
             {
                 users = users.Where(x => (x.UserName != null && x.UserName.Contains(searchText)) ||
                 (x.FirstName != null && x.FirstName.Contains(searchText)) ||
                 (x.LastName != null && x.LastName.Contains(searchText)))
-                 .ToList();
+                 .AsQueryable();
             }
 
-            return users;
+            switch (orderBy)
+            {
+                case "NameDesc":
+                    users = users.OrderByDescending(x => x.UserName)
+                        .ThenBy(x => x.FirstName)
+                        .ThenByDescending(x => x.LastName);
+                    break;
+                default:
+                    users = users.OrderBy(x => x.UserName)
+                        .ThenBy(x => x.FirstName)
+                        .ThenByDescending(x => x.LastName);
+                    break;
+            }
+
+            return await users.To<T>()
+                .ToListAsync();
         }
 
         public async Task<EditUserInputModel> GetUserSelfInfoAsync(string userId)
         {
-             return await userRepo.AllAsNoTracking()
-                .Where(x => x.Id == userId)
-                .To<EditUserInputModel>()
-                .FirstOrDefaultAsync();      
+            return await userRepo.AllAsNoTracking()
+               .Where(x => x.Id == userId)
+               .To<EditUserInputModel>()
+               .FirstOrDefaultAsync();
         }
 
         public async Task RecoverAccountAsync(string userId)

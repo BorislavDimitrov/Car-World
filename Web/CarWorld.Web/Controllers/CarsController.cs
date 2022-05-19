@@ -36,7 +36,7 @@
         [HttpGet]
         public async Task<IActionResult> Create()
         {
-            var regions = await regionsService.GetExistingRegionsAsync();
+            var regions = await regionsService.GetExistingRegionsAsSelectItemListAsync();
             var makes = await makesService.GetExistingMakesAsSelectListItemAsync();
             var makeId = makes.FirstOrDefault().Value;
             var models = await modelsService.GetModelsByMakeIdAsync(int.Parse(makeId));
@@ -57,7 +57,7 @@
         {
             if (!ModelState.IsValid)
             {
-                var regions = await regionsService.GetExistingRegionsAsync();
+                var regions = await regionsService.GetExistingRegionsAsSelectItemListAsync();
                 var makes =  await makesService.GetExistingMakesAsSelectListItemAsync();
                 var makeId = makes.FirstOrDefault().Value;
                 var models = await modelsService.GetModelsByMakeIdAsync(int.Parse(makeId));
@@ -94,7 +94,7 @@
 
             var model = await carsService.GetCarByIdAsync<EditCarInputModel>(id);
 
-            var regions = await regionsService.GetExistingRegionsAsync();
+            var regions = await regionsService.GetExistingRegionsAsSelectItemListAsync();
             var makes = await makesService.GetExistingMakesAsSelectListItemAsync();
             var models = await modelsService.GetModelsByMakeIdAsync(model.MakeId);        
             
@@ -110,7 +110,7 @@
         {
             if (!ModelState.IsValid)
             {
-                var cities = await regionsService.GetExistingRegionsAsync();
+                var cities = await regionsService.GetExistingRegionsAsSelectItemListAsync();
                 var makes = await makesService.GetExistingMakesAsSelectListItemAsync();
                 var models = await modelsService.GetModelsByMakeIdAsync(model.MakeId);
                 model.Regions = cities;
@@ -147,8 +147,6 @@
                 ItemsPerPage = itemsPerPage,
             };
 
-            //ViewData["CurrentFilter"] = searchString;
-
             return View(viewModel);
         }
 
@@ -183,11 +181,11 @@
         }
 
         [HttpGet]
-        public async Task<IActionResult> Search(int id = 1)
+        public async Task<IActionResult> Search(string search, int? makeId, int? modelId, int? regionId, string orderBy, int id = 1)
         {
             const int itemsPerPage = 1;
 
-            var cars = await carsService.GetSearchCarsAsync<SearchCarsInListViewModel>();
+            var cars = await carsService.GetSearchCarsAsync<SearchCarsInListViewModel>(search, makeId, modelId, regionId, orderBy);
 
             var viewModel = new SearchCarsListViewModel()
             {
@@ -195,6 +193,12 @@
                 Cars = cars.Skip((id - 1) * itemsPerPage).Take(itemsPerPage),
                 ItemsCount = cars.Count(),
                 ItemsPerPage = itemsPerPage,
+                Search = search,
+                OrderBy = orderBy,
+                MakeId = makeId,
+                RegionId = regionId,
+                ModelId = modelId,
+
             };
 
             return View(viewModel);

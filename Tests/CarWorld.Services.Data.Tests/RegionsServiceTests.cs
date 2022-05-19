@@ -107,7 +107,7 @@
             var regionId = 1;
 
             await this.regionsService.DeleteRegionAsync(regionId);
-            var regions = await this.regionsService.GetExistingRegionsAsync();
+            var regions = await this.regionsService.GetExistingRegionsAsSelectItemListAsync();
 
             Assert.AreEqual(4, regions.Count());
         }

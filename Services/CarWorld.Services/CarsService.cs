@@ -189,21 +189,58 @@
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<CarsForAdminInListViewModel>> GetCarsForAdminAsync(string searchText)
+        public async Task<IEnumerable<T>> GetCarsForAdminAsync<T>(string search, int? makeId, int? modelId, int? regionId, string orderBy)
         {                    
-            var cars = await carsRepo.AllWithDeleted()
-                .To<CarsForAdminInListViewModel>()
-                .ToListAsync();
+            var cars = carsRepo.AllWithDeleted()
+                .AsQueryable();
 
-            if (searchText != null)
+            if (search != null)
             {
-                cars = cars.Where(x => x.Title.Contains(searchText)).ToList();
+                cars = cars.Where(x => x.Title.Contains(search)).AsQueryable();
             }
 
-            return cars;
+            if (makeId != null)
+            {
+                cars = cars.Where(x => x.MakeId == makeId).AsQueryable();
+            }
+
+            if (modelId != null)
+            {
+                cars = cars.Where(x => x.ModelId == modelId).AsQueryable();
+            }
+
+            if (regionId != null)
+            {
+                cars = cars.Where(x => x.RegionId == regionId).AsQueryable();
+            }
+
+            if (modelId != null)
+            {
+                cars = cars.Where(x => x.ModelId == modelId).AsQueryable();
+            }
+
+            switch (orderBy)
+            {
+                case "DateAsc":
+                    cars = cars.OrderBy(x => x.CreateDate);
+                    break;
+                case "PriceDesc":
+                    cars = cars.OrderByDescending(x => x.Price);
+                    break;
+                case "PriceAsc":
+                    cars = cars.OrderBy(x => x.Price);
+                    break;
+                default:
+                    cars = cars.OrderByDescending(x => x.CreateDate);
+                    break;
+            }
+
+            return await cars
+                .To<T>()
+                .ToListAsync();
         }
 
-        public async Task<IEnumerable<T>> GetSearchCarsAsync<T>()
+        public async Task<IEnumerable<T>> GetSearchCarsAsync<T>(string search, int? makeId, int? modelId, int? regionId, string orderBy)
         {
             return await carsRepo.AllAsNoTracking()
                 .OrderByDescending(x => x.Id)

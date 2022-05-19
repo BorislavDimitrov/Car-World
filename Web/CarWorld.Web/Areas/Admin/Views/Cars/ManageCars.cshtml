@@ -1,10 +1,28 @@
 ﻿@using CarWorld.Web.Infrastructure.Extensions
 @using CarWorld.Web.ViewModels.Administration.Cars
+@using CarWorld.Web.ViewModels.Models
 @model CarsForAdminListViewModel
 @{
     ViewData["Title"] = "Manage cars, peage " + @Model.PageNumber;
-    ViewData["Controller"] = "Cars";
-    ViewData["Action"] = "ManageCars";
+
+    SelectListItem defaultSelectMake = new SelectListItem
+            {
+                Text = "Select make",
+                Value = "",
+            };
+    Model.Makes.Insert(0, defaultSelectMake);
+
+    var defaultModel = new ModelsDropDown { ModelId = null, ModelName = "Select model" };
+
+    Model.Models.Insert(0, defaultModel);
+
+    SelectListItem defaultSelectRegion = new SelectListItem
+            {
+                Text = "Select region",
+                Value = "",
+            };
+
+    Model.Regions.Insert(0, defaultSelectRegion);
 }
 
 <partial name="_AlertsPartial" />
@@ -12,18 +30,55 @@
 <div class="row">
     <div class="col-12">
         <div class="card">
+
+            <h3 class="card-title">Cars</h3>
             <div class="card-header">
-                <h3 class="card-title">Makes</h3>
+
                 <form asp-action="ManageCars" method="get">
-                    <div class="form-actions no-color">
-                        <p>
-                            Search by title: <input type="text" name="searchText" value="@ViewData["CurrentFilter"]" />
-                            <input type="submit" value="Search" class="btn btn-default" /> |
-                            <a asp-action="ManageCars">Reset search</a>
-                        </p>
+
+                    <div class="form-row">
+
+                        <div class="col-md-4">
+                            <label>Search</label>
+                            <input type="text" name="Search" class="form-control" placeholder="Search ......" value="@Model.Search">
+                        </div>
+
+                        <div class="form-group col-md-4">
+                            <label>Make</label>
+                            <select asp-for="MakeId" class="form-control" asp-items="@Model.Makes"></select>
+                            <span asp-validation-for="MakeId" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group col-md-4">
+                            <label>Model</label>
+                            <select asp-for="ModelId" asp-items="@(new SelectList(@Model.Models, "ModelId", "ModelName"))" class="form-control"></select>
+                            <span asp-validation-for="ModelId" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group col-md-4">
+                            <label>Region</label>
+                            <select asp-for="RegionId" asp-items="@Model.Regions" class="form-control"></select>
+                            <span asp-validation-for="RegionId" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group col-md-4">
+                            <label>Order by</label>
+                            <select name="OrderBy" asp-for="OrderBy" value="@Model.OrderBy" class="form-control" style="width: 100%">
+                                <option value="DateDesc">Date descending</option>
+                                <option value="DateAsc">Date ascending</option>
+                                <option value="PriceDesc">Price descending</option>
+                                <option value="PriceAsc">Price ascending</option>
+                            </select>
+                        </div>
+
+
+
                     </div>
+
+                    <button type="submit" asp-route-id="1" class="btn btn-outline-secondary">Search</button>
                 </form>
             </div>
+
 
             <div class="card-body table-responsive p-0">
                 <table class="table table-hover text-nowrap">
@@ -62,10 +117,10 @@
                                 <td>@car.HorsePower</td>
                                 <td>@car.Mileage</td>
                                 <td>
-                                    <a asp-area="admin" asp-action="delete" asp-controller="cars" asp-route-id="@car.Id" class="btn btn-block btn-danger">Delete car</a>                                  
+                                    <a asp-area="admin" asp-action="delete" asp-controller="cars" asp-route-id="@car.Id" class="btn btn-block btn-danger">Delete car</a>
                                 </td>
                                 <td>
-                                    <a asp-area="admin" asp-action="details" asp-controller="cars" asp-route-id="@car.Id" class="btn btn-block btn-info">View car</a>                                  
+                                    <a asp-area="admin" asp-action="details" asp-controller="cars" asp-route-id="@car.Id" class="btn btn-block btn-info">View car</a>
                                 </td>
                             </tr>
                         }
@@ -73,8 +128,32 @@
                 </table>
             </div>
 
-             <partial name="_PartialPaging" model="@Model" />
+            <partial name="_PartialPaging" model="@Model" />
 
         </div>
     </div>
 </div>
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#MakeId').change(function () {
+            var url = '@Url.Content("~/")' + "Admin/Cars/GetModels";
+            var ddlsource = "#MakeId";
+            $.getJSON(url, { MakeId: $(ddlsource).val() }, function (data) {
+                var items = '';
+                $("#ModelId").empty();
+                $.each(data, function (i, model) {
+                    items += "<option value='" + model.value + "'>" + model.text + "</option>";
+                });
+                $('#ModelId').html(items);
+            });
+        });
+    });
+</script>
+
+
+@section Scripts {
+<partial name="_ValidationScriptsPartial" />
+}

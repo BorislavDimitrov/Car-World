@@ -102,6 +102,14 @@
                 .ToListAsync();
         }
 
+        public async Task<List<ModelsDropDown>> GetModelsByMakeIdForAdminAsync(int? makeId)
+        {
+            return await modelsRepo.AllAsNoTrackingWithDeleted()
+                .Where(x => x.MakeId == makeId)
+                .To<ModelsDropDown>()
+                .ToListAsync();
+        }
+
         public async Task RecoverModelAsync(int modelId)
         {
             var model = await modelsRepo.AllWithDeleted()

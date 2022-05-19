@@ -8,20 +8,35 @@
 <partial name="_AlertsPartial" />
 
 <div class="row">
-    <div class="col-10">
+    <div class="col-12">
         <div class="card">
+
+            <h3 class="card-title">Users</h3>
             <div class="card-header">
-                <h3 class="card-title">Users</h3>
-                <form asp-action="ManageUsers" method="get">
-                    <div class="form-actions no-color">
-                        <p>
-                            Find by username, first or last name: <input type="text" name="searchText" value="@ViewData["CurrentFilter"]" />
-                            <input type="submit" value="Search" class="btn btn-default" /> |
-                            <a asp-action="ManageUsers">Reset search</a>
-                        </p>
+
+                <form asp-action="ManageMakes" method="get">
+
+                    <div class="form-row">
+
+                        <div class="col-md-6">
+                            <label>Search</label>
+                            <input type="text" name="Search" class="form-control" placeholder="Search ......" value="@Model.Search">
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label>Order by</label>
+                            <select name="OrderBy" asp-for="OrderBy" value="@Model.OrderBy" class="form-control" style="width: 100%">
+                                <option value="NameAsc">Name ascending</option>
+                                <option value="NameDesc">Name descending</option>
+                            </select>
+                        </div>
+
                     </div>
+
+                    <button type="submit" asp-route-id="1" class="btn btn-outline-secondary">Search</button>
                 </form>
             </div>
+
 
             <div class="card-body table-responsive p-0">
                 <table class="table table-hover text-nowrap">
@@ -62,5 +77,5 @@
     </div>
 </div>
 
-      <partial name="_PartialPaging" model="@Model"/>
+<partial name="_PartialPaging" model="@Model" />
 

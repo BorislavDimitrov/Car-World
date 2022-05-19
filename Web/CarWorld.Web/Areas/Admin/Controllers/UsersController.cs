@@ -3,7 +3,6 @@ using CarWorld.Data.Models;
 using CarWorld.Services.Contracts;
 using CarWorld.Web.Areas.Administration.Controllers;
 using CarWorld.Web.ViewModels.Administration.Users;
-using CarWorld.Web.ViewModels.Paging;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -59,11 +58,11 @@ namespace CarWorld.Web.Areas.Admin.Controllers
             return View();
         }
 
-        public async Task<IActionResult> ManageUsers(string searchText, int id = 1)
+        public async Task<IActionResult> ManageUsers(string search, string orderBy, int id = 1)
         {
             const int itemsPerPage = 12;
 
-            var users = await usersService.GetUsersAsync(searchText);
+            var users = await usersService.GetUsersAsync<UserInListViewModel>(search, orderBy);
 
             var viewModel = new UserListViewModel()
             {
@@ -71,9 +70,9 @@ namespace CarWorld.Web.Areas.Admin.Controllers
                 Users = users.Skip((id - 1) * itemsPerPage).Take(itemsPerPage),
                 ItemsCount = users.Count(),
                 ItemsPerPage = itemsPerPage,
+                Search = search,
+                OrderBy = orderBy
             };
-
-            ViewData["CurrentFilter"] = searchText;
 
             return View(viewModel);
         }

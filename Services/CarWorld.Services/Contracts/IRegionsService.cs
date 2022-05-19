@@ -9,7 +9,9 @@
 
     public interface IRegionsService
     {
-        Task<IEnumerable<SelectListItem>> GetExistingRegionsAsync();
+        Task<List<SelectListItem>> GetExistingRegionsAsSelectItemListAsync();
+
+        Task<List<SelectListItem>> GetRegionsForAdminAsSelectItemListAsync();
 
         Task<IEnumerable<T>> GetRegionsAsync<T>(string search, string orderBy);
 

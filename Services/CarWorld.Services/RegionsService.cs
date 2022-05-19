@@ -75,9 +75,20 @@
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<SelectListItem>> GetExistingRegionsAsync()
+        public async Task<List<SelectListItem>> GetExistingRegionsAsSelectItemListAsync()
         {
             return await regionsRepo.AllAsNoTracking()
+                .Select(x => new SelectListItem
+                {
+                    Value = x.Id.ToString(),
+                    Text = x.Name,
+                })
+                .ToListAsync();
+        }
+
+        public async Task<List<SelectListItem>> GetRegionsForAdminAsSelectItemListAsync()
+        {
+            return await regionsRepo.AllAsNoTrackingWithDeleted()
                 .Select(x => new SelectListItem
                 {
                     Value = x.Id.ToString(),

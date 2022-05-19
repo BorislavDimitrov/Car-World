@@ -1,34 +1,51 @@
 ﻿namespace CarWorld.Web.Areas.Admin.Controllers
 {
-    using System.Linq;
-    using System.Threading.Tasks;
-
     using CarWorld.Common;
     using CarWorld.Services.Contracts;
     using CarWorld.Web.Areas.Administration.Controllers;
     using CarWorld.Web.ViewModels.Administration.Cars;
-    using CarWorld.Web.ViewModels.Paging;
+    using CarWorld.Web.ViewModels.Models;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.Rendering;
     using Microsoft.Extensions.Caching.Distributed;
+    using System.Linq;
+    using System.Threading.Tasks;
 
     public class CarsController : AdministrationController
     {
         private readonly ICarsService carsService;
+        private readonly IMakesService makesService;
+        private readonly IModelsService modelsService;
+        private readonly IRegionsService regionsService;
         private readonly IDistributedCache cache;
 
         public CarsController(ICarsService carsService,
+            IMakesService makesService,
+            IModelsService modelsService,
+            IRegionsService regionsService,
             IDistributedCache cache)
         {
             this.carsService = carsService;
+            this.makesService = makesService;
+            this.modelsService = modelsService;
+            this.regionsService = regionsService;
             this.cache = cache;
         }
 
         [HttpGet]
-        public async Task<IActionResult> ManageCars(string searchText, int id = 1)
+        public async Task<IActionResult> ManageCars(string search, int? makeId, int? modelId, int? regionId, string orderBy, int id = 1)
         {
             const int itemsPerPage = 12;
 
-            var cars = await carsService.GetCarsForAdminAsync(searchText);
+            var cars = await carsService.GetCarsForAdminAsync<CarsForAdminInListViewModel>(search, makeId, modelId, regionId, orderBy);
+
+            var makes = await makesService.GetMakesAsSelectListItemAsync();          
+
+            var models = await modelsService.GetModelsByMakeIdForAdminAsync(makeId);
+
+            var regions = await regionsService.GetExistingRegionsAsSelectItemListAsync();
+
+            
 
             var viewModel = new CarsForAdminListViewModel()
             {
@@ -36,9 +53,15 @@
                 Cars = cars.Skip((id - 1) * itemsPerPage).Take(itemsPerPage),
                 ItemsCount = cars.Count(),
                 ItemsPerPage = itemsPerPage,
+                Search = search,
+                MakeId = makeId,
+                RegionId = regionId,
+                OrderBy = orderBy,
+                ModelId = modelId,
+                Makes = makes,
+                Regions = regions,
+                Models = models,
             };
-
-            ViewData["CurrentFilter"] = searchText;
 
             return View(viewModel);
         }
@@ -69,6 +92,17 @@
             var model = await carsService.GetCarDetails(id);
 
             return View(model);
+        }
+
+        public async Task<IActionResult> GetModels(int? makeId)
+        {
+            var models = await modelsService.GetModelsByMakeIdForAdminAsync(makeId);
+
+            var defaultModel = new ModelsDropDown { ModelId = null, ModelName = "Select model" };
+
+            models.Insert(0, defaultModel);
+
+            return Json(new SelectList(models, "ModelId", "ModelName"));
         }
     }
 }

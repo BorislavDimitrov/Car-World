@@ -1,81 +1,29 @@
 ﻿@using CarWorld.Web.ViewModels.Cars
+@using CarWorld.Web.ViewModels.Models
 @model SearchCarsListViewModel
 @{
     ViewData["Title"] = "Search cars, page " + @Model.PageNumber;
-    //ViewData["Controller"] = "Cars";
-    //ViewData["Action"] = "Search";
+    SelectListItem defaultSelectMake = new SelectListItem
+            {
+                Text = "Select make",
+                Value = "",
+            };
+    Model.Makes.Insert(0, defaultSelectMake);
+
+    var defaultModel = new ModelsDropDown { ModelId = null, ModelName = "Select model" };
+
+    Model.Models.Insert(0, defaultModel);
+
+    SelectListItem defaultSelectRegion = new SelectListItem
+            {
+                Text = "Select region",
+                Value = "",
+            };
+
+    Model.Regions.Insert(0, defaultSelectRegion);
 }
 
-<form asp-action="search" method="get" class="col-md-12">
-    <div class="form-row">
 
-        @*<div class="col-md-6">
-            <p>
-                Search : <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
-                <input type="submit" value="Search" class="btn btn-default" /> |
-                <a asp-action="UserCars">Back to Full List</a>
-            </p>
-        </div>*@
-
-            <div class="col-md-3">
-                <label>Search</label>
-                <input type="text" name="Search" class="form-control" placeholder="Search ......" >
-            </div>
-
-        <div class="col-md-3">
-            <label>Search by</label>
-            <select name="SearchBy" class="form-select" style="width: 100%;">
-                <option value="Title">Title</option>
-                <option value="Make">Make</option>
-                <option value="Model">Model</option>
-                <option value="City">City</option>
-            </select>
-        </div>
-
-        <div class="col-md-3 ">
-            <label>Order by</label>
-            <select name="OrderBy" value="@Model.OrderBy" class="form-select" style="width: 100%">
-                <option value="DateDesc">Date descending</option>
-                <option value="DateAsc">Date ascending</option>
-                <option value="PriceDesc">Price descending</option>
-                <option value="PriceAsc">Price ascending</option>
-            </select>
-        </div>
-
-        <div class="col-md-3 ">
-            <label>Order by</label>
-            <select name="OrderBy" class="form-select" style="width: 100%">
-                <option value="DateDesc">Date descending</option>
-                <option value="DateAsc">Date ascending</option>
-                <option value="PriceDesc">Price descending</option>
-                <option value="PriceAsc">Price ascending</option>
-            </select>
-        </div>
-
-        <div class="col-md-3 ">
-            <label>Order by</label>
-            <select name="OrderBy" class="form-select" style="width: 100%">
-                <option value="DateDesc">Date descending</option>
-                <option value="DateAsc">Date ascending</option>
-                <option value="PriceDesc">Price descending</option>
-                <option value="PriceAsc">Price ascending</option>
-            </select>
-        </div>
-
-        <div class="col-md-3 ">
-            <label>Order by</label>
-            <select name="OrderBy" class="form-select" style="width: 100%">
-                <option value="DateDesc">Date descending</option>
-                <option value="DateAsc">Date ascending</option>
-                <option value="PriceDesc">Price descending</option>
-                <option value="PriceAsc">Price ascending</option>
-            </select>
-        </div>
-
-
-    </div>
-
-</form>
 
 
 

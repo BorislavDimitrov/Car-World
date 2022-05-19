@@ -6,7 +6,7 @@ namespace CarWorld.Web.ViewModels.Models
 {
     public class ModelsDropDown : IMapFrom<Model>, IHaveCustomMappings
     {
-        public int ModelId { get; set; }
+        public int? ModelId { get; set; }
 
         public string ModelName { get; set; }
 
