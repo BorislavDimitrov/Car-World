@@ -1,17 +1,9 @@
 ﻿@using CarWorld.Web.ViewModels.Cars
 @using CarWorld.Web.ViewModels.Models
-@using CarWorld.Web.ViewModels.Paging
 @model UsersCarsListViewModel
 @{
     ViewData["Title"] = "Manage cars, peage " + @Model.PageNumber;
 
-    Model.Makes.Insert(0, new SelectListItem("Select make", ""));
-
-    var defaultModel = new ModelsDropDown { ModelId = null, ModelName = "Select model" };
-
-    Model.Models.Insert(0, defaultModel);
-
-    Model.Regions.Insert(0, new SelectListItem("Select region", ""));
 }
 
 <hr />

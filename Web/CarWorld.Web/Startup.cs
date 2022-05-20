@@ -79,6 +79,7 @@
             services.AddTransient<IRegionsService, RegionsService>();
             services.AddTransient<IModelsService, ModelsService>();
             services.AddTransient<ICarsService, CarsService>();
+            services.AddTransient<IReportsService, ReportsService>();
 
             services.AddMvc();
 
@@ -91,7 +92,7 @@
                 options.TableName = "CacheRecords";
             });
 
-            //
+            
             services.AddSession(options =>
             {
                 options.IdleTimeout = new TimeSpan(365, 0, 0, 0);

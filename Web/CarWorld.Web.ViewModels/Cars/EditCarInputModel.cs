@@ -14,6 +14,7 @@ namespace CarWorld.Web.ViewModels.Cars
     public class EditCarInputModel : IMapFrom<Car>
     {
         public int Id { get; set; }
+
         public int MakeId { get; set; }
 
         public int ModelId { get; set; }
@@ -21,6 +22,7 @@ namespace CarWorld.Web.ViewModels.Cars
         [Required]
         [StringLength(200, MinimumLength = 1)]
         public string Title { get; set; }
+
         [Required]
         [Phone]
         public string PhoneNumber { get; set; }
@@ -84,7 +86,6 @@ namespace CarWorld.Web.ViewModels.Cars
         [Display(Name = "Images of the car")]
         [MultiFilesSizeAndFormat(10, 4, "jpg", "png", "jpeg")]
         public List<IFormFile>? Images { get; set; } = new List<IFormFile>();
-
 
         public IEnumerable<SelectListItem> Makes { get; set; } = new List<SelectListItem>();
         public IEnumerable<SelectListItem> Regions { get; set; } = new List<SelectListItem>();

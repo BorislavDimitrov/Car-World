@@ -101,6 +101,6 @@
 
         public List<Picture> Pictures { get; set; } = new List<Picture>();
 
-        // public IList<ApplicationUser> InterestedUsers { get; set; } = new List<ApplicationUser>();
+        public ICollection<CarReport> Reports { get; set; } = new HashSet<CarReport>();
     }
 }

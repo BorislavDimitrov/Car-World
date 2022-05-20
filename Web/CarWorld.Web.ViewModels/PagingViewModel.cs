@@ -1,10 +1,11 @@
-﻿using CarWorld.Web.ViewModels.Models;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using System;
-using System.Collections.Generic;
-
-namespace CarWorld.Web.ViewModels.Cars
+﻿namespace CarWorld.Web.ViewModels.Cars
 {
+    using System;
+    using System.Collections.Generic;
+
+    using CarWorld.Web.ViewModels.Models;
+    using Microsoft.AspNetCore.Mvc.Rendering;
+
     public class PagingViewModel
     {
         public int PageNumber { get; set; }

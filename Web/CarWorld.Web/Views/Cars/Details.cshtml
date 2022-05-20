@@ -23,7 +23,7 @@
                     {
                         @if (@Model.CreatorId != @UserManager.GetUserAsync(User).Result.Id)
                         {
-                            <a asp-area="admin" asp-action="delete" asp-controller="models" asp-route-id="@Model.Id" class="btn btn-block btn-danger" style="width: 100px">Report</a>
+                            <a asp-area="" asp-action="ReportCar" asp-controller="Reports" asp-route-reporterId="@UserManager.GetUserAsync(User).Result.Id" asp-route-carId="@Model.Id" class="btn btn-block btn-danger" style="width: 100px">Report</a>
                         }
                     }
                 </td>

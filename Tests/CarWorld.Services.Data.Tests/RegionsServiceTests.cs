@@ -29,7 +29,7 @@
             this.regionsRepository = new EfDeletableEntityRepository<Region>(this.dbContext);
             this.regionsService = new RegionsService(this.regionsRepository);
 
-            AutoMapperConfig.RegisterMappings(typeof(RegionsInListViewModel).Assembly);
+            AutoMapperConfig.RegisterMappings(typeof(RegionsInListViewModel).Assembly, typeof(CreateRegionInputModel).Assembly);
         }
 
 
@@ -58,7 +58,7 @@
             };
 
             await this.regionsService.CreateRegionAsync(region);
-            Assert.ThrowsAsync<InvalidOperationException>( async () => await this.regionsService.CreateRegionAsync(region), $"Region with the name {region.Name} already exists.");
+            Assert.ThrowsAsync<InvalidOperationException>(async () => await this.regionsService.CreateRegionAsync(region), $"Region with the name {region.Name} already exists.");
         }
 
         [Test]
@@ -119,7 +119,7 @@
             this.regionsService.DeleteRegionAsync(1);
             this.regionsService.DeleteRegionAsync(2);
 
-            var regions = await this.regionsService.GetRegionsAsync(1, 10);
+            var regions = await this.regionsService.GetRegionsAsync<RegionsInListViewModel>(null, null);
 
             Assert.AreEqual(10, regions.Count());
         }
