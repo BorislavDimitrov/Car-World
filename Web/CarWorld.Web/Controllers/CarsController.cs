@@ -137,7 +137,7 @@
 
             const int itemsPerPage = 12;
 
-            var cars = await carsService.GetUserCarsAsync(userId, search, makeId, modelId, regionId, orderBy);
+            var cars = await carsService.GetUserCarsAsync<UserCarsInListViewModel>(userId, search, makeId, modelId, regionId, orderBy);
 
             var makes = await makesService.GetExistingMakesAsSelectListItemAsync();
 
@@ -200,7 +200,7 @@
         {
             const int itemsPerPage = 12;
 
-            var cars = await carsService.GetSearchCarsAsync<SearchCarsInListViewModel>(search, makeId, modelId, regionId, orderBy);
+            var cars = await carsService.GetSearchCarsAsync<CarsInListViewModel>(search, makeId, modelId, regionId, orderBy);
 
             var makes = await makesService.GetExistingMakesAsSelectListItemAsync();
 
@@ -208,7 +208,7 @@
 
             var regions = await regionsService.GetExistingRegionsAsSelectItemListAsync();
 
-            var viewModel = new SearchCarsListViewModel()
+            var viewModel = new CarsListViewModel()
             {
                 PageNumber = id,
                 Cars = cars.Skip((id - 1) * itemsPerPage).Take(itemsPerPage),

@@ -1,8 +1,5 @@
-﻿using CarWorld.Data.Models;
-using CarWorld.Web.ViewModels.Administration.Cars;
-using CarWorld.Web.ViewModels.Cars;
+﻿using CarWorld.Web.ViewModels.Cars;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace CarWorld.Services.Contracts
@@ -11,7 +8,7 @@ namespace CarWorld.Services.Contracts
     {
         Task CreateCarAsync(CreateCarInputModel model, string wwwrootPath);
 
-        Task<IEnumerable<UserCarsInListViewModel>> GetUserCarsAsync(string userId, string search, int? makeId, int? modelId, int? regionId, string orderBy);
+        Task<IEnumerable<T>> GetUserCarsAsync<T>(string userId, string search, int? makeId, int? modelId, int? regionId, string orderBy);
 
         Task<T> GetCarByIdAsync<T>(int carId);
 

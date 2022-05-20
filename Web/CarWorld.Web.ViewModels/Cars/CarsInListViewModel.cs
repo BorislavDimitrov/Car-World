@@ -3,11 +3,9 @@
     using CarWorld.Data.Models;
     using CarWorld.Services.Mapping;
 
-    public class SearchCarsInListViewModel : IMapFrom<Car>
+    public class CarsInListViewModel : IMapFrom<Car>
     {
         public int Id { get; set; }
-
-        public string CreatorId { get; set; }
 
         public string Title { get; set; }
 

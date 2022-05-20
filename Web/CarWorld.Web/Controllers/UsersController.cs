@@ -1,10 +1,12 @@
 ﻿namespace CarWorld.Web.Controllers
 {
+    using System.Linq;
     using System.Security.Claims;
     using System.Threading.Tasks;
     using CarWorld.Common;
     using CarWorld.Data.Models;
     using CarWorld.Services.Contracts;
+    using CarWorld.Web.ViewModels.Cars;
     using CarWorld.Web.ViewModels.Users;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Hosting;
@@ -17,16 +19,28 @@
         private readonly IUsersService userService;
         private readonly SignInManager<ApplicationUser> signInManager;
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly ICarsService carsService;
+        private readonly IMakesService makesService;
+        private readonly IModelsService modelsService;
+        private readonly IRegionsService regionsService;
 
         public UsersController(IWebHostEnvironment webHostEnvironment,
             IUsersService userService,
             SignInManager<ApplicationUser> signInManager,
-            UserManager<ApplicationUser> userManager)
+            UserManager<ApplicationUser> userManager,
+            ICarsService carsService,
+            IMakesService makesService,
+            IModelsService modelsService,
+            IRegionsService regionsService)
         {
             this.webHostEnvironment = webHostEnvironment;
             this.userService = userService;
             this.signInManager = signInManager;
             this.userManager = userManager;
+            this.carsService = carsService;
+            this.makesService = makesService;
+            this.modelsService = modelsService;
+            this.regionsService = regionsService;
         }
       
         [HttpGet]
@@ -93,6 +107,54 @@
             return View(editModel);
         }
 
-       
+        public async Task<IActionResult> ViewProfile(string userId, string search, int? makeId, int? modelId, int? regionId, string orderBy, int id = 1)
+        {
+            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var user = await userManager.FindByIdAsync(userId);
+
+            
+            if (currentUserId == userId || user == null)
+            {
+                TempData["ErrorMessage"] = GlobalConstants.RedirectToHomepageAlertMessage;
+                return Redirect("/Home/index");
+            }
+
+            const int itemsPerPage = 12;
+
+            var cars = await carsService.GetUserCarsAsync<UserCarsInListViewModel>(userId, search, makeId, modelId, regionId, orderBy);
+
+            var makes = await makesService.GetExistingMakesAsSelectListItemAsync();
+
+            var models = await modelsService.GetModelsForDropdownByMakeIdAsync(makeId);
+
+            var regions = await regionsService.GetExistingRegionsAsSelectItemListAsync();
+
+
+            var viewModel = new ProfileViewModel()
+            {
+                PageNumber = id,
+                Cars = cars.Skip((id - 1) * itemsPerPage).Take(itemsPerPage),
+                ItemsCount = cars.Count(),
+                ItemsPerPage = itemsPerPage,
+                Search = search,
+                OrderBy = orderBy,
+                MakeId = makeId,
+                RegionId = regionId,
+                ModelId = modelId,
+                Makes = makes,
+                Models = models,
+                Regions = regions,
+                FirstName = user.FirstName ?? "Not provided",
+                LastName = user.LastName ?? "Not provided",
+                UserName = user.UserName,
+                ImagePath = user.ImagePath,
+                PhoneNumber = user.PhoneNumber ?? "Not provided",
+                Email = user.Email ?? "Not provided",
+                UserId = userId,
+            };
+
+            return View(viewModel);
+        }
     }
 }

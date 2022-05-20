@@ -101,7 +101,7 @@
             await carsRepo.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<UserCarsInListViewModel>> GetUserCarsAsync(string userId, string search, int? makeId, int? modelId, int? regionId, string orderBy)
+        public async Task<IEnumerable<T>> GetUserCarsAsync<T>(string userId, string search, int? makeId, int? modelId, int? regionId, string orderBy)
         {
             var cars = carsRepo.AllAsNoTracking()
                 .Where(x => x.CreatorId == userId)
@@ -149,7 +149,7 @@
             }
 
             return await cars 
-                .To<UserCarsInListViewModel>()
+                .To<T>()
                 .ToListAsync();
         }
 

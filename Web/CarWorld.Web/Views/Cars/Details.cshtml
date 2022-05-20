@@ -159,7 +159,7 @@
 
             @if (@Model.CreatorId != @UserManager.GetUserAsync(User).Result.Id)
             {
-                <a type="button" class="btn btn-info btn-sm" asp-area="" asp-action="Users" asp-controller="ViewProfile" asp-route-userId="@Model.CreatorId">View account</a>
+                <a type="button" class="btn btn-info btn-sm" asp-area="" asp-action="ViewProfile" asp-controller="Users" asp-route-userId="@Model.CreatorId">View account</a>
             }
 
         </div>

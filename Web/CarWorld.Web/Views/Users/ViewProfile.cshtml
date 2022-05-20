@@ -1,5 +1,91 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using CarWorld.Web.ViewModels.Models
+@using CarWorld.Web.ViewModels.Users
+@model ProfileViewModel
 @{
+    ViewData["Title"] = "Search cars, page " + @Model.PageNumber;
+
+    Model.Makes.Insert(0, new SelectListItem("Select make", ""));
+
+    var defaultModel = new ModelsDropDown { ModelId = null, ModelName = "Select model" };
+
+    Model.Models.Insert(0, defaultModel);
+
+    Model.Regions.Insert(0, new SelectListItem("Select region", ""));
 }
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <img src="@Model.ImagePath" class="img-circle" height=60 width=100 alt="User Image">
+        </div>
+        <div class="col">
+            <strong>Username:</strong>
+            @Model.UserName
+        </div>
+        <div class="col">
+            <strong>First name:</strong>
+            @Model.FirstName
+        </div>
+        <div class="col">
+            <strong>Last name:</strong>
+            @Model.LastName
+        </div>
+        <div class="col">
+            <strong>Phone number:</strong>
+            @Model.PhoneNumber
+        </div>
+        <div class="col">
+            <strong>Email:</strong>
+            @Model.Email
+        </div>
+    </div>
+</div>
+
+<hr />
+
+<partial name="_FilterPartial" model="@Model" />
+
+<hr />
+
+@if (!@Model.Cars.Any())
+{
+    <h1>No results found</h1>
+}
+else
+{
+    <div class="row">
+        @foreach (var car in Model.Cars)
+        {
+            <div class="col-md-4">
+                <div class="card mb-3">
+                    <img class="card-img-top" src="@car.ThumbnailPicturePath" alt="@car.MakeName @car.ModelName @car.CreationYear">
+                    <div class="card-body text-center">
+                        <h4 class=" badge-pill bg-primary card-text text-center text-black text-truncate "> @car.Title</h4>
+                        <h5 class=" card-text text-center text-black ">Make- @car.MakeName Model- @car.ModelName Year- @car.CreationYear Price- @car.Price $</h5>
+                        <a asp-controller="Cars" asp-action="Details" asp-route-id="@car.Id" class="btn btn-primary">View</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#MakeId').change(function () {
+            var url = '@Url.Content("~/")' + "Cars/GetModels";
+            var ddlsource = "#MakeId";
+            $.getJSON(url, { MakeId: $(ddlsource).val() }, function (data) {
+                var items = '';
+                $("#ModelId").empty();
+                items += "<option value='" + "" + "'>" + "Select model" + "</option>";
+                $.each(data, function (i, model) {
+                    items += "<option value='" + model.value + "'>" + model.text + "</option>";
+                });
+                $('#ModelId').html(items);
+            });
+        });
+    });
+</script>

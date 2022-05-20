@@ -33,6 +33,8 @@ namespace CarWorld.Web.ViewModels.Cars
 
         public string OrderBy { get; set; }
 
+        public string UserId { get; set; }
+
         public List<SelectListItem> Makes { get; set; } = new List<SelectListItem>();
 
         public List<SelectListItem> Regions { get; set; } = new List<SelectListItem>();

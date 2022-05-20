@@ -14,13 +14,20 @@
     Model.Regions.Insert(0, new SelectListItem("Select region", ""));
 }
 
+<hr />
+
 <partial name="_AlertsPartial" />
 <partial name="_FilterPartial" model="@Model" />
 
-
 <hr />
 
-<div class="container-fluid">
+@if (!Model.Cars.Any())
+{
+    <h1>No results found</h1>
+}
+else
+{
+    <div class="container-fluid">
     <div class="row">
         @foreach (var car in Model.Cars)
         {
@@ -39,6 +46,7 @@
         }
     </div>
 </div>
+}
 
 <partial name="_PartialPaging" model="@Model" />
 
