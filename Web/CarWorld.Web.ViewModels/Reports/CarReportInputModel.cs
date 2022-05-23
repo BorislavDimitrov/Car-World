@@ -6,7 +6,11 @@ using System.ComponentModel.DataAnnotations;
 namespace CarWorld.Web.ViewModels.Reports
 {
     public class CarReportInputModel : IMapTo<CarReport>
-    { 
+    {
+        [Required]
+        [StringLength(20)]
+        public string Title { get; set; }
+
         [Required]
         [StringLength(500)]
         public string Description { get; set; }

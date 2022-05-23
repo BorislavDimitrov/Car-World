@@ -74,7 +74,7 @@
 
         public async Task<List<T>> GetModelsAsync<T>(string search, int? makeId )
         {
-            var models = modelsRepo.AllWithDeleted()
+            var models = modelsRepo.AllAsNoTrackingWithDeleted()
                 .OrderByDescending(x => x.Name)
                 .AsQueryable();
 

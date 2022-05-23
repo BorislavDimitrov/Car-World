@@ -1,0 +1,11 @@
+﻿@using CarWorld.Web.ViewModels.Administration.CarReports
+@model CarReportViewModel
+@{
+    ViewData["Title"] = "View Report";
+}
+
+<h1 class="text-center"> @Model.Title </h1>
+
+<blockquote class="blockquote" style="word-wrap:break-word; background-color: #eee;">
+  <p class="mb-0">@Model.Description</p>
+</blockquote>
