@@ -20,24 +20,33 @@
 else
 {
     <div class="container-fluid">
-    <div class="row">
-        @foreach (var car in Model.Cars)
-        {
-            <div class="col-md-4">
-                <div class="card" style="height:100%">
-                    <img class="card-img-top" src="@car.ThumbnailPicturePath" alt="@car.MakeName @car.ModelName @car.CreationYear">
-                    <div class="card-body text-center">
-                        <h4 class="card-text text-center text-black text-truncate">Title- @car.Title</h4>
-                        <h5 class="card-text text-center text-black ">Make- @car.MakeName Model- @car.ModelName Year- @car.CreationYear Price- @car.Price $</h5>
-                        <a asp-controller="Cars" asp-action="Details" asp-route-id="@car.Id" class="btn btn-primary">View</a>
-                        <a asp-controller="Cars" asp-action="Edit" asp-route-id="@car.Id" class="btn btn-warning">Edit</a>
-                        <a asp-controller="Cars" asp-action="Delete" asp-route-id="@car.Id" class="btn btn-danger">Delete</a>
+        <div class="row">
+            @foreach (var car in Model.Cars)
+            {
+                <div class="col-md-4">
+                    <div class="card" style="height:100%">
+                        <img class="card-img-top" src="@car.ThumbnailPicturePath" alt="@car.MakeName @car.ModelName @car.CreationYear">
+                        <div class="card-body text-center">
+                            <h4 class=" badge-pill bg-primary card-text text-center text-black text-truncate "> @car.Title</h4>
+                            <h5 class="card-text text-center text-black ">Make- @car.MakeName Model- @car.ModelName Year- @car.CreationYear Price- @car.Price $</h5>
+
+                            <div class="card-footer col">
+
+                                <a asp-controller="Cars" asp-action="Details" asp-route-id="@car.Id" class="btn btn-primary">View</a>
+                                <a asp-controller="Cars" asp-action="Edit" asp-route-id="@car.Id" class="btn btn-warning">Edit</a>
+
+                                <form method="post" asp-controller="Cars" asp-action="Delete" asp-route-id="@car.Id"> 
+                                    <button class="btn btn-danger">Delete</button>
+                                </form>
+
+                            </div>
+
+                        </div>
                     </div>
                 </div>
-            </div>
-        }
+            }
+        </div>
     </div>
-</div>
 }
 
 <partial name="_PartialPaging" model="@Model" />

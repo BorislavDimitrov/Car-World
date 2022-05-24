@@ -15,5 +15,7 @@ namespace CarWorld.Services.Contracts
         Task<bool> IsReportExistingByIdAsync(int reportId);
 
         Task SetReportAsCheckedByIdAsync(int reportId);
+
+        Task DeleteCarReportAsync(int reportId);
     }
 }

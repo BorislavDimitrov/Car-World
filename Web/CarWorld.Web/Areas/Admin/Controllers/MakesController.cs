@@ -20,6 +20,7 @@
             this.makesService = makesService;
         }
 
+        [HttpPost]
         public async Task<IActionResult> Delete(int id)
         {
             if (!await makesService.IsMakeExistingByIdAsync(id))
@@ -64,6 +65,7 @@
             return RedirectToAction(nameof(ManageMakes));
         }
 
+        [HttpGet]
         public async Task<IActionResult> ManageMakes(string search, string orderBy, int id = 1)
         {
             const int itemsPerPage = 12;
@@ -83,6 +85,7 @@
             return View(viewModel);
         }
 
+        [HttpPost]
         public async Task<IActionResult> Recover(int id)
         {
             if (!await makesService.IsMakeExistingByIdAsync(id))

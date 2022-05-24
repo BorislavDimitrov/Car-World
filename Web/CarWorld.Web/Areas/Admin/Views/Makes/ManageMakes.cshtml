@@ -53,8 +53,14 @@
                                 <td>@make.Name</td>
                                 <td>@make.IsDeleted</td>
                                 <td>
-                                    <a asp-area="admin" asp-action="recover" asp-controller="makes" asp-route-id="@make.Id" class="btn btn-primary btn-success">Recover make</a>
-                                    <a asp-area="admin" asp-action="delete" asp-controller="makes" asp-route-id="@make.Id" class="btn btn-primary btn-danger">Delete make</a>
+                                    <form method="post" asp-area="admin" asp-action="recover" asp-controller="makes" asp-route-id="@make.Id">
+                                        <button class="btn btn-primary btn-success">Recover make</button>
+                                    </form>
+
+                                    <form method="post" asp-action="delete" asp-controller="makes" asp-route-id="@make.Id">
+                                        <button class="btn btn-primary btn-danger">Delete make</button>
+                                    </form>
+
                                     <a asp-area="admin" asp-action="edit" asp-controller="makes" asp-route-id="@make.Id" class="btn btn-primary btn-dark">Edit make</a>
                                 </td>
                             </tr>

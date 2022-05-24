@@ -68,7 +68,8 @@
             return RedirectToAction(nameof(ManageRegions));
         }
 
-        public async Task<IActionResult> Delete(int id)
+        [HttpPost]
+        public async Task<IActionResult> Delete([FromForm] int id)
         {           
 
             if (!await regionsService.IsRegionExistingByIdAsync(id))
@@ -84,6 +85,7 @@
             return RedirectToAction(nameof(ManageRegions));
         }
 
+        [HttpPost]
         public async Task<IActionResult> Recover(int id)
         {
             if (!await regionsService.IsRegionExistingByIdAsync(id))

@@ -31,6 +31,16 @@ namespace CarWorld.Services
             await carsReportsRepo.SaveChangesAsync();
         }
 
+        public async Task DeleteCarReportAsync(int reportId)
+        {
+            var report = await carsReportsRepo.All()
+                .FirstOrDefaultAsync(x => x.Id == reportId);
+
+            carsReportsRepo.Delete(report);
+
+            await carsReportsRepo.SaveChangesAsync();
+        }
+
         public async Task<T> GetReportByIdAsync<T>(int reportId)
         {
             return await carsReportsRepo.AllAsNoTracking()

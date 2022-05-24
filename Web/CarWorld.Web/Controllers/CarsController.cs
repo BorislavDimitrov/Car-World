@@ -165,6 +165,7 @@
             return View(viewModel);
         }
 
+        [HttpPost]
         public async Task<IActionResult> Delete(int id)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -182,6 +183,7 @@
             return Redirect("/Home/index");
         }
 
+        [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
             var model = await carsService.GetCarDetails(id);

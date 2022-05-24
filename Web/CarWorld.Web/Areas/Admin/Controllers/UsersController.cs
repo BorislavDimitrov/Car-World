@@ -77,6 +77,7 @@ namespace CarWorld.Web.Areas.Admin.Controllers
             return View(viewModel);
         }
 
+        [HttpPost]
         public async Task<IActionResult> Delete(string id)
         {
             await usersService.DeleteAccountAsync(id);

@@ -49,5 +49,21 @@ namespace CarWorld.Web.Areas.Admin.Controllers
 
             return View(report);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> CarReportDelete(int id)
+        {
+            if (!await reportsService.IsReportExistingByIdAsync(id))
+            {
+                TempData["ErrorMessage"] = GlobalConstants.RedirectToHomepageAlertMessage;
+                return Redirect("/Admin/Home/index");
+            }
+            
+            await reportsService.DeleteCarReportAsync(id);
+
+            TempData["DeleteMessage"] = GlobalConstants.SuccessfulDelete;
+
+            return RedirectToAction(nameof(ManageReports));
+        }
     }
 }

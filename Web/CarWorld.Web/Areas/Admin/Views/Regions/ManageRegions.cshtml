@@ -50,8 +50,14 @@
                                 <td>@region.Name</td>
                                 <td>@region.IsDeleted</td>
                                 <td>
-                                    <a asp-area="admin" asp-action="recover" asp-controller="regions" asp-route-id="@region.Id" class="btn btn-primary btn-success">Recover region</a>
-                                    <a asp-area="admin" asp-action="delete" asp-controller="regions" asp-route-id="@region.Id" class="btn btn-primary btn-danger">Delete region</a>
+                                    <form method="post" asp-area="admin" asp-action="recover" asp-controller="regions" asp-route-id="@region.Id">
+                                        <button class="btn btn-primary btn-success">Recover region</button>
+                                    </form>
+
+                                    <form method="post" asp-area="admin" asp-action="delete" asp-controller="regions" asp-route-id="@region.Id">
+                                        <button class="btn btn-primary btn-danger">Delete region</button>
+                                    </form>
+
                                     <a asp-area="admin" asp-action="edit" asp-controller="regions" asp-route-id="@region.Id" class="btn btn-primary btn-dark">Edit region</a>
                                 </td>
                             </tr>

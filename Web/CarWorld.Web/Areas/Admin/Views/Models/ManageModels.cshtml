@@ -51,8 +51,14 @@
                                 <td>@carModel.MakeName</td>
                                 <td>@carModel.IsDeleted</td>
                                 <td>
-                                    <a asp-area="admin" asp-action="recover" asp-controller="models" asp-route-id="@carModel.Id" class="btn btn-primary btn-success">Recover model</a>
-                                    <a asp-area="admin" asp-action="delete" asp-controller="models" asp-route-id="@carModel.Id" class="btn btn-primary btn-danger">Delete model</a>
+                                     <form method="post" asp-area="admin" asp-action="recover" asp-controller="models" asp-route-id="@carModel.Id">
+                                        <button class="btn btn-primary btn-success">Recover model</button>
+                                    </form>
+
+                                    <form method="post" asp-area="admin" asp-action="delete" asp-controller="models" asp-route-id="@carModel.Id">
+                                        <button class="btn btn-primary btn-danger">Delete model</button>
+                                    </form>
+
                                     <a asp-area="admin" asp-action="edit" asp-controller="models" asp-route-id="@carModel.Id" class="btn btn-primary btn-dark">Edit model</a>
                                 </td>
                             </tr>

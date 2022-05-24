@@ -64,6 +64,7 @@
             return View(viewModel);
         }
 
+        [HttpPost]
         public async Task<IActionResult> Delete(int id)
         {
             if (!await carsService.IsCarExistingForAdminByIdAsync(id))
@@ -79,6 +80,7 @@
             return RedirectToAction(nameof(ManageCars));
         }
 
+        [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
             if (!await carsService.IsCarExistingForAdminByIdAsync(id))

@@ -58,9 +58,15 @@
                                 <td>@report.IsChecked</td>
                                 <td>
                                     <a asp-area="admin" asp-action="CarReportDetails" asp-controller="Reports" asp-route-id="@report.Id" class="btn btn-primary btn-success">View report</a>
-                                    <a asp-area="" asp-action="Details" asp-controller="Cars" asp-route-id="@report.CarId" class="btn btn-primary btn-success">View car</a>
-                                    <a asp-area="admin" asp-action="" asp-controller="Reports" asp-route-id="@report.Id" class="btn btn-primary btn-danger">Delete report</a>
-                                    <a asp-area="" asp-action="Delete" asp-controller="Cars" asp-route-id="@report.CarId" class="btn btn-primary btn-danger">Delete car</a>
+                                    <a asp-area="admin" asp-action="Details" asp-controller="Cars" asp-route-id="@report.CarId" class="btn btn-primary btn-success">View car</a>
+
+                                    <form method="post" asp-area="admin" asp-action="CarReportDelete" asp-controller="Reports" asp-route-id="@report.Id">
+                                        <button class="btn btn-primary btn-danger">Delete report</button>
+                                    </form>
+
+                                    <form method="post" asp-action="Delete" asp-controller="Cars" asp-route-id="@report.CarId">
+                                        <button class="btn btn-primary btn-danger">Delete car</button>
+                                    </form>
                                 </td>
                             </tr>
                         }
@@ -68,9 +74,9 @@
                 </table>
             </div>
 
-  
+
 
         </div>
     </div>
 </div>
-     <partial name="_PartialPaging" model="@Model" />
+<partial name="_PartialPaging" model="@Model" />

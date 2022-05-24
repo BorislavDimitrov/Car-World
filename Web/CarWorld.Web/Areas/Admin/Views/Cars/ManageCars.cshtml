@@ -101,7 +101,9 @@
                                 <td>@car.HorsePower</td>
                                 <td>@car.Mileage</td>
                                 <td>
-                                    <a asp-area="admin" asp-action="delete" asp-controller="cars" asp-route-id="@car.Id" class="btn btn-block btn-danger">Delete car</a>
+                                    <form method="post" asp-area="admin" asp-action="delete" asp-controller="cars" asp-route-id="@car.Id">
+                                        <button class="btn btn-block btn-danger">Delete car</button>
+                                    </form>
                                 </td>
                                 <td>
                                     <a asp-area="admin" asp-action="details" asp-controller="cars" asp-route-id="@car.Id" class="btn btn-block btn-info">View car</a>
