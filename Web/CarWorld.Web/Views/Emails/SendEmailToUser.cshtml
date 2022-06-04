@@ -1,0 +1,30 @@
+﻿@using CarWorld.Web.ViewModels.Emails
+@model SendEmailInputModel
+@{
+    ViewData["Title"] = "Send email to user";
+
+}
+
+<div>
+
+    <form method="post" class="col-md-10" enctype="multipart/form-data">
+        <input type="hidden" asp-for="SenderEmail" />
+        <input type="hidden" asp-for="SenderUsername" />
+        <input type="hidden" asp-for="RecieverEmail" />
+        <div asp-validation-summary="All" class="text-danger"></div>
+
+        <div class="form-group">
+            <label asp-for="Subject"></label>
+            <input asp-for="Subject" class="form-control" />
+            <span asp-validation-for="Subject" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Content"></label>
+            <textarea asp-for="Content" class="form-control"></textarea>
+            <span asp-validation-for="Content" class="text-danger"></span>
+        </div>
+
+        <input type="submit" class="btn btn-primary" />
+    </form>
+</div>

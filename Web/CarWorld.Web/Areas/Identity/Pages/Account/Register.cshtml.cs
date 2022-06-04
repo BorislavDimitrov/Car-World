@@ -9,17 +9,16 @@ namespace CarWorld.Web.Areas.Identity.Pages.Account
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
     using System.Text;
-    using System.Text.Encodings.Web;
     using System.Threading;
     using System.Threading.Tasks;
 
     using CarWorld.Common;
     using CarWorld.Data;
     using CarWorld.Data.Models;
+    using CarWorld.Services.Messaging;
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Identity;
-    using Microsoft.AspNetCore.Identity.UI.Services;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.RazorPages;
     using Microsoft.AspNetCore.WebUtilities;
@@ -32,27 +31,28 @@ namespace CarWorld.Web.Areas.Identity.Pages.Account
         private readonly IUserStore<ApplicationUser> _userStore;
         private readonly IUserEmailStore<ApplicationUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
-        private readonly IEmailSender _emailSender;
         private readonly ApplicationDbContext repo;
         private readonly IWebHostEnvironment webHostEnvironment;
+        IEmailSender emailSender;
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             IUserStore<ApplicationUser> userStore,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender,
             ApplicationDbContext repo,
-            IWebHostEnvironment webHostEnvironment)
+            IWebHostEnvironment webHostEnvironment,
+            IEmailSender emailSender)
         {
             _userManager = userManager;
             _userStore = userStore;
             _emailStore = GetEmailStore();
             _signInManager = signInManager;
             _logger = logger;
-            _emailSender = emailSender;
+            ;
             this.repo = repo;
             this.webHostEnvironment = webHostEnvironment;
+            this.emailSender = emailSender;
         }
 
         /// <summary>
@@ -140,48 +140,44 @@ namespace CarWorld.Web.Areas.Identity.Pages.Account
                 return Page();
             }
 
-                if (ModelState.IsValid)
+            if (ModelState.IsValid)
+            {
+                var user = CreateUser();
+
+                user.ImagePath = GlobalConstants.DefaultUserImagePath;
+
+                await _userStore.SetUserNameAsync(user, Input.Username, CancellationToken.None);
+                await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+                var result = await _userManager.CreateAsync(user, Input.Password);
+
+                if (result.Succeeded)
                 {
-                    var user = CreateUser();
+                    _logger.LogInformation("User created a new account with password.");
 
-                    user.ImagePath = GlobalConstants.DefaultUserImagePath;
+                    var userId = await _userManager.GetUserIdAsync(user);
+                    var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));                   
 
-                    await _userStore.SetUserNameAsync(user, Input.Username, CancellationToken.None);
-                    await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
-                    var result = await _userManager.CreateAsync(user, Input.Password);
+                    var confirmationLink = Url.Action("ConfirmEmail", "Users", new {Area = "", userId = user.Id, token = token }, Request.Scheme);      
 
-                    if (result.Succeeded)
+                    if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
-                        _logger.LogInformation("User created a new account with password.");
-
-                        var userId = await _userManager.GetUserIdAsync(user);
-                        var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                        code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                        var callbackUrl = Url.Page(
-                            "/Account/ConfirmEmail",
-                            pageHandler: null,
-                            values: new { area = "Identity", userId, code, returnUrl },
-                            protocol: Request.Scheme);
-
-                        await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                            $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
-
-                        if (_userManager.Options.SignIn.RequireConfirmedAccount)
-                        {
-                            return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl });
-                        }
-                        else
-                        {
-                            await _signInManager.SignInAsync(user, isPersistent: false);
-                            return LocalRedirect(returnUrl);
-                        }
+                        await emailSender.SendEmailAsync("bdimitorv@gmail.com", "Admin", user.Email, "Account confirmation", $"Confirm your account in Car World by clicking this link <a href=\"{confirmationLink}\"> Confirm account</a>");
+                        TempData["CreateMessage"] = "Account confirmation email has been sent.";
+                        return Redirect("/Home/Index");
                     }
-                    foreach (var error in result.Errors)
+                    else
                     {
-                        ModelState.AddModelError(string.Empty, error.Description);
+                        await _signInManager.SignInAsync(user, isPersistent: false);
+                        return LocalRedirect(returnUrl);
                     }
                 }
-            
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+            }
+
             // If we got this far, something failed, redisplay form
             return Page();
         }

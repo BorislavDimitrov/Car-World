@@ -2,6 +2,7 @@
 {
     using CarWorld.Common;
     using CarWorld.Services.Contracts;
+    using CarWorld.Services.Messaging;
     using CarWorld.Web.ViewModels.Cars;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Hosting;
@@ -18,18 +19,21 @@
         private readonly IModelsService modelsService;
         private readonly ICarsService carsService;
         private readonly IWebHostEnvironment webHostEnvironment;
+        private readonly IEmailSender emailSender;
 
         public CarsController(IMakesService makesService,
             IRegionsService regionsService,
             IModelsService modelsService,
             ICarsService carsService,
-            IWebHostEnvironment webHostEnvironment)
+            IWebHostEnvironment webHostEnvironment,
+            IEmailSender emailSender)
         {
             this.makesService = makesService;
             this.regionsService = regionsService;
             this.modelsService = modelsService;
             this.carsService = carsService;
             this.webHostEnvironment = webHostEnvironment;
+            this.emailSender = emailSender;
         }
 
         [Authorize]
@@ -58,7 +62,7 @@
             if (!ModelState.IsValid)
             {
                 var regions = await regionsService.GetExistingRegionsAsSelectItemListAsync();
-                var makes =  await makesService.GetExistingMakesAsSelectListItemAsync();
+                var makes = await makesService.GetExistingMakesAsSelectListItemAsync();
                 var makeId = makes.FirstOrDefault().Value;
                 var models = await modelsService.GetModelsForDropdownByMakeIdAsync(int.Parse(makeId));
 
@@ -68,7 +72,7 @@
                 return View(model);
             }
 
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);   
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             model.UserId = userId;
 
             string wwwrootPath = webHostEnvironment.WebRootPath;
@@ -79,7 +83,7 @@
 
             return RedirectToAction(nameof(UserCars));
         }
-        
+
         [HttpGet]
         [Authorize]
         public async Task<IActionResult> Edit(int id)
@@ -90,17 +94,17 @@
             {
                 TempData["ErrorMessage"] = GlobalConstants.RedirectToHomepageAlertMessage;
                 return Redirect("/Home/index");
-            }          
+            }
 
             var model = await carsService.GetCarByIdAsync<EditCarInputModel>(id);
 
             var regions = await regionsService.GetExistingRegionsAsSelectItemListAsync();
             var makes = await makesService.GetExistingMakesAsSelectListItemAsync();
-            var models = await modelsService.GetModelsForDropdownByMakeIdAsync(model.MakeId);        
-            
+            var models = await modelsService.GetModelsForDropdownByMakeIdAsync(model.MakeId);
+
             model.Regions = regions;
-            model.Makes= makes;
-            model.Models= models;
+            model.Makes = makes;
+            model.Models = models;
 
             return View(model);
         }
@@ -118,7 +122,7 @@
                 model.Models = models;
 
                 return View(model);
-            }         
+            }
 
             string wwwroot = webHostEnvironment.WebRootPath;
 
@@ -127,7 +131,7 @@
             TempData["EditMessage"] = GlobalConstants.SuccessfulEdit;
 
             return RedirectToAction(nameof(Details), new { model.Id });
-        }   
+        }
 
         [HttpGet]
         [Authorize]
@@ -234,6 +238,21 @@
             var models = await modelsService.GetModelsForDropdownByMakeIdAsync(makeId);
 
             return Json(new SelectList(models, "ModelId", "ModelName"));
+        }
+
+        public async Task<IActionResult> Email()
+        {
+            //to = "powerglide@abv.bg";
+            //from = "bdimitorv@gmail.com";
+
+            var link = Url.Action("ConfirmEmail", "Users", new { userId = "userId", token = "token" }, Request.Scheme);
+
+
+            
+
+             await emailSender.SendEmailAsync("bdimitorv@gmail.com", "Test", "hesiyad232@oceore.com", "Test", $"<a href=\"{link}\"> Confirm account</a>");
+
+            return Ok();
         }
     }
 }

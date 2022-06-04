@@ -31,6 +31,7 @@
         <div class="col">
             <strong>Email:</strong>
             @Model.Email
+            <a asp-area="" asp-action="SendEmailToUser" asp-controller="Emails" asp-route-id="@Model.UserId" class="btn btn-primary btn-dark">Send email</a>
         </div>
     </div>
 </div>

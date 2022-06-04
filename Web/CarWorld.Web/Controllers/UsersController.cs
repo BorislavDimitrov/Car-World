@@ -2,6 +2,7 @@
 {
     using System.Linq;
     using System.Security.Claims;
+    using System.Text;
     using System.Threading.Tasks;
     using CarWorld.Common;
     using CarWorld.Data.Models;
@@ -12,8 +13,9 @@
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.WebUtilities;
 
-    public class UsersController : BaseController
+    public class UsersController : Controller
     {
         private readonly IWebHostEnvironment webHostEnvironment;
         private readonly IUsersService userService;
@@ -69,6 +71,7 @@
             return Redirect("/");
         }
         
+        [Authorize]
         [HttpGet]
         public IActionResult AccountManager()
         {
@@ -155,6 +158,38 @@
             };
 
             return View(viewModel);
+        }
+
+        public async Task<IActionResult> ConfirmEmail(string userId, string token)
+        {
+            if (userId == null || token == null)
+            {
+                TempData["ErrorMessage"] = "Confirm email failed !";
+                return Redirect("/Home/Index");
+            }
+
+            var user = await userManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                TempData["ErrorMessage"] = "Confirm email failed !";
+                return Redirect("/Home/Index");
+            }
+
+            var tokenByte = WebEncoders.Base64UrlDecode(token);
+            token = Encoding.UTF8.GetString(tokenByte);
+
+            var result = await userManager.ConfirmEmailAsync(user, token);
+
+            if (result.Succeeded)
+            {
+                return Redirect("/Identity/Account/Login");
+            }
+            else
+            {
+                TempData["ErrorMessage"] = GlobalConstants.RedirectToHomepageAlertMessage;
+                return Redirect("/Home/Index");
+            }
         }
     }
 }

@@ -57,6 +57,16 @@
                         options.MinimumSameSitePolicy = SameSiteMode.None;
                     });
 
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.ExpireTimeSpan = TimeSpan.FromDays(5);
+                options.SlidingExpiration = true;
+
+            });
+
+            services.Configure<DataProtectionTokenProviderOptions>(o =>
+            o.TokenLifespan = TimeSpan.FromHours(3));
+
             services.AddControllersWithViews(
                 options =>
                     {
@@ -73,7 +83,8 @@
             services.AddScoped<IDbQueryRunner, DbQueryRunner>();
 
             // Application services
-            services.AddTransient<IEmailSender, NullMessageSender>();
+            services.AddTransient<IEmailSender>(x => new SendGridEmailSender(this.configuration["SendGrid:ApiKey"]));
+
             services.AddTransient<IUsersService, UsersService>();
             services.AddTransient<IMakesService, MakesService>();
             services.AddTransient<IRegionsService, RegionsService>();
@@ -92,7 +103,7 @@
                 options.TableName = "CacheRecords";
             });
 
-            
+
             services.AddSession(options =>
             {
                 options.IdleTimeout = new TimeSpan(365, 0, 0, 0);
