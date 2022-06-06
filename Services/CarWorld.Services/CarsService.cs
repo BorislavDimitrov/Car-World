@@ -33,32 +33,6 @@
 
         public async Task CreateCarAsync(CreateCarInputModel model, string wwwrootPath)
         {
-            //var car = new Car()
-            //{
-            //    CreatorId = model.UserId,
-            //    MakeId = model.MakeId,
-            //    RegionId = model.RegionId,
-            //    ModelId = model.ModelId,
-            //    CarType = model.CarType,
-            //    Color = model.Color,
-            //    Condition = model.Condition,
-            //    CreationYear = model.CreationYear,
-            //    Description = model.Description,
-            //    FuelType = model.FuelType,
-            //    DoorsCount = model.DoorsCount,
-            //    CubicCapacity = model.CubicCapacity,
-            //    HandDrive = model.HandDrive,
-            //    EmissionClass = model.EmissionClass,
-            //    Mileage = model.Mileage,
-            //    SeatsCount = model.SeatsCount,
-            //    TankFuel = model.TankFuel,
-            //    Transmission = model.Transmission,
-            //    Title = model.Title,
-            //    HorsePower = model.HorsePower,
-            //    Price = model.Price,
-            //    PhoneNumber = model.PhoneNumber,
-            //    City = model.City,
-            //};
 
             var car = mapper.Map<Car>(model);
 

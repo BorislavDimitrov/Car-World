@@ -44,7 +44,7 @@
             this.modelsService = modelsService;
             this.regionsService = regionsService;
         }
-      
+
         [HttpGet]
         public IActionResult Delete()
         {
@@ -70,7 +70,7 @@
 
             return Redirect("/");
         }
-        
+
         [Authorize]
         [HttpGet]
         public IActionResult AccountManager()
@@ -100,12 +100,12 @@
             {
                 editModel.ImagePath = user.ImagePath;
                 return View(editModel);
-            }            
+            }
 
             string wwwrootPath = webHostEnvironment.WebRootPath;
 
             await userService.EditAccountAsync(userId, editModel, wwwrootPath);
-            
+
             editModel.ImagePath = user.ImagePath;
             return View(editModel);
         }
@@ -116,7 +116,7 @@
 
             var user = await userManager.FindByIdAsync(userId);
 
-            
+
             if (currentUserId == userId || user == null)
             {
                 TempData["ErrorMessage"] = GlobalConstants.RedirectToHomepageAlertMessage;
@@ -190,6 +190,37 @@
                 TempData["ErrorMessage"] = GlobalConstants.RedirectToHomepageAlertMessage;
                 return Redirect("/Home/Index");
             }
+        }
+
+        public async Task<IActionResult> ConfirmEmailChange(string userId, string token, string oldEmail, string newEmail)
+        {
+            if (userId == null || token == null)
+            {
+                TempData["ErrorMessage"] = "Confirm email failed !";
+                return Redirect("/Home/Index");
+            }
+
+            var user = await userManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                TempData["ErrorMessage"] = "Confirm email failed !";
+                return Redirect("/Home/Index");
+            }
+
+            if (user.Email != oldEmail)
+            {
+                TempData["ErrorMessage"] = "Confirm email failed !";
+                return Redirect("/Home/Index");
+            }
+
+            var tokenByte = WebEncoders.Base64UrlDecode(token);
+            token = Encoding.UTF8.GetString(tokenByte);
+
+            var result = await userManager.ChangeEmailAsync(user, newEmail, token);
+
+            TempData["CreateMessage"] = "New email verified";
+            return Redirect("/Identity/Account/Manage/Email");
         }
     }
 }
