@@ -1,11 +1,12 @@
-﻿using CarWorld.Common;
-using CarWorld.Services.Contracts;
-using CarWorld.Web.ViewModels.Reports;
-using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
-
-namespace CarWorld.Web.Controllers
+﻿namespace CarWorld.Web.Controllers
 {
+    using System.Threading.Tasks;
+
+    using CarWorld.Common;
+    using CarWorld.Services.Contracts;
+    using CarWorld.Web.ViewModels.Reports;
+    using Microsoft.AspNetCore.Mvc;
+
     public class ReportsController : BaseController
     {
         private readonly ICarsService carsService;
@@ -19,7 +20,7 @@ namespace CarWorld.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> ReportCar(string reporterId, int carId)
+        public IActionResult ReportCar(string reporterId, int carId)
         {
             var model = new CarReportInputModel()
             {

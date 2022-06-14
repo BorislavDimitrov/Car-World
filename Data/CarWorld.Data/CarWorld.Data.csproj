@@ -45,6 +45,10 @@
     <ProjectReference Include="..\CarWorld.Data.Models\CarWorld.Data.Models.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 	
 
 </Project>
