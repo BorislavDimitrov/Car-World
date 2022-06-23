@@ -1,5 +1,4 @@
 ﻿using CarWorld.Data.Common.Models;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -21,5 +20,7 @@ namespace CarWorld.Data.Models
 
         [ForeignKey(nameof(CategoryId))]
         public Category Category { get; set; }
+
+        public virtual ICollection<Vote> Votes { get; set; }
     }
 }
