@@ -22,7 +22,7 @@
                                     <div class="media-body ml-3">
                                         @comment.UserUserName
                                         <div class="text-muted small">
-                                            <time datetime="@comment.CreatedOn.ToString("O")"></time>
+                                            @comment.CreatedOn
                                         </div>
                                     </div>
                                     <div class="text-muted small ml-3">
@@ -65,7 +65,7 @@
                         <div class="media-body ml-3">
                             @Model.CreatorUserName
                             <div class="text-muted small">
-                                <time datetime="@Model.CreatedOn.ToString("O")"></time>
+                                @Model.CreatedOn
                             </div>
                         </div>
                         <div class="text-muted small ml-3">
@@ -91,7 +91,7 @@
 
                     @if (this.User.Identity.IsAuthenticated)
                     {
-                        <div class="px-4 pt-3"> <button type="button" class="btn btn-primary float-right" onclick="showAddCommentForm(0)"><i class="fa fa-plus"></i>&nbsp; Comment</button> </div>
+                        <div class="px-4 pt-3"> <button type="button" class="btn btn-primary float-right" onclick="showAddCommentForm(@null)"><i class="fa fa-plus"></i>&nbsp; Comment</button> </div>
                         <div class="clearfix"></div>
                     }
                     @{ DisplayComments(null); }
@@ -111,7 +111,7 @@
 <div>
     <form asp-controller="Comments" asp-action="Create" method="post" id="AddCommentForm" style="display: none">
         <input type="hidden" name="PostId" value="@this.Model.Id" />
-        <input type="hidden" name="ParentId" value="0" />
+        <input type="hidden" name="ParentId" value="@null" />
         <div>
             <label for="Content"></label>
             <textarea name="Content" id="Content" class="form-control"></textarea>
