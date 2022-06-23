@@ -3,6 +3,7 @@ using CarWorld.Data.Models;
 using CarWorld.Services.Mapping;
 using Ganss.XSS;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace CarWorld.Web.ViewModels.Posts
@@ -10,6 +11,8 @@ namespace CarWorld.Web.ViewModels.Posts
     public class DetailsPostViewModel : IMapFrom<Post>, IMapTo<Post>, IHaveCustomMappings
     {
         public int Id { get; set; }
+
+        public string CreatorImagePath { get; set; }
 
         public DateTime CreatedOn { get; set; }
 
@@ -19,11 +22,11 @@ namespace CarWorld.Web.ViewModels.Posts
 
         public string SanitizedContent => new HtmlSanitizer().Sanitize(this.Content);
 
-        public string UserUserName { get; set; }
+        public string CreatorUserName { get; set; }
 
         public int VotesCount { get; set; }
 
-        //public IEnumerable<PostCommentViewModel> Comments { get; set; }
+        public IEnumerable<PostCommentViewModel> Comments { get; set; }
 
         public void CreateMappings(IProfileExpression configuration)
         {

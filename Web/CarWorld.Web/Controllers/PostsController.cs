@@ -38,6 +38,8 @@ namespace CarWorld.Web.Controllers
         {
             if (!ModelState.IsValid)
             {
+                var categories = await categoriesService.GetExistingCategoriesAsSelectListItemAsync();
+                model.Categories = categories;
                 return View(model);
             }
 
@@ -46,7 +48,7 @@ namespace CarWorld.Web.Controllers
 
             int postId = await postsService.CreatePostAsync(model);
 
-            return Ok(postId);
+            return RedirectToAction(nameof(Details),new {id = postId});
         }
 
         public async Task<IActionResult> Details(int id)

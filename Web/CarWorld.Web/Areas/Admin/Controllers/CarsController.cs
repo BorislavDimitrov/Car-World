@@ -89,7 +89,7 @@
                 return Redirect("/Admin/Home/Index");
             }
 
-            var model = await carsService.GetCarDetails(id);
+            var model = await carsService.GetCarDetailsByIdAsync(id);
 
             return View(model);
         }
