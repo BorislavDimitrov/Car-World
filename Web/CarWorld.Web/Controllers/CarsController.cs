@@ -239,20 +239,5 @@
 
             return Json(new SelectList(models, "ModelId", "ModelName"));
         }
-
-        public async Task<IActionResult> Email()
-        {
-            //to = "powerglide@abv.bg";
-            //from = "bdimitorv@gmail.com";
-
-            var link = Url.Action("ConfirmEmail", "Users", new { userId = "userId", token = "token" }, Request.Scheme);
-
-
-            
-
-             await emailSender.SendEmailAsync("bdimitorv@gmail.com", "Test", "hesiyad232@oceore.com", "Test", $"<a href=\"{link}\"> Confirm account</a>");
-
-            return Ok();
-        }
     }
 }
