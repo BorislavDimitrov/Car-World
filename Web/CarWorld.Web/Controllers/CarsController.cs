@@ -190,13 +190,13 @@
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            var model = await carsService.GetCarDetails(id);
-
             if (!await carsService.IsCarExistingForUserByIdAsync(id))
             {
                 TempData["ErrorMessage"] = GlobalConstants.RedirectToHomepageAlertMessage;
                 return Redirect("/Home/index");
             }
+
+            var model = await carsService.GetCarDetailsByIdAsync(id);
 
             return View(model);
         }

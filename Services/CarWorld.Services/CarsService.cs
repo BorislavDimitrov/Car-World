@@ -197,7 +197,7 @@
             await carsRepo.SaveChangesAsync();
         }
 
-        public async Task<DetailsCarViewModel> GetCarDetails(int carId)
+        public async Task<DetailsCarViewModel> GetCarDetailsByIdAsync(int carId)
         {
             return await carsRepo.AllWithDeleted()
                 .Where(x => x.Id == carId)

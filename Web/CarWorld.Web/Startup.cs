@@ -92,6 +92,8 @@
             services.AddTransient<IModelsService, ModelsService>();
             services.AddTransient<ICarsService, CarsService>();
             services.AddTransient<IReportsService, ReportsService>();
+            services.AddTransient<ICategoriesService, CategoriesService>();
+            services.AddTransient<IPostsService, PostsService>();
 
             services.AddMvc();
 

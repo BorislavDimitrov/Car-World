@@ -1,4 +1,5 @@
 ﻿using CarWorld.Data.Common.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace CarWorld.Data.Models
 {
@@ -12,6 +13,7 @@ namespace CarWorld.Data.Models
 
         public virtual Comment Parent { get; set; }
 
+        [Required]
         public string Content { get; set; }
 
         public string UserId { get; set; }

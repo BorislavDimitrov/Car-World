@@ -43,4 +43,8 @@
     <ProjectReference Include="..\CarWorld.Web.Infrastructure\CarWorld.Web.Infrastructure.csproj" />
     <ProjectReference Include="..\CarWorld.Web.ViewModels\CarWorld.Web.ViewModels.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\lib\tinymce\" />
+  </ItemGroup>
 </Project>

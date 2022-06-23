@@ -16,7 +16,7 @@ namespace CarWorld.Services.Contracts
 
         Task DeleteCarAsync(int carId);
 
-        Task<DetailsCarViewModel> GetCarDetails(int carId);
+        Task<DetailsCarViewModel> GetCarDetailsByIdAsync(int carId);
 
         Task<IEnumerable<T>> GetCarsForAdminAsync<T>(string search, int? makeId, int? modelId, int? regionId, string orderBy);
 

@@ -29,6 +29,7 @@
                               new MakesSeeder(),
                               new ModelsSeeder(),
                               new RegionsSeeder(),
+                              new CategoriesSeeder(),
                           };
 
             foreach (var seeder in seeders)
