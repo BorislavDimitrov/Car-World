@@ -85,7 +85,6 @@ namespace CarWorld.Web.Controllers
             viewModel.ItemsPerPage = itemsPerPage;
             viewModel.Search = search;
             viewModel.OrderBy = orderBy;
-            //viewModel.CategoryId = categoryId;
 
             return View(viewModel);
         }

@@ -8,5 +8,9 @@
     public class MakeListViewModel : PagingViewModel
     {
         public IEnumerable<MakeInListViewModel> Makes { get; set; }
+
+        public string Search { get; set; }
+
+        public string OrderBy { get; set; }
     }
 }

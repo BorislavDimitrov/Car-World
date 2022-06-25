@@ -1,18 +1,18 @@
 ﻿@using CarWorld.Web.ViewModels.Cars
 @model PagingViewModel
 @{
-    var routeData = new Dictionary<string, string>
-    {
-        {"search", $"{Model.Search}"},
-        {"MakeId", $"{Model.MakeId}"},
-        {"OrderBy" , $"{Model.OrderBy}"},
-        {"ModelId", $"{Model.ModelId}" },
-        {"RegionID", $"{Model.RegionId}" },
-        {"CategoryId", $"{Model.CategoryId}"}
-    };
+    //var routeData = new Dictionary<string, string>
+    //{
+    //    {"search", $"{Model.Search}"},
+    //    {"MakeId", $"{Model.MakeId}"},
+    //    {"OrderBy" , $"{Model.OrderBy}"},
+    //    {"ModelId", $"{Model.ModelId}" },
+    //    {"RegionID", $"{Model.RegionId}" },
+    //    {"CategoryId", $"{Model.CategoryId}"}
+    //};
 }
 
-<nav aria-label="...">
+@*<nav aria-label="...">
   <ul class="pagination justify-content-center">
        <li class="page-item @if(!Model.HasPreviousPage) {<text>disabled</text>}">
       <a class="page-link" asp-all-route-data="routeData" asp-route-id="1">First</a>
@@ -47,4 +47,4 @@
       <a class="page-link" asp-all-route-data="routeData" asp-route-id="@Model.PagesCount">Last</a>
     </li>
   </ul>
-</nav>
+</nav>*@

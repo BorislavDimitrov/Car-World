@@ -14,6 +14,12 @@ namespace CarWorld.Web.ViewModels.Posts
 
         public string ImagePath { get; set; }
 
+        public string Search { get; set; }
+
+        public string OrderBy { get; set; }
+
+        public int CategoryId { get; set; }
+
         public IEnumerable<PostInListViewModel> CategoryPosts { get; set; }
 
         public void CreateMappings(IProfileExpression configuration)

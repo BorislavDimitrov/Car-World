@@ -9,5 +9,9 @@ namespace CarWorld.Web.ViewModels.Administration.Models
         public IEnumerable<ModelInListViewModel> Models { get; set; }
 
         public List<SelectListItem> Makes { get; set; } = new List<SelectListItem>();
+
+        public int? MakeId { get; set; }
+
+        public string Search { get; set; }
     }
 }

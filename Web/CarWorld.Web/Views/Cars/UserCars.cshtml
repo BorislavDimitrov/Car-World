@@ -2,14 +2,81 @@
 @using CarWorld.Web.ViewModels.Models
 @model UsersCarsListViewModel
 @{
+    var routeData = new Dictionary<string, string>
+    {
+        {"search", $"{Model.Search}"},
+        {"MakeId", $"{Model.MakeId}"},
+        {"OrderBy" , $"{Model.OrderBy}"},
+        {"ModelId", $"{Model.ModelId}" },
+        {"RegionID", $"{Model.RegionId}" },
+    };
+
     ViewData["Title"] = "Manage cars, peage " + @Model.PageNumber;
 
+    Model.Makes.Insert(0, new SelectListItem("Select make", ""));
+
+    var defaultModel = new ModelsDropDown { ModelId = null, ModelName = "Select model" };
+
+    Model.Models.Insert(0, defaultModel);
+
+    Model.Regions.Insert(0, new SelectListItem("Select region", ""));
 }
 
 <hr />
 
 <partial name="_AlertsPartial" />
-<partial name="_FilterPartial" model="@Model" />
+
+<div class="card">
+    <h3 class="text-center">Cars</h3>
+    <div class="card-header">
+
+        <form  method="get">
+
+            <div class="form-row">
+                <div class="col-md-4">
+                    <label>Search</label>
+                    <input type="text" name="Search" class="form-control" placeholder="Search ......" value="@Model.Search">
+                </div>
+
+                <div class="form-group col-md-4">
+                    <label>Make</label>
+                    <select asp-for="MakeId" class="form-control" asp-items="@Model.Makes"></select>
+                </div>
+
+                <div class="form-group col-md-4">
+                    <label>Model</label>
+                    <select asp-for="ModelId" asp-items="@(new SelectList(@Model.Models, "ModelId", "ModelName"))" class="form-control">
+                    </select>
+                </div>
+
+                <div class="form-group col-md-4">
+                    <label>Region</label>
+                    <select asp-for="RegionId" asp-items="@Model.Regions" class="form-control"></select>
+                </div>
+
+                <div class="form-group col-md-4">
+                    <label>Order by</label>
+                    <select name="OrderBy" asp-for="OrderBy" value="@Model.OrderBy" class="form-control" style="width: 100%">
+                        <option value="DateDesc">Date descending</option>
+                        <option value="DateAsc">Date ascending</option>
+                        <option value="PriceDesc">Price descending</option>
+                        <option value="PriceAsc">Price ascending</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="d-flex justify-content-center align-items-center">
+                <button type="submit" asp-route-id="1" class="btn btn-outline-secondary ">Search</button>
+            </div>
+
+        </form>
+
+
+    </div>
+
+
+</div>
 
 <hr />
 
@@ -49,7 +116,42 @@ else
     </div>
 }
 
-<partial name="_PartialPaging" model="@Model" />
+<nav aria-label="...">
+  <ul class="pagination justify-content-center">
+       <li class="page-item @if(!Model.HasPreviousPage) {<text>disabled</text>}">
+      <a class="page-link" asp-all-route-data="routeData" asp-route-id="1">First</a>
+    </li>
+    <li class="page-item @if(!Model.HasPreviousPage) {<text>disabled</text>}">
+      <a class="page-link" asp-all-route-data="routeData" asp-route-id="@Model.PreviousPageNumber">Previous</a>
+    </li>
+    @for (var i = @Model.PageNumber - 3; i < @Model.PageNumber; i++)
+    {
+         @if (i > 0)
+        {
+            <li class="page-item"><a class="page-link" asp-all-route-data="routeData" asp-route-id="@i" >@i</a></li>
+        }
+    }
+    <li class="page-item active">
+      <span class="page-link">
+        @Model.PageNumber
+        <span class="sr-only"></span>
+      </span>
+    </li>
+    @for (var i = @Model.PageNumber + 1; i < @Model.PageNumber + 3; i++)
+   {
+       @if (i <= @Model.PagesCount)
+        {
+            <li class="page-item"><a class="page-link" asp-all-route-data="routeData" asp-route-id="@i" >@i</a></li>
+        }
+   }
+    <li class="page-item @if(!Model.HasNextPage) {<text>disabled</text>}">
+      <a class="page-link" asp-all-route-data="routeData" asp-route-id="@Model.NextPageNumber">Next</a>
+    </li>
+    <li class="page-item @if(!Model.HasNextPage) {<text>disabled</text>}">
+      <a class="page-link" asp-all-route-data="routeData" asp-route-id="@Model.PagesCount">Last</a>
+    </li>
+  </ul>
+</nav>
 
 <script src="~/lib/jquery/dist/jquery.js"></script>
 
