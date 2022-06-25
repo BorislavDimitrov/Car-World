@@ -3,6 +3,7 @@ using CarWorld.Services.Contracts;
 using CarWorld.Web.ViewModels.Posts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -62,6 +63,31 @@ namespace CarWorld.Web.Controllers
             var model = await postsService.GetPostDetailsByIdAsync(id);
 
             return View(model);
+        }
+
+        public async Task<IActionResult> Search(string search, string orderBy, int categoryId, int id = 1)
+        {
+            if (!await categoriesService.IsCategoryExistingByIdAsync(categoryId))
+            {
+                TempData["ErrorMessage"] = GlobalConstants.RedirectToHomepageAlertMessage;
+                return Redirect("/Home/index");
+            }
+
+            var viewModel = await categoriesService.GetCategoryById<PostsListViewModel>(categoryId);
+
+            const int itemsPerPage = 1;
+
+            var posts = await postsService.GetSearchPostsAsync<PostInListViewModel>(search, orderBy, categoryId);
+
+            viewModel.PageNumber = id;
+            viewModel.CategoryPosts = posts.Skip((id - 1) * itemsPerPage).Take(itemsPerPage);
+            viewModel.ItemsCount = posts.Count();
+            viewModel.ItemsPerPage = itemsPerPage;
+            viewModel.Search = search;
+            viewModel.OrderBy = orderBy;
+            //viewModel.CategoryId = categoryId;
+
+            return View(viewModel);
         }
     }
 }

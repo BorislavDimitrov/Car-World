@@ -32,6 +32,8 @@
 
         public int? RegionId { get; set; }
 
+        public int CategoryId { get; set; }
+
         public string OrderBy { get; set; }
 
         public string UserId { get; set; }

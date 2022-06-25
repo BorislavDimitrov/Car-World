@@ -1,4 +1,5 @@
 ﻿using CarWorld.Web.ViewModels.Posts;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace CarWorld.Services.Contracts
@@ -10,5 +11,7 @@ namespace CarWorld.Services.Contracts
         Task<bool> IsPostExistingForUserByIdAsync(int id);
 
         Task<DetailsPostViewModel> GetPostDetailsByIdAsync(int id);
+
+        Task<IEnumerable<T>> GetSearchPostsAsync<T>(string search, string orderBy, int categoryId);
     }
 }

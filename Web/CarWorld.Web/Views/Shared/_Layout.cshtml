@@ -47,6 +47,13 @@
                         Search car
                     </a>
                 </li>
+
+                <li class="nav-item d-none d-sm-inline-block">
+                    <a class="nav-link text-black" asp-area="" asp-controller="categories" asp-action="GetAll">
+                        <i class="fas fa-search"></i>
+                        Forum
+                    </a>
+                </li>
               
                 <li class="nav-item">
                     @if (@User.IsInRole("Administrator") && SignInManager.IsSignedIn(User))

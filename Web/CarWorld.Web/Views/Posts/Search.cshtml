@@ -1,0 +1,73 @@
+﻿@using CarWorld.Web.ViewModels.Posts
+@model PostsListViewModel
+@{
+    this.ViewData["Title"] = Model.Name;
+}
+
+<div class="card">
+    <div class="card-header">
+
+        <form method="get">
+            <input type="hidden" asp-for="CategoryId" />
+            <div class="form-row">
+                <input type="hidden" asp-for="@Model.UserId" />
+                <div class="col-md-4">
+                    <label>Search</label>
+                    <input type="text" name="Search" class="form-control" placeholder="Search ......" value="@Model.Search">
+                </div>
+
+                <div class="form-group col-md-4">
+                    <label>Order by</label>
+                    <select name="OrderBy" asp-for="OrderBy" value="@Model.OrderBy" class="form-control" style="width: 100%">
+                        <option value="DateDesc">Date descending</option>
+                        <option value="DateAsc">Date ascending</option>
+                        <option value="RateDesc">Rate descending</option>
+                        <option value="PriceAsc">Rate ascending</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="d-flex justify-content-center align-items-center">
+                <button type="submit" asp-route-id="1" class="btn btn-outline-secondary ">Search</button>
+            </div>
+
+        </form>
+
+
+    </div>
+
+
+</div>
+
+<h1 class="text-center">@Model.Name</h1>
+<div class="alert alert-info">
+    @Model.Description
+</div>
+
+@if (!@Model.CategoryPosts.Any())
+{
+    <h1>No results found</h1>
+}
+else
+{
+    @foreach (var post in Model.CategoryPosts)
+    {
+        <div class="media-body">
+            <h4 class="media-heading"><a asp-controller="Posts" asp-action="Details" asp-route-id="@post.Id">@post.Title</a></h4>
+            <p>@post.ShortContent</p>
+            <ul class="list-inline list-unstyled text-right">
+                <li class="list-inline-item">
+                    <i class="fas fa-user-edit"></i> @post.CreatorUserName
+                </li>
+                <li class="list-inline-item">
+                    <i class="fas fa-calendar-alt"></i> @post.CreatedOn
+                </li>
+                <li class="list-inline-item">
+                    <i class="fas fa-comment-dots"></i> @post.CommentsCount comments
+                </li>
+            </ul>
+        </div>
+    }
+    <partial name="_PartialPaging" model="@Model" />
+}

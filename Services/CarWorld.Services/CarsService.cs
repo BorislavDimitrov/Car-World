@@ -114,7 +114,7 @@
                 case "PriceDesc":
                     cars = cars.OrderByDescending(x => x.Price);
                     break;
-                case "PriceAsc":
+                case "RateAsc":
                     cars = cars.OrderBy(x => x.Price);
                     break;
                 default:
