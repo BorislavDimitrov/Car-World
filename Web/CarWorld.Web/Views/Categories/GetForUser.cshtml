@@ -1,0 +1,28 @@
+﻿@using CarWorld.Web.ViewModels.Categories
+@model UserCategoriesListViewModel
+@{
+
+}
+
+<div class="text-center">
+    <h1 class="display-3">@this.ViewData["Title"]</h1>
+    <a asp-controller="Posts" asp-action="Create" class="btn btn-primary btn-lg">Create new forum post</a>
+</div>
+
+<hr />
+<div class="row">
+    @foreach (var category in Model.Categories)
+    {
+        <div class="col-md-4 media">
+            <img src="@category.ImagePath" width="100" class="mr-3" alt="@category.Name">
+            <div class="media-body">
+                <h5 class="mt-0">
+                    <a asp-controller="Posts" asp-action="UserPosts" asp-route-categoryId="@category.Id">
+                        @category.Name (@category.PostsCount)
+                    </a>
+                </h5>
+                @category.Description
+            </div>
+        </div>
+    }
+</div>

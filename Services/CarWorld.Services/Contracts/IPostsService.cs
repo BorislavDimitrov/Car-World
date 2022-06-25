@@ -10,8 +10,16 @@ namespace CarWorld.Services.Contracts
 
         Task<bool> IsPostExistingForUserByIdAsync(int id);
 
-        Task<DetailsPostViewModel> GetPostDetailsByIdAsync(int id);
+        Task<T> GetPostDetailsByIdAsync<T>(int id);
 
         Task<IEnumerable<T>> GetSearchPostsAsync<T>(string search, string orderBy, int categoryId);
+
+        Task<bool> IsUserHavingPostsInCategoryAsync(string userId, int categoryId);
+
+        Task<IEnumerable<T>> GetUserPostsAsync<T>(string userId, string search, string orderBy, int categoryId);
+
+        Task<bool> IsPostCreatedByUserAsync(string userId, int id);
+
+        Task EditPostAsync(EditPostInputModel model);
     }
 }

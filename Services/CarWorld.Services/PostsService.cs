@@ -36,11 +36,11 @@ namespace CarWorld.Services
             return newPost.Id;
         }
 
-        public async Task<DetailsPostViewModel> GetPostDetailsByIdAsync(int carId)
+        public async Task<T> GetPostDetailsByIdAsync<T>(int postId)
         {
             return await postsRepo.AllWithDeleted()
-                .Where(x => x.Id == carId)
-                .To<DetailsPostViewModel>()
+                .Where(x => x.Id == postId)
+                .To<T>()
                 .FirstOrDefaultAsync();
         }
 
@@ -76,8 +76,36 @@ namespace CarWorld.Services
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<T>> GetUserPostsAsync<T>(string userId, string search, string orderBy, int categoryId)
+        {
+            return await postsRepo.All()
+                .Where(x => x.CreatorId == userId && x.CategoryId == categoryId)
+                .To<T>()
+                .ToListAsync();
+        }
+
         public async Task<bool> IsPostExistingForUserByIdAsync(int id)
             => await postsRepo.All()
             .FirstOrDefaultAsync(x => x.Id == id) == null ? false : true;
+
+        public async Task<bool> IsUserHavingPostsInCategoryAsync(string userId, int categoryId)
+            => postsRepo.All()
+            .Any(x => x.CreatorId == userId && x.CategoryId == categoryId);
+
+        public async Task<bool> IsPostCreatedByUserAsync(string userId, int postId)
+            => await postsRepo.All()
+            .FirstOrDefaultAsync(x => x.CreatorId == userId && x.Id == postId) == null ? false : true;
+
+        public async Task EditPostAsync(EditPostInputModel model)
+        {
+            var post = await postsRepo.All()
+                .FirstOrDefaultAsync(x => x.Id == model.Id);
+
+            post.CategoryId = model.CategoryId;
+            post.Title = model.Title;
+            post.Content = model.Content;
+
+            await postsRepo.SaveChangesAsync();
+        }
     }
 }

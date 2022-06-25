@@ -49,6 +49,8 @@ namespace CarWorld.Web.Controllers
 
             int postId = await postsService.CreatePostAsync(model);
 
+            TempData["CreateMessage"] = GlobalConstants.SuccessfulCreate;
+
             return RedirectToAction(nameof(Details),new {id = postId});
         }
 
@@ -60,7 +62,7 @@ namespace CarWorld.Web.Controllers
                 return Redirect("/Home/index");
             }
 
-            var model = await postsService.GetPostDetailsByIdAsync(id);
+            var model = await postsService.GetPostDetailsByIdAsync<DetailsPostViewModel>(id);
 
             return View(model);
         }
@@ -75,7 +77,7 @@ namespace CarWorld.Web.Controllers
 
             var viewModel = await categoriesService.GetCategoryById<PostsListViewModel>(categoryId);
 
-            const int itemsPerPage = 1;
+            const int itemsPerPage = 12;
 
             var posts = await postsService.GetSearchPostsAsync<PostInListViewModel>(search, orderBy, categoryId);
 
@@ -87,6 +89,69 @@ namespace CarWorld.Web.Controllers
             viewModel.OrderBy = orderBy;
 
             return View(viewModel);
+        }
+
+        public async Task<IActionResult> UserPosts(string search, string orderBy, int categoryId, int id = 1)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (!(await categoriesService.IsCategoryExistingByIdAsync(categoryId) && await postsService.IsUserHavingPostsInCategoryAsync(userId, categoryId)))
+            {
+                TempData["ErrorMessage"] = GlobalConstants.RedirectToHomepageAlertMessage;
+                return Redirect("/Home/index");
+            }
+
+            var viewModel = await categoriesService.GetCategoryById<PostsListViewModel>(categoryId);
+
+            const int itemsPerPage = 12;
+
+            var posts = await postsService.GetUserPostsAsync<PostInListViewModel>(userId, search, orderBy, categoryId);
+
+            viewModel.PageNumber = id;
+            viewModel.CategoryPosts = posts.Skip((id - 1) * itemsPerPage).Take(itemsPerPage);
+            viewModel.ItemsCount = posts.Count();
+            viewModel.ItemsPerPage = itemsPerPage;
+            viewModel.Search = search;
+            viewModel.OrderBy = orderBy;
+
+            return View(viewModel);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (!await postsService.IsPostCreatedByUserAsync(userId, id))
+            {
+                TempData["ErrorMessage"] = GlobalConstants.RedirectToHomepageAlertMessage;
+                return Redirect("/Home/index");
+            }
+
+            var model = await postsService.GetPostDetailsByIdAsync<EditPostInputModel>(id);
+
+            var categories = await categoriesService.GetExistingCategoriesAsSelectListItemAsync();
+
+            model.Categories = categories;
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(EditPostInputModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                var categories = await categoriesService.GetExistingCategoriesAsSelectListItemAsync();
+                model.Categories = categories;
+                return View(model);
+            }
+
+            await postsService.EditPostAsync(model);
+
+            TempData["EditMessage"] = GlobalConstants.SuccessfulEdit;
+
+            return RedirectToAction(nameof(Details), new { model.Id });
         }
     }
 }

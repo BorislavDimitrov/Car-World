@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using CarWorld.Web.ViewModels.Categories;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -13,5 +14,7 @@ namespace CarWorld.Services.Contracts
         Task<bool> IsCategoryExistingByIdAsync(int categoryId);
 
         Task<T> GetCategoryById<T>(int categoryId);
+
+        Task<IEnumerable<UserCategoriesInListViewModel>> GetCategoriesByUserIdAsync(string userId);
     }
 }
