@@ -21,5 +21,6 @@ namespace CarWorld.Services.Contracts
         Task<bool> IsPostCreatedByUserAsync(string userId, int id);
 
         Task EditPostAsync(EditPostInputModel model);
+        Task DeletePostAsync(int id);
     }
 }

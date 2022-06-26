@@ -3,13 +3,10 @@ using CarWorld.Data.Common.Repositories;
 using CarWorld.Data.Models;
 using CarWorld.Services.Contracts;
 using CarWorld.Services.Mapping;
-using CarWorld.Web.ViewModels.Cars;
 using CarWorld.Web.ViewModels.Posts;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace CarWorld.Services
@@ -104,6 +101,16 @@ namespace CarWorld.Services
             post.CategoryId = model.CategoryId;
             post.Title = model.Title;
             post.Content = model.Content;
+
+            await postsRepo.SaveChangesAsync();
+        }
+
+        public async Task DeletePostAsync(int postId)
+        {
+            var post = await postsRepo.All()
+                .FirstOrDefaultAsync(x => x.Id == postId);
+
+            postsRepo.Delete(post);
 
             await postsRepo.SaveChangesAsync();
         }

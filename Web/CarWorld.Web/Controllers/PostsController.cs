@@ -1,7 +1,9 @@
 ﻿using CarWorld.Common;
+using CarWorld.Data.Models;
 using CarWorld.Services.Contracts;
 using CarWorld.Web.ViewModels.Posts;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Security.Claims;
@@ -13,12 +15,15 @@ namespace CarWorld.Web.Controllers
     {
         private readonly ICategoriesService categoriesService;
         private readonly IPostsService postsService;
+        private readonly UserManager<ApplicationUser> userManager;
 
         public PostsController(ICategoriesService categoriesService,
-            IPostsService postsService)
+            IPostsService postsService,
+            UserManager<ApplicationUser> userManager)
         {
             this.categoriesService = categoriesService;
             this.postsService = postsService;
+            this.userManager = userManager;
         }
 
         [Authorize]
@@ -152,6 +157,25 @@ namespace CarWorld.Web.Controllers
             TempData["EditMessage"] = GlobalConstants.SuccessfulEdit;
 
             return RedirectToAction(nameof(Details), new { model.Id });
+        }
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var user = await userManager.GetUserAsync(this.User);
+
+            if (!await postsService.IsPostCreatedByUserAsync(userId, id) && !await userManager.IsInRoleAsync(user, "Administrator"))
+            {
+                TempData["ErrorMessage"] = GlobalConstants.RedirectToHomepageAlertMessage;
+                return Redirect("/Home/index");
+            }
+
+            await postsService.DeletePostAsync(id);
+
+            TempData["DeleteMessage"] = GlobalConstants.SuccessfulDelete;
+
+            return Redirect("/Home/index");
         }
     }
 }

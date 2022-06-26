@@ -76,7 +76,7 @@ else
                 <div class="card-footer col">
                     <a asp-controller="Posts" asp-action="Edit" asp-route-id="@post.Id" class="btn btn-warning">Edit</a>
 
-                    <form method="post" asp-controller="Cars" asp-action="Delete" asp-route-id="@post.Id">
+                    <form method="post" asp-controller="Posts" asp-action="Delete" asp-route-id="@post.Id">
                         <button class="btn btn-danger">Delete</button>
                     </form>
 
