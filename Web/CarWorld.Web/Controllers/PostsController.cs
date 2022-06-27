@@ -74,7 +74,7 @@ namespace CarWorld.Web.Controllers
 
         public async Task<IActionResult> Search(string search, string orderBy, int categoryId, int id = 1)
         {
-            if (!await categoriesService.IsCategoryExistingByIdAsync(categoryId))
+            if (!await categoriesService.IsCategoryExistingForUserByIdAsync(categoryId))
             {
                 TempData["ErrorMessage"] = GlobalConstants.RedirectToHomepageAlertMessage;
                 return Redirect("/Home/index");
@@ -100,7 +100,7 @@ namespace CarWorld.Web.Controllers
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            if (!(await categoriesService.IsCategoryExistingByIdAsync(categoryId) && await postsService.IsUserHavingPostsInCategoryAsync(userId, categoryId)))
+            if (!(await categoriesService.IsCategoryExistingForUserByIdAsync(categoryId) && await postsService.IsUserHavingPostsInCategoryAsync(userId, categoryId)))
             {
                 TempData["ErrorMessage"] = GlobalConstants.RedirectToHomepageAlertMessage;
                 return Redirect("/Home/index");
