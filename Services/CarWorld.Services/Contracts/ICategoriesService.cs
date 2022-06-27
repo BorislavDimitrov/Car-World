@@ -12,6 +12,8 @@ namespace CarWorld.Services.Contracts
 
         Task<IEnumerable<T>> GetAllCategoriesAsync<T>();
 
+        Task<IEnumerable<T>> GetAllCategoriesForAdminAsync<T>();
+
         Task<bool> IsCategoryExistingForUserByIdAsync(int categoryId);
 
         Task<bool> IsCategoryExistingForAdminByIdAsync(int categoryId);

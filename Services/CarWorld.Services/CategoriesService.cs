@@ -138,7 +138,7 @@ namespace CarWorld.Services
 
         public async Task EditCategoryAsync(EditCategoryInputModel model, string wwwrootPath)
         {
-            if (await IsCategoryExistingByNameAsync(model.Name))
+            if (await IsCategoryExistingByNameAsync(model.Name) && model.Image == null)
             {
                 throw new InvalidOperationException($"Category with the name {model.Name} already exists.");
             }
@@ -165,6 +165,13 @@ namespace CarWorld.Services
             }
 
             await categoriesRepo.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<T>> GetAllCategoriesForAdminAsync<T>()
+        {
+            return await categoriesRepo.AllWithDeleted()
+               .To<T>()
+               .ToListAsync();
         }
     }
 }

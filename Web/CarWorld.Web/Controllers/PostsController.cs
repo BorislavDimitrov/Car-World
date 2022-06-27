@@ -80,7 +80,7 @@ namespace CarWorld.Web.Controllers
                 return Redirect("/Home/index");
             }
 
-            var viewModel = await categoriesService.GetCategoryById<PostsListViewModel>(categoryId);
+            var viewModel = await categoriesService.GetCategoryByIdAsync<PostsListViewModel>(categoryId);
 
             const int itemsPerPage = 12;
 
@@ -106,7 +106,7 @@ namespace CarWorld.Web.Controllers
                 return Redirect("/Home/index");
             }
 
-            var viewModel = await categoriesService.GetCategoryById<PostsListViewModel>(categoryId);
+            var viewModel = await categoriesService.GetCategoryByIdAsync<PostsListViewModel>(categoryId);
 
             const int itemsPerPage = 12;
 

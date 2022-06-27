@@ -1,5 +1,39 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using CarWorld.Web.ViewModels.Administration.Categories
+@model CategoriesForAdminListViewModel
 @{
+    ViewData["Title"] = "Manage Makes";
 }
+
+<partial name="_AlertsPartial" />
+
+<hr />
+<div class="row">
+    @foreach (var category in Model.Categories)
+    {
+        <div class="col-md-4 media">
+            <img src="@category.ImagePath" width="100" class="mr-3" alt="@category.Name">
+            <div class="media-body">
+                <h5 class="mt-0">
+                    @category.Name (@category.PostsCount) IsDeleted : @category.IsDeleted
+                </h5>
+                @category.Description
+            </div>
+
+            <div>
+                <form method="post" asp-area="admin" asp-action="recover" asp-controller="categories" asp-route-id="@category.Id">
+                    <button class="btn btn-primary btn-success">Recover category</button>
+                </form>
+
+                <form method="post" asp-action="delete" asp-controller="categories" asp-route-id="@category.Id">
+                    <button class="btn btn-primary btn-danger">Delete category</button>
+                </form>
+
+                <div class="btn">
+                    <a asp-area="admin" asp-action="edit" asp-controller="categories" asp-route-id="@category.Id" class="btn btn-primary btn-dark">Edit category</a>
+                </div>
+            </div>
+
+        </div>
+
+    }
+</div>

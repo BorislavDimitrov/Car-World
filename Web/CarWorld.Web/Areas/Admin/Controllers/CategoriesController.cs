@@ -91,7 +91,7 @@ namespace CarWorld.Web.Areas.Admin.Controllers
                 return Redirect("/Admin/Home/index");
             }
 
-            var model = categoriesService.GetCategoryForAdminAsync<EditCategoryInputModel>(id);
+            var model = await categoriesService.GetCategoryForAdminAsync<EditCategoryInputModel>(id);
 
             return View(model);
         }
@@ -105,8 +105,6 @@ namespace CarWorld.Web.Areas.Admin.Controllers
             }
 
             var wwwrootPath = webHostEnvironment.WebRootPath;
-
-            await categoriesService.EditCategoryAsync(model, wwwrootPath);
 
             try
             {
@@ -123,9 +121,17 @@ namespace CarWorld.Web.Areas.Admin.Controllers
             return RedirectToAction(nameof(ManageCategories));
         }
 
+        [HttpGet]
         public async Task<IActionResult> ManageCategories()
         {
-            return Ok();
+            var categories = await categoriesService.GetAllCategoriesForAdminAsync<CategoriesForAdminInListViewModel>();
+
+            var viewModel = new CategoriesForAdminListViewModel
+            {
+                Categories = categories,
+            };
+
+            return View(viewModel);
         }
     }
 }
