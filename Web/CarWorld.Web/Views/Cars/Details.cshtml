@@ -3,6 +3,7 @@
 @using CarWorld.Web.ViewModels.Cars
 @using Microsoft.AspNetCore.Identity
 @inject UserManager<ApplicationUser> UserManager
+@inject SignInManager<ApplicationUser> SignInManager
 @model DetailsCarViewModel
 @{
     ViewData["Title"] = $"Details - {Model.Title}";
@@ -19,7 +20,7 @@
                     <div class="blur-text" style="float: left;font-style: normal;"> @Model.CreateDate &nbsp;</div>
                 </td>
                 <td valign="top" align="right">
-                    @if (@User.Identity.IsAuthenticated)
+                    @if (@SignInManager.IsSignedIn(User))
                     {
                         @if (@Model.CreatorId != @UserManager.GetUserAsync(User).Result.Id)
                         {
@@ -155,11 +156,14 @@
 
         <div class="image">
             <img src="@Model.CreatorImagePath" class="img-circle" height=60 width=100 alt="User Image">
-            
 
-            @if (@Model.CreatorId != @UserManager.GetUserAsync(User).Result.Id)
+
+            @if (SignInManager.IsSignedIn(User))
             {
-                <a type="button" class="btn btn-info btn-sm" asp-area="" asp-action="ViewProfile" asp-controller="Users" asp-route-userId="@Model.CreatorId">View account</a>
+                @if (@Model.CreatorId != @UserManager.GetUserAsync(User).Result.Id)
+                {
+                    <a type="button" class="btn btn-info btn-sm" asp-area="" asp-action="ViewProfile" asp-controller="Users" asp-route-userId="@Model.CreatorId">View account</a>
+                }
             }
 
         </div>
