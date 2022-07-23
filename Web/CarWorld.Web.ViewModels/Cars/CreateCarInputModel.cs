@@ -89,7 +89,9 @@
         public List<IFormFile>? Pictures { get; set; } = new List<IFormFile>();
 
         public IEnumerable<SelectListItem> Makes { get; set; } = new List<SelectListItem>();
+
         public IEnumerable<SelectListItem> Regions { get; set; } = new List<SelectListItem>();
+
         public IEnumerable<ModelsDropDown> Models { get; set; } = new List<ModelsDropDown>();
 
         public void CreateMappings(IProfileExpression configuration)
