@@ -33,7 +33,7 @@
         public DbSet<Model> Models { get; set; }
 
         public DbSet<Picture> Pictures { get; set; }
-        
+
         public DbSet<CarReport> CarReports { get; set; }
 
         public DbSet<Category> Categories { get; set; }

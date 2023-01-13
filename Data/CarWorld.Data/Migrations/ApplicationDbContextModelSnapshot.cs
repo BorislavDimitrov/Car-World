@@ -265,7 +265,7 @@ namespace CarWorld.Data.Migrations
 
                     b.HasIndex("RegionId");
 
-                    b.ToTable("Cars");
+                    b.ToTable("Cars", (string)null);
                 });
 
             modelBuilder.Entity("CarWorld.Data.Models.CarReport", b =>
@@ -308,7 +308,7 @@ namespace CarWorld.Data.Migrations
 
                     b.HasIndex("CarId");
 
-                    b.ToTable("CarReports");
+                    b.ToTable("CarReports", (string)null);
                 });
 
             modelBuilder.Entity("CarWorld.Data.Models.Category", b =>
@@ -344,7 +344,7 @@ namespace CarWorld.Data.Migrations
 
                     b.HasIndex("IsDeleted");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("CarWorld.Data.Models.Comment", b =>
@@ -390,7 +390,7 @@ namespace CarWorld.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Comments");
+                    b.ToTable("Comments", (string)null);
                 });
 
             modelBuilder.Entity("CarWorld.Data.Models.Make", b =>
@@ -422,7 +422,7 @@ namespace CarWorld.Data.Migrations
 
                     b.HasIndex("IsDeleted");
 
-                    b.ToTable("Makes");
+                    b.ToTable("Makes", (string)null);
                 });
 
             modelBuilder.Entity("CarWorld.Data.Models.Model", b =>
@@ -459,7 +459,7 @@ namespace CarWorld.Data.Migrations
 
                     b.HasIndex("MakeId");
 
-                    b.ToTable("Models");
+                    b.ToTable("Models", (string)null);
                 });
 
             modelBuilder.Entity("CarWorld.Data.Models.Picture", b =>
@@ -491,7 +491,7 @@ namespace CarWorld.Data.Migrations
 
                     b.HasIndex("IsDeleted");
 
-                    b.ToTable("Pictures");
+                    b.ToTable("Pictures", (string)null);
                 });
 
             modelBuilder.Entity("CarWorld.Data.Models.Post", b =>
@@ -537,7 +537,7 @@ namespace CarWorld.Data.Migrations
 
                     b.HasIndex("IsDeleted");
 
-                    b.ToTable("Posts");
+                    b.ToTable("Posts", (string)null);
                 });
 
             modelBuilder.Entity("CarWorld.Data.Models.Region", b =>
@@ -569,7 +569,7 @@ namespace CarWorld.Data.Migrations
 
                     b.HasIndex("IsDeleted");
 
-                    b.ToTable("Regions");
+                    b.ToTable("Regions", (string)null);
                 });
 
             modelBuilder.Entity("CarWorld.Data.Models.Vote", b =>
@@ -602,7 +602,7 @@ namespace CarWorld.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Votes");
+                    b.ToTable("Votes", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
