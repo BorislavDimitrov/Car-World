@@ -69,8 +69,8 @@
         }
 
         [HttpPost]
-        public async Task<IActionResult> Delete([FromForm] int id)
-        {           
+        public async Task<IActionResult> Delete(int id)
+        {
 
             if (!await regionsService.IsRegionExistingByIdAsync(id))
             {
