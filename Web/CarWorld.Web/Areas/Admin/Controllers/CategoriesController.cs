@@ -52,6 +52,7 @@ namespace CarWorld.Web.Areas.Admin.Controllers
             return RedirectToAction(nameof(ManageCategories));
         }
 
+        [HttpPost]
         public async Task<IActionResult> Delete(int id)
         {
             if (!await categoriesService.IsCategoryExistingForAdminByIdAsync(id))
@@ -67,6 +68,7 @@ namespace CarWorld.Web.Areas.Admin.Controllers
             return RedirectToAction(nameof(ManageCategories));
         }
 
+        [HttpPost]
         public async Task<IActionResult> Recover(int id)
         {
             if (!await categoriesService.IsCategoryExistingForAdminByIdAsync(id))

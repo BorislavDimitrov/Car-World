@@ -94,6 +94,7 @@
             return View(model);
         }
 
+        [HttpGet]
         public async Task<IActionResult> GetModels(int? makeId)
         {
             var models = await modelsService.GetModelsByMakeIdForAdminAsync(makeId);

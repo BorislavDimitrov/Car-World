@@ -162,7 +162,7 @@ namespace CarWorld.Web.Areas.Identity.Pages.Account
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
-                        await emailSender.SendEmailAsync("bdimitorv@gmail.com", "Admin", user.Email, "Account confirmation", $"Confirm your account in Car World by clicking this link <a href=\"{confirmationLink}\"> Confirm account</a>");
+                        await emailSender.SendEmailAsync("powerglide@abv.bg", "Admin", user.Email, "Account confirmation", $"Confirm your account in Car World by clicking this link <a href=\"{confirmationLink}\"> Confirm account</a>");
                         TempData["CreateMessage"] = "Account confirmation email has been sent.";
                         return Redirect("/Home/Index");
                     }
