@@ -26,6 +26,8 @@
 
         public DbSet<Car> Cars { get; set; }
 
+        public DbSet<Cart> Carts { get; set; }
+
         public DbSet<Region> Regions { get; set; }
 
         public DbSet<Make> Makes { get; set; }
