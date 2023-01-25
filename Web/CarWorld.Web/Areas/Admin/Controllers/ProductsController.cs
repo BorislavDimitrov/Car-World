@@ -8,7 +8,5 @@ namespace CarWorld.Web.Areas.Admin.Controllers
         {
 
         }
-
-
     }
 }
