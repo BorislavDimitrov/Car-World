@@ -1,12 +1,21 @@
-﻿using System;
+﻿using CarWorld.Data.Common.Models;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CarWorld.Data.Models
 {
-    internal class Cart
+    public class Cart : BaseModel<int>
     {
+        public Cart()
+        {
+            Items = new HashSet<Item>();
+        }
+
+        [ForeignKey(nameof(User))]
+        public string UserId { get; set; }
+
+        public ApplicationUser User { get; set; }
+
+        public ICollection<Item> Items { get; set; }
     }
 }
