@@ -121,7 +121,7 @@ namespace CarWorld.Services
             var category = await categoriesRepo.AllWithDeleted()
                 .FirstOrDefaultAsync(x => x.Id == id);
 
-             categoriesRepo.Delete(category);
+            categoriesRepo.Delete(category);
 
             await categoriesRepo.SaveChangesAsync();
         }
