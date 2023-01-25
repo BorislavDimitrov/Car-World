@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace CarWorld.Services.Contracts
 {
-    internal class ICartsService
+    public interface ICartsService
     {
+        Task CreateAsync(string userId);
     }
 }
