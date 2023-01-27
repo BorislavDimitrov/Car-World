@@ -51,9 +51,9 @@
 
             List<Picture> pictures = new List<Picture>();
 
-            if (model.Pictures.Count > 0)
+            if (model.CarPictures.Count > 0)
             {
-                pictures = await ResizeCarPicturesAsync(model.Pictures, wwwrootPath);
+                pictures = await ResizeCarPicturesAsync(model.CarPictures, wwwrootPath);
             }
             else
             {

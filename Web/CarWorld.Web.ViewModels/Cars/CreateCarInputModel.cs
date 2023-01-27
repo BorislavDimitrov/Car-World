@@ -86,7 +86,7 @@
 
         [Display(Name = "Images of the car")]
         [MultiFilesSizeAndFormat(10, 4, "jpg", "png", "jpeg")]
-        public List<IFormFile>? Pictures { get; set; } = new List<IFormFile>();
+        public List<IFormFile>? CarPictures { get; set; } = new List<IFormFile>();
 
         public IEnumerable<SelectListItem> Makes { get; set; } = new List<SelectListItem>();
 
