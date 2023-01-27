@@ -15,6 +15,8 @@ namespace CarWorld.Web.Areas.Identity.Pages.Account
     using CarWorld.Common;
     using CarWorld.Data;
     using CarWorld.Data.Models;
+    using CarWorld.Services;
+    using CarWorld.Services.Contracts;
     using CarWorld.Services.Messaging;
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Hosting;
@@ -34,6 +36,7 @@ namespace CarWorld.Web.Areas.Identity.Pages.Account
         private readonly ApplicationDbContext repo;
         private readonly IWebHostEnvironment webHostEnvironment;
         IEmailSender emailSender;
+        private readonly ICartsService cartsService;
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
@@ -42,7 +45,8 @@ namespace CarWorld.Web.Areas.Identity.Pages.Account
             ILogger<RegisterModel> logger,
             ApplicationDbContext repo,
             IWebHostEnvironment webHostEnvironment,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            ICartsService cartsService)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -53,6 +57,7 @@ namespace CarWorld.Web.Areas.Identity.Pages.Account
             this.repo = repo;
             this.webHostEnvironment = webHostEnvironment;
             this.emailSender = emailSender;
+            this.cartsService = cartsService;
         }
 
         /// <summary>
@@ -155,8 +160,9 @@ namespace CarWorld.Web.Areas.Identity.Pages.Account
                     _logger.LogInformation("User created a new account with password.");
 
                     var userId = await _userManager.GetUserIdAsync(user);
+                    await cartsService.CreateAsync(userId);
                     var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));                   
+                    token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
 
                     var confirmationLink = Url.Action("ConfirmEmail", "Users", new {Area = "", userId = user.Id, token = token }, Request.Scheme);      
 
