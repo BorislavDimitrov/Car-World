@@ -45,6 +45,14 @@ namespace CarWorld.Services
             await cartsRepo.SaveChangesAsync();
         }
 
+        public async Task<int> GetUserCartIdAsync(string id)
+        {
+            var cart = await cartsRepo.AllAsNoTracking()
+                .FirstOrDefaultAsync(x => x.UserId == id);
+
+            return cart.Id;
+        }
+
         private async Task<Item> CreateItemAsync(Product product, int cartId, int quanity)
         {
             var item = new Item
