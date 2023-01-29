@@ -53,6 +53,10 @@ namespace CarWorld.Services
             return cart.Id;
         }
 
+        public async Task<bool> IsProductInCartAsync(int cartId, int productId)
+            => await itemsRepo.AllAsNoTracking()
+            .FirstOrDefaultAsync(x => x.CartId == cartId && x.ProductId == productId) == null ? false : true;
+
         private async Task<Item> CreateItemAsync(Product product, int cartId, int quanity)
         {
             var item = new Item

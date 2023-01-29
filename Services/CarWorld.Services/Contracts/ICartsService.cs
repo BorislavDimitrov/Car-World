@@ -9,5 +9,7 @@ namespace CarWorld.Services.Contracts
         Task AddProductToCartAsync(int id, string userId, int quanity);
 
         Task<int> GetUserCartIdAsync(string id);
+
+        Task<bool> IsProductInCartAsync(int cartId, int productId);
     }
 }
