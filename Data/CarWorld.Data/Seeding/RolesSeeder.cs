@@ -11,7 +11,7 @@
     using Microsoft.Extensions.DependencyInjection;
 
     internal class RolesSeeder : ISeeder
-    {      
+    {
         public async Task SeedAsync(ApplicationDbContext dbContext, IServiceProvider serviceProvider)
         {
             var roleManager = serviceProvider.GetRequiredService<RoleManager<ApplicationRole>>();
@@ -44,6 +44,8 @@
             var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
             await userManager.CreateAsync(user);
             await userManager.AddToRoleAsync(user, GlobalConstants.AdministratorRoleName);
+
+            dbContext.Add(new Cart { UserId = user.Id});
 
             await dbContext.SaveChangesAsync();
         }
