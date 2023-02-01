@@ -45,7 +45,7 @@
             await userManager.CreateAsync(user);
             await userManager.AddToRoleAsync(user, GlobalConstants.AdministratorRoleName);
 
-            dbContext.Add(new Cart { UserId = user.Id, User = user});
+            dbContext.Add(new Cart { UserId = user.Id, User = user });
 
             await dbContext.SaveChangesAsync();
         }

@@ -265,7 +265,7 @@ namespace CarWorld.Data.Migrations
 
                     b.HasIndex("RegionId");
 
-                    b.ToTable("Cars", (string)null);
+                    b.ToTable("Cars");
                 });
 
             modelBuilder.Entity("CarWorld.Data.Models.CarReport", b =>
@@ -308,7 +308,31 @@ namespace CarWorld.Data.Migrations
 
                     b.HasIndex("CarId");
 
-                    b.ToTable("CarReports", (string)null);
+                    b.ToTable("CarReports");
+                });
+
+            modelBuilder.Entity("CarWorld.Data.Models.Cart", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Carts");
                 });
 
             modelBuilder.Entity("CarWorld.Data.Models.Category", b =>
@@ -326,9 +350,11 @@ namespace CarWorld.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImagePath")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
@@ -338,13 +364,14 @@ namespace CarWorld.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("IsDeleted");
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("CarWorld.Data.Models.Comment", b =>
@@ -390,7 +417,39 @@ namespace CarWorld.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Comments", (string)null);
+                    b.ToTable("Comments");
+                });
+
+            modelBuilder.Entity("CarWorld.Data.Models.Item", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("CartId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quanity")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CartId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("Item");
                 });
 
             modelBuilder.Entity("CarWorld.Data.Models.Make", b =>
@@ -422,7 +481,7 @@ namespace CarWorld.Data.Migrations
 
                     b.HasIndex("IsDeleted");
 
-                    b.ToTable("Makes", (string)null);
+                    b.ToTable("Makes");
                 });
 
             modelBuilder.Entity("CarWorld.Data.Models.Model", b =>
@@ -459,7 +518,7 @@ namespace CarWorld.Data.Migrations
 
                     b.HasIndex("MakeId");
 
-                    b.ToTable("Models", (string)null);
+                    b.ToTable("Models");
                 });
 
             modelBuilder.Entity("CarWorld.Data.Models.Picture", b =>
@@ -491,7 +550,7 @@ namespace CarWorld.Data.Migrations
 
                     b.HasIndex("IsDeleted");
 
-                    b.ToTable("Pictures", (string)null);
+                    b.ToTable("Pictures");
                 });
 
             modelBuilder.Entity("CarWorld.Data.Models.Post", b =>
@@ -537,7 +596,55 @@ namespace CarWorld.Data.Migrations
 
                     b.HasIndex("IsDeleted");
 
-                    b.ToTable("Posts", (string)null);
+                    b.ToTable("Posts");
+                });
+
+            modelBuilder.Entity("CarWorld.Data.Models.Product", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatorId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("PicturePath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatorId");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("CarWorld.Data.Models.Region", b =>
@@ -569,7 +676,7 @@ namespace CarWorld.Data.Migrations
 
                     b.HasIndex("IsDeleted");
 
-                    b.ToTable("Regions", (string)null);
+                    b.ToTable("Regions");
                 });
 
             modelBuilder.Entity("CarWorld.Data.Models.Vote", b =>
@@ -602,7 +709,7 @@ namespace CarWorld.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Votes", (string)null);
+                    b.ToTable("Votes");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -755,6 +862,15 @@ namespace CarWorld.Data.Migrations
                     b.Navigation("Car");
                 });
 
+            modelBuilder.Entity("CarWorld.Data.Models.Cart", b =>
+                {
+                    b.HasOne("CarWorld.Data.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("CarWorld.Data.Models.Comment", b =>
                 {
                     b.HasOne("CarWorld.Data.Models.Comment", "Parent")
@@ -776,6 +892,25 @@ namespace CarWorld.Data.Migrations
                     b.Navigation("Post");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("CarWorld.Data.Models.Item", b =>
+                {
+                    b.HasOne("CarWorld.Data.Models.Cart", "Cart")
+                        .WithMany("Items")
+                        .HasForeignKey("CartId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CarWorld.Data.Models.Product", "Product")
+                        .WithMany("Items")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Cart");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("CarWorld.Data.Models.Model", b =>
@@ -813,6 +948,15 @@ namespace CarWorld.Data.Migrations
                         .HasForeignKey("CreatorId");
 
                     b.Navigation("Category");
+
+                    b.Navigation("Creator");
+                });
+
+            modelBuilder.Entity("CarWorld.Data.Models.Product", b =>
+                {
+                    b.HasOne("CarWorld.Data.Models.ApplicationUser", "Creator")
+                        .WithMany()
+                        .HasForeignKey("CreatorId");
 
                     b.Navigation("Creator");
                 });
@@ -903,6 +1047,11 @@ namespace CarWorld.Data.Migrations
                     b.Navigation("Reports");
                 });
 
+            modelBuilder.Entity("CarWorld.Data.Models.Cart", b =>
+                {
+                    b.Navigation("Items");
+                });
+
             modelBuilder.Entity("CarWorld.Data.Models.Category", b =>
                 {
                     b.Navigation("Posts");
@@ -925,6 +1074,11 @@ namespace CarWorld.Data.Migrations
                     b.Navigation("Comments");
 
                     b.Navigation("Votes");
+                });
+
+            modelBuilder.Entity("CarWorld.Data.Models.Product", b =>
+                {
+                    b.Navigation("Items");
                 });
 
             modelBuilder.Entity("CarWorld.Data.Models.Region", b =>
