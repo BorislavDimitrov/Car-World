@@ -18,7 +18,6 @@
         [StringLength(30, MinimumLength = 1, ErrorMessage = "Name can be long between 1 and 30 letters")]
         public string? LastName { get; set; }
 
-        [Range(0,1)]
         [FileSizeAndFormat(4, "jpg", "png", "jpeg")]
         [Display(Name = "User Image")]
         public IFormFile? Image { get; set; }
