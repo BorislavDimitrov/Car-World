@@ -31,7 +31,7 @@
     </div>
 
     <div>
-        <label asp-for="CategoryId"></label>
+        <label>Category</label>
         <select asp-for="CategoryId" asp-items="@Model.Categories" class="form-control"></select>
         <span asp-validation-for="CategoryId" class="text-danger"></span>
     </div>
