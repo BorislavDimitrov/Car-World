@@ -26,6 +26,8 @@ namespace CarWorld.Services.Contracts
 
         Task<bool> IsCarExistingForAdminByIdAsync(int carId);
 
-        Task<bool> IsCarMadeByUserAsync(int carId, string userId);  
+        Task<bool> IsCarMadeByUserAsync(int carId, string userId);
+
+        Task<bool> IsCarDeleted(int carId);
     }
 }
