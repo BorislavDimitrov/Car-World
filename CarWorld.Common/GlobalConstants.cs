@@ -21,5 +21,7 @@
         public const string SuccessfulDelete = "The delete was successful.";
 
         public const string SuccessfulRecover = "The recover was successful.";
+
+        public const string FailedDelete = "The unit is already deleted.";
     }
 }

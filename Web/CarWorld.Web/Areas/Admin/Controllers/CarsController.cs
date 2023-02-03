@@ -73,6 +73,12 @@
                 return Redirect("/Admin/Home/Index");
             }
 
+            if (await carsService.IsCarDeleted(id))
+            {
+                TempData["ErrorMessage"] = GlobalConstants.FailedDelete;
+                return Redirect("/Admin/Cars/ManageCars");
+            }
+
             await carsService.DeleteCarAsync(id);
 
             TempData["DeleteMessage"] = GlobalConstants.SuccessfulDelete;

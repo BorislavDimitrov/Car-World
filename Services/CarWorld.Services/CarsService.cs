@@ -327,7 +327,7 @@
 
         public async Task<bool> IsCarDeleted(int carId)
             => await carsRepo.AllWithDeleted()
-            .FirstOrDefaultAsync(x => x.Id == carId) == null ? false : true;
+            .FirstOrDefaultAsync(x => x.Id == carId && x.IsDeleted == true) == null ? false : true;
 
         private string ResizeThumbnailPicture(IFormFile thumbnailPic, string wwwrootPath)
         {
