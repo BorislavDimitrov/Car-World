@@ -325,6 +325,10 @@
             => await carsRepo.All()
             .FirstOrDefaultAsync(x => x.Id == carId && x.CreatorId == userId) == null ? false : true;
 
+        public async Task<bool> IsCarDeleted(int carId)
+            => await carsRepo.AllWithDeleted()
+            .FirstOrDefaultAsync(x => x.Id == carId) == null ? false : true;
+
         private string ResizeThumbnailPicture(IFormFile thumbnailPic, string wwwrootPath)
         {
             var extension = Path.GetExtension(thumbnailPic.FileName);
