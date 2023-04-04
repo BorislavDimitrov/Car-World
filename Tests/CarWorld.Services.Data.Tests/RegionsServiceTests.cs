@@ -148,6 +148,8 @@
 
             await this.regionsService.EditRegionAsync(region);
 
+            var dbModel = await this.dbContext.Regions.FirstOrDefaultAsync(x => x.Id == 1);
+
             Assert.AreEqual("Stara Zagora", region.Name);
         }
 
