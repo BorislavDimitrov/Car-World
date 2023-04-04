@@ -18,6 +18,7 @@
     {
         private readonly IDeletableEntityRepository<Make> makeRepo;
         private readonly IMapper mapper;
+
         public MakesService(IDeletableEntityRepository<Make> makeRepo)
         {
             this.makeRepo = makeRepo;

@@ -34,7 +34,7 @@ namespace CarWorld.Services.Data.Tests
         }
 
         [Test]
-        public async Task CreateMakeAsyncShouldSussesfullyCreateNewMake()
+        public async Task CreateMakeAsyncShouldSuccessfullyCreateNewMake()
         {
             var make = new CreateMakeInputModel
             {
@@ -59,6 +59,27 @@ namespace CarWorld.Services.Data.Tests
             };
 
             Assert.ThrowsAsync<InvalidOperationException>(async () => await this.makesService.CreateMakeAsync(make), $"Make with the name {make.Name} already exists.");
+        }
+
+        [Test]
+        public async Task DeleteMakeAsyncShouldSuccessfullyDeleteMake()
+        {
+            var make = new CreateMakeInputModel
+            {
+                Name = "Porsche",
+            };
+
+            await this.makesService.CreateMakeAsync(make);
+
+            var existingMake = await this.dbContext.Makes.FirstOrDefaultAsync();
+
+            int id = existingMake.Id;
+
+            await this.makesService.DeleteMakeAsync(id);
+
+            var makesCount = this.dbContext.Makes.Count();
+
+            Assert.AreEqual(0, makesCount);
         }
 
         private async Task MakesSeedingAsync(int count)
