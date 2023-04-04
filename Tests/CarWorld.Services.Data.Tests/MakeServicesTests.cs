@@ -53,11 +53,9 @@ namespace CarWorld.Services.Data.Tests
         {
             await this.MakesSeedingAsync(5);
 
-            var makesCount = await this.dbContext.Makes.CountAsync();
-
             await this.makesService.DeleteMakeAsync(1);
 
-             makesCount = await this.dbContext.Makes.CountAsync();
+            var makesCount = await this.dbContext.Makes.CountAsync();
 
             Assert.AreEqual(4, makesCount);
         }
