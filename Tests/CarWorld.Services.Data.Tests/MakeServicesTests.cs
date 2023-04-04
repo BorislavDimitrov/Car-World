@@ -3,16 +3,13 @@ using CarWorld.Data.Models;
 using CarWorld.Data.Repositories;
 using CarWorld.Services.Contracts;
 using CarWorld.Services.Mapping;
-using CarWorld.Web.ViewMod.els.Administration.Makes;
 using CarWorld.Web.ViewModels.Administration;
 using CarWorld.Web.ViewModels.Administration.Makes;
 using Microsoft.EntityFrameworkCore;
-using NuGet.Frameworks;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace CarWorld.Services.Data.Tests
@@ -117,6 +114,36 @@ namespace CarWorld.Services.Data.Tests
             var make = await this.makesService.GetMakeByIdAsync<MakeInListViewModel>(1);
 
             Assert.AreEqual(1, make.Id);
+        }
+
+        [Test]
+        [TestCase(null, null, 3, "Make1", "Make2", "Make3")]
+        [TestCase(null, "NameDesc", 3, "Make3", "Make2", "Make1")]
+        [TestCase("1", null, 1, "Make1", null, null)]
+        public async Task GetMakesAsyncShouldReturnRightMakes(
+            string search,
+            string order,
+            int count,
+            string firstName,
+            string secondName,
+            string thirdName)
+        {
+            await this.MakesSeedingAsync(3);
+
+            var names = new List<string>();
+            names.Add(firstName);
+            names.Add(secondName);
+            names.Add(thirdName);
+
+            var makes = await this.makesService.GetMakesAsync<MakeInListViewModel>(search, order);
+            var listMakes = makes.ToList();
+
+            Assert.AreEqual(count, makes.Count());
+
+            for (int i = 0; i < makes.Count(); i++)
+            {
+                Assert.AreEqual(names[i], listMakes[i].Name);
+            }
         }
 
         private async Task MakesSeedingAsync(int count)
