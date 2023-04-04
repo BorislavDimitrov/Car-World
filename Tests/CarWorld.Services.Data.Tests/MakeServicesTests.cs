@@ -3,6 +3,7 @@ using CarWorld.Data.Models;
 using CarWorld.Data.Repositories;
 using CarWorld.Services.Contracts;
 using CarWorld.Services.Mapping;
+using CarWorld.Web.ViewMod.els.Administration.Makes;
 using CarWorld.Web.ViewModels.Administration;
 using CarWorld.Web.ViewModels.Administration.Makes;
 using Microsoft.EntityFrameworkCore;
@@ -106,6 +107,16 @@ namespace CarWorld.Services.Data.Tests
 
             Assert.ThrowsAsync<InvalidOperationException>
                 (async () => await this.makesService.EditMakeAsync(editModel));
+        }
+
+        [Test]
+        public async Task GetMakeByIdAsyncShouldReturnTheRightMake()
+        {
+            await this.MakesSeedingAsync(5);
+
+            var make = await this.makesService.GetMakeByIdAsync<MakeInListViewModel>(1);
+
+            Assert.AreEqual(1, make.Id);
         }
 
         private async Task MakesSeedingAsync(int count)
