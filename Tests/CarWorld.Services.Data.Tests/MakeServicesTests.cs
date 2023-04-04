@@ -93,6 +93,21 @@ namespace CarWorld.Services.Data.Tests
             Assert.AreEqual("Porsche", dbModel.Name);
         }
 
+        [Test]
+        public async Task EditMakeAsyncShouldThrowInvalidOperationException()
+        {
+            await this.MakesSeedingAsync(5);
+
+            var editModel = new EditMakeInputModel()
+            {
+                Id = 1,
+                Name = "Make5",
+            };
+
+            Assert.ThrowsAsync<InvalidOperationException>
+                (async () => await this.makesService.EditMakeAsync(editModel));
+        }
+
         private async Task MakesSeedingAsync(int count)
         {
             for (int i = 1; i <= count; i++)
