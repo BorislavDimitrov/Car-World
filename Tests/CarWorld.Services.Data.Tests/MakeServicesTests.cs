@@ -51,7 +51,7 @@ namespace CarWorld.Services.Data.Tests
         [Test]
         public async Task CreateMakeAsyncShouldThrowInvalidOperationExceptionDueToExistingName()
         {
-            await this.RegionsSeedingAsync(5);
+            await this.MakesSeedingAsync(5);
 
             var make = new CreateMakeInputModel
             {
@@ -61,7 +61,7 @@ namespace CarWorld.Services.Data.Tests
             Assert.ThrowsAsync<InvalidOperationException>(async () => await this.makesService.CreateMakeAsync(make), $"Make with the name {make.Name} already exists.");
         }
 
-        private async Task RegionsSeedingAsync(int count)
+        private async Task MakesSeedingAsync(int count)
         {
             for (int i = 1; i <= count; i++)
             {
