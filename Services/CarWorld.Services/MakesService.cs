@@ -125,7 +125,7 @@
         public async Task<bool> IsMakeExistingByNameAsync(string name)
             => await makeRepo.AllWithDeleted()
             .FirstOrDefaultAsync(x => x.Name == name) == null ? false : true;
-         
+
         public async Task<bool> IsMakeExistingByIdAsync(int id)
             => await makeRepo.AllWithDeleted()
             .FirstOrDefaultAsync(x => x.Id == id) == null ? false : true;

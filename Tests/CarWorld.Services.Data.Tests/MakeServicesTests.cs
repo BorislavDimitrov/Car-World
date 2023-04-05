@@ -159,6 +159,16 @@ namespace CarWorld.Services.Data.Tests
             Assert.AreEqual("Make1", make.Name);
         }
 
+        [Test]
+        public async Task IsMakeExistingByNameAsyncShouldReturnTrue()
+        {
+            await this.MakesSeedingAsync(5);
+
+            var isTrue = await this.makesService.IsMakeExistingByNameAsync("Make1");
+
+            Assert.IsTrue(isTrue);
+        }
+
         private async Task MakesSeedingAsync(int count)
         {
             for (int i = 1; i <= count; i++)
