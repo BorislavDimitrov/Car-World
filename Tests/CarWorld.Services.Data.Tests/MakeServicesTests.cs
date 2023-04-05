@@ -189,6 +189,16 @@ namespace CarWorld.Services.Data.Tests
             Assert.IsTrue(isTrue);
         }
 
+        [Test]
+        public async Task IsMakeExistingByIdAsyncShouldReturnFalse()
+        {
+            await this.MakesSeedingAsync(5);
+
+            var isFalse = await this.makesService.IsMakeExistingByIdAsync(6);
+
+            Assert.IsFalse(isFalse);
+        }
+
         private async Task MakesSeedingAsync(int count)
         {
             for (int i = 1; i <= count; i++)
