@@ -146,6 +146,19 @@ namespace CarWorld.Services.Data.Tests
             }
         }
 
+        [Test]
+        public async Task RecoverMakeAsyncShouldSuccessfullyRecoverAMake()
+        {
+            await this.MakesSeedingAsync(5);
+
+            await this.makesService.DeleteMakeAsync(1);
+            await this.makesService.RecoverMakeAsync(1);
+
+            var make = await this.dbContext.Makes.FirstOrDefaultAsync();
+
+            Assert.AreEqual("Make1", make.Name);
+        }
+
         private async Task MakesSeedingAsync(int count)
         {
             for (int i = 1; i <= count; i++)
