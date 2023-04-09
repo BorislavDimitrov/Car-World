@@ -167,6 +167,16 @@
             Assert.ThrowsAsync<InvalidOperationException>(async () => await this.regionsService.EditRegionAsync(region));
         }
 
+        [Test]
+        public async Task IsRegionExistingByNameAsyncShouldReturnTrue()
+        {
+            await this.RegionsSeedingAsync(5);
+
+            var isTrue = await this.regionsService.IsRegionExistingByNameAsync("Region1");
+
+            Assert.IsTrue(isTrue);
+
+        }
         private async Task RegionsSeedingAsync(int count)
         {
             for (int i = 1; i <= count; i++)
