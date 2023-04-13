@@ -177,13 +177,25 @@
             Assert.IsTrue(isTrue);
 
         }
+
+        [Test]
+        public async Task IsRegionExistingByNameAsyncShouldReturnFalse()
+        {
+            await this.RegionsSeedingAsync(5);
+
+            var isFalse = await this.regionsService.IsRegionExistingByNameAsync("Region66");
+
+            Assert.IsFalse(isFalse);
+
+        }
+
         private async Task RegionsSeedingAsync(int count)
         {
             for (int i = 1; i <= count; i++)
             {
                 await this.regionsService.CreateRegionAsync(new CreateRegionInputModel
                 {
-                    Name = $"Region{i}"
+                    Name = $"Region{i}",
                 });
             }
         }
