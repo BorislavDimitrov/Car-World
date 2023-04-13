@@ -199,6 +199,16 @@
             Assert.IsTrue(isTrue);
         }
 
+        [Test]
+        public async Task IsRegionExistingByIdAsyncShouldRetunFalse()
+        {
+            await this.RegionsSeedingAsync(5);
+
+            var isFalse = await this.regionsService.IsRegionExistingByIdAsync(6);
+
+            Assert.IsFalse(isFalse);
+        }
+
         private async Task RegionsSeedingAsync(int count)
         {
             for (int i = 1; i <= count; i++)
