@@ -5,6 +5,7 @@ using CarWorld.Data.Repositories;
 using CarWorld.Services.Contracts;
 using CarWorld.Services.Mapping;
 using CarWorld.Web.ViewModels.Administration;
+using CarWorld.Web.ViewModels.Votes;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 using System;
@@ -29,5 +30,36 @@ namespace CarWorld.Services.Data.Tests
             this.votesService = new VotesService(this.votesRepository);
         }
 
+
+        [Test]
+        public async Task Test()
+        {
+            await this.VotesSeedingAsync(5);
+            var num = await this.dbContext.Votes.CountAsync();
+            Assert.AreEqual(5, num);
+        }
+
+        private async Task VotesSeedingAsync(int count)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                var post = new Post
+                {
+                    Title = i.ToString(),
+                    Content = i.ToString(),
+                };
+
+                await this.dbContext.Posts.AddAsync(post);
+
+                await this.dbContext.SaveChangesAsync();
+
+                await this.votesService.VoteAsync(new VoteInputModel
+                {
+                    IsUpVote = i <= count / 2 ? true : false,
+                    PostId = i,
+                    UserId = Guid.NewGuid().ToString(),
+                });
+            }
+        }
     }
 }
