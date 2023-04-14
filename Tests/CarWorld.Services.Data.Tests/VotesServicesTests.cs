@@ -45,6 +45,21 @@ namespace CarWorld.Services.Data.Tests
             Assert.AreEqual(votesCount, votes);
         }
 
+        [Test]
+        public async Task VoteAsyncShouldSuccessfullyVoteAPost()
+        {
+            await this.VotesSeedingAsync(5);
+
+            var vote = await this.dbContext.Votes.FirstOrDefaultAsync();
+
+            await this.votesService.VoteAsync(new VoteInputModel
+            {
+                IsUpVote = false,
+                PostId = 1,
+                UserId = vote.UserId,
+            });
+        }
+
         private async Task VotesSeedingAsync(int count)
         {
             for (int i = 0; i < count; i++)
