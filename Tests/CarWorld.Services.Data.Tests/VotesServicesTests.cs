@@ -58,11 +58,15 @@ namespace CarWorld.Services.Data.Tests
                 PostId = 1,
                 UserId = vote.UserId,
             });
+
+            var postVote = await this.votesService.GetVotesForPostByIdAsync(1);
+
+            Assert.AreEqual(-1, postVote);
         }
 
         private async Task VotesSeedingAsync(int count)
         {
-            for (int i = 0; i < count; i++)
+            for (int i = 1; i < count; i++)
             {
                 var post = new Post
                 {
