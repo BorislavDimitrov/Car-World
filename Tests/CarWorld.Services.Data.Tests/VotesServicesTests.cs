@@ -30,13 +30,19 @@ namespace CarWorld.Services.Data.Tests
             this.votesService = new VotesService(this.votesRepository);
         }
 
-
         [Test]
-        public async Task Test()
+        [TestCase(5, 1, 1)]
+        [TestCase(10, 6, -1)]
+        public async Task GetVotesForPostByIdAsyncShouldRetunRightNumber(
+            int count,
+            int postId,
+            int votesCount)
         {
-            await this.VotesSeedingAsync(5);
-            var num = await this.dbContext.Votes.CountAsync();
-            Assert.AreEqual(5, num);
+            await this.VotesSeedingAsync(count);
+
+            var votes = await this.votesService.GetVotesForPostByIdAsync(postId);
+
+            Assert.AreEqual(votesCount, votes);
         }
 
         private async Task VotesSeedingAsync(int count)
@@ -55,7 +61,7 @@ namespace CarWorld.Services.Data.Tests
 
                 await this.votesService.VoteAsync(new VoteInputModel
                 {
-                    IsUpVote = i <= count / 2 ? true : false,
+                    IsUpVote = (i <= (count / 2)) ? true : false,
                     PostId = i,
                     UserId = Guid.NewGuid().ToString(),
                 });
