@@ -1,4 +1,5 @@
-﻿using CarWorld.Data.Common.Repositories;
+﻿using AutoMapper;
+using CarWorld.Data.Common.Repositories;
 using CarWorld.Data.Models;
 using CarWorld.Services.Contracts;
 using CarWorld.Services.Mapping;
@@ -67,10 +68,10 @@ namespace CarWorld.Services
             switch (orderBy)
             {
                 case "Newest":
-                    reports = reports.OrderByDescending(x => x.CreatedOn);
+                    reports = reports.OrderBy(x => x.CreatedOn);
                     break;
                 case "Oldest":
-                    reports = reports.OrderBy(x => x.CreatedOn);
+                    reports = reports.OrderByDescending(x => x.CreatedOn);
                     break;
                 case "CheckedFirst":
                     reports = reports.OrderByDescending(x => x.IsChecked);

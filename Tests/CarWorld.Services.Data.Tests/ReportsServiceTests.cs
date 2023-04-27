@@ -9,6 +9,7 @@ using CarWorld.Web.ViewModels.Reports;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CarWorld.Services.Data.Tests
@@ -64,10 +65,24 @@ namespace CarWorld.Services.Data.Tests
             Assert.AreEqual("Title0", carReport.Title);
         }
 
+        [Test]
+        public async Task GetReportsAsyncShouldReturnRightCarReports()
+        {
+            await this.ReportsSeedingAsync(5);
+
+            var carReportsCount = await this.dbContext.CarReports.CountAsync();
+
+            var carReports = await this.reportsService.GetReportsAsync<CarReportsInListViewModel>("Description", "Oldest");
+
+            Assert.AreEqual(5, carReportsCount);
+            Assert.AreEqual("Title4", carReports[0].Title);
+        }
+
         private async Task ReportsSeedingAsync(int count)
         {
             for (int i = 0; i < count; i++)
             {
+                Thread.Sleep(1000);
                 await this.reportsService.CreateCarReportAsync(new CarReportInputModel
                 {
                     CarId = i,
