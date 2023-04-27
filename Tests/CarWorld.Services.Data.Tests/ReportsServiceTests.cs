@@ -43,6 +43,18 @@ namespace CarWorld.Services.Data.Tests
             Assert.AreEqual(1, reportsCount);
         }
 
+        [Test]
+        public async Task DeleteCarReportAsyncShouldDeleteCarReport()
+        {
+            await this.ReportsSeedingAsync(1);
+
+            await this.reportsService.DeleteCarReportAsync(1);
+
+            var reportsCount = await this.dbContext.CarReports.CountAsync();
+
+            Assert.AreEqual(0, reportsCount);
+        }
+
         private async Task ReportsSeedingAsync(int count)
         {
             for (int i = 0; i < count; i++)
