@@ -4,7 +4,6 @@ using CarWorld.Data.Models.Enums;
 using CarWorld.Data.Repositories;
 using CarWorld.Services.Contracts;
 using CarWorld.Services.Mapping;
-using CarWorld.Web.ViewModels.Administration;
 using CarWorld.Web.ViewModels.Administration.CarReports;
 using CarWorld.Web.ViewModels.Reports;
 using Microsoft.EntityFrameworkCore;
@@ -55,6 +54,16 @@ namespace CarWorld.Services.Data.Tests
             Assert.AreEqual(0, reportsCount);
         }
 
+        [Test]
+        public async Task GetReportByIdAsyncShouldReturnRightCarReport()
+        {
+            await this.ReportsSeedingAsync(5);
+
+            var carReport = await this.reportsService.GetReportByIdAsync<CarReportViewModel>(1);
+
+            Assert.AreEqual("Title0", carReport.Title);
+        }
+
         private async Task ReportsSeedingAsync(int count)
         {
             for (int i = 0; i < count; i++)
@@ -63,7 +72,7 @@ namespace CarWorld.Services.Data.Tests
                 {
                     CarId = i,
                     Description = "Description",
-                    Title = "Title",
+                    Title = $"Title{i}",
                     ReporterId = i.ToString(),
                     ReportType = ReportType.Scam,
                 });
