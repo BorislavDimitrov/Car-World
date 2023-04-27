@@ -82,7 +82,6 @@ namespace CarWorld.Services.Data.Tests
         {
             for (int i = 0; i < count; i++)
             {
-                Thread.Sleep(1000);
                 await this.reportsService.CreateCarReportAsync(new CarReportInputModel
                 {
                     CarId = i,
