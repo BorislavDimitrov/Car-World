@@ -78,6 +78,16 @@ namespace CarWorld.Services.Data.Tests
             Assert.AreEqual("Title4", carReports[0].Title);
         }
 
+        [Test]
+        public async Task IsReportExistingByIdAsyncShouldReturnTrue()
+        {
+            await this.ReportsSeedingAsync(5);
+
+            var isTrure = await this.reportsService.IsReportExistingByIdAsync(1);
+
+            Assert.IsTrue(isTrure);
+        }
+
         private async Task ReportsSeedingAsync(int count)
         {
             for (int i = 0; i < count; i++)
