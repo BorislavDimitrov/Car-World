@@ -14,17 +14,23 @@ namespace CarWorld.Services
     public class ReportsService : IReportsService
     {
         private readonly IRepository<CarReport> carsReportsRepo;
-        private readonly IMapper mapper;
 
         public ReportsService(IRepository<CarReport> carsRepo)
         {
             this.carsReportsRepo = carsRepo;
-            this.mapper = AutoMapperConfig.MapperInstance;
         }
 
         public async Task CreateCarReportAsync(CarReportInputModel model)
         {
-            var newCarReport = mapper.Map<CarReport>(model);
+            var newCarReport = new CarReport
+            {
+                Title = model.Title,
+                Description = model.Description,
+                CarId = model.CarId,
+                ReportType = model.ReportType,
+                ReporterId = model.ReporterId,
+                IsChecked = false,
+            };
 
             await carsReportsRepo.AddAsync(newCarReport);
 
