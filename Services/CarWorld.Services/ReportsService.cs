@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using CarWorld.Data.Common.Repositories;
+﻿using CarWorld.Data.Common.Repositories;
 using CarWorld.Data.Models;
 using CarWorld.Services.Contracts;
 using CarWorld.Services.Mapping;

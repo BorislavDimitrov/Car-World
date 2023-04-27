@@ -1,11 +1,9 @@
-﻿using CarWorld.Data.Models;
-using CarWorld.Data.Models.Enums;
-using CarWorld.Services.Mapping;
+﻿using CarWorld.Data.Models.Enums;
 using System.ComponentModel.DataAnnotations;
 
 namespace CarWorld.Web.ViewModels.Reports
 {
-    public class CarReportInputModel : IMapTo<CarReport>
+    public class CarReportInputModel
     {
         [Required]
         [StringLength(20)]
