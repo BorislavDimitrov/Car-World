@@ -33,6 +33,16 @@ namespace CarWorld.Services.Data.Tests
             AutoMapperConfig.RegisterMappings(typeof(CarReportsInListViewModel).Assembly);
         }
 
+        [Test]
+        public async Task CreateCarReportAsyncShouldSuccessfullyCreateAReport()
+        {
+            await this.ReportsSeedingAsync(1);
+
+            var reportsCount = await this.dbContext.CarReports.CountAsync();
+
+            Assert.AreEqual(1, reportsCount);
+        }
+
         private async Task ReportsSeedingAsync(int count)
         {
             for (int i = 0; i < count; i++)
