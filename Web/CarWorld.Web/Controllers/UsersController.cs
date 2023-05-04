@@ -116,7 +116,6 @@
 
             var user = await userManager.FindByIdAsync(userId);
 
-
             if (currentUserId == userId || user == null)
             {
                 TempData["ErrorMessage"] = GlobalConstants.RedirectToHomepageAlertMessage;

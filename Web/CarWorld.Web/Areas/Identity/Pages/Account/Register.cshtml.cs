@@ -4,27 +4,26 @@ namespace CarWorld.Web.Areas.Identity.Pages.Account
 {
 #nullable disable
 
+    using CarWorld.Common;
+    using CarWorld.Data;
+    using CarWorld.Data.Models;
+    using CarWorld.Services.Messaging;
+    using Microsoft.AspNetCore.Authentication;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Identity.UI.Services;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.RazorPages;
+    using Microsoft.AspNetCore.WebUtilities;
+    using Microsoft.Extensions.Logging;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
     using System.Text;
+    using System.Text.Encodings.Web;
     using System.Threading;
     using System.Threading.Tasks;
-
-    using CarWorld.Common;
-    using CarWorld.Data;
-    using CarWorld.Data.Models;
-    using CarWorld.Services;
-    using CarWorld.Services.Contracts;
-    using CarWorld.Services.Messaging;
-    using Microsoft.AspNetCore.Authentication;
-    using Microsoft.AspNetCore.Hosting;
-    using Microsoft.AspNetCore.Identity;
-    using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.Mvc.RazorPages;
-    using Microsoft.AspNetCore.WebUtilities;
-    using Microsoft.Extensions.Logging;
 
     public class RegisterModel : PageModel
     {
@@ -35,8 +34,7 @@ namespace CarWorld.Web.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly ApplicationDbContext repo;
         private readonly IWebHostEnvironment webHostEnvironment;
-        IEmailSender emailSender;
-        private readonly ICartsService cartsService;
+        private readonly Microsoft.AspNetCore.Identity.UI.Services.IEmailSender _emailSender;
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
@@ -45,8 +43,7 @@ namespace CarWorld.Web.Areas.Identity.Pages.Account
             ILogger<RegisterModel> logger,
             ApplicationDbContext repo,
             IWebHostEnvironment webHostEnvironment,
-            IEmailSender emailSender,
-            ICartsService cartsService)
+            Microsoft.AspNetCore.Identity.UI.Services.IEmailSender _emailSender)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -56,8 +53,7 @@ namespace CarWorld.Web.Areas.Identity.Pages.Account
             ;
             this.repo = repo;
             this.webHostEnvironment = webHostEnvironment;
-            this.emailSender = emailSender;
-            this.cartsService = cartsService;
+            this._emailSender = _emailSender;
         }
 
         /// <summary>
@@ -160,17 +156,20 @@ namespace CarWorld.Web.Areas.Identity.Pages.Account
                     _logger.LogInformation("User created a new account with password.");
 
                     var userId = await _userManager.GetUserIdAsync(user);
-                    await cartsService.CreateAsync(userId);
-                    var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                    var callbackUrl = Url.Page(
+                        "/Account/ConfirmEmail",
+                        pageHandler: null,
+                        values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
+                        protocol: Request.Scheme);
 
-                    var confirmationLink = Url.Action("ConfirmEmail", "Users", new {Area = "", userId = user.Id, token = token }, Request.Scheme);      
+                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
+                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
-                        await emailSender.SendEmailAsync("powerglide@abv.bg", "Admin", user.Email, "Account confirmation", $"Confirm your account in Car World by clicking this link <a href=\"{confirmationLink}\"> Confirm account</a>");
-                        TempData["CreateMessage"] = "Account confirmation email has been sent.";
-                        return Redirect("/Home/Index");
+                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
                     }
                     else
                     {
@@ -178,6 +177,7 @@ namespace CarWorld.Web.Areas.Identity.Pages.Account
                         return LocalRedirect(returnUrl);
                     }
                 }
+
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
