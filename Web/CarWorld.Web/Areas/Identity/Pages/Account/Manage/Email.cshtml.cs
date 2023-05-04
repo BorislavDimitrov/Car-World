@@ -4,15 +4,11 @@
 
 using CarWorld.Data;
 using CarWorld.Data.Models;
-using CarWorld.Services.Messaging;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
 namespace CarWorld.Web.Areas.Identity.Pages.Account.Manage
@@ -20,20 +16,17 @@ namespace CarWorld.Web.Areas.Identity.Pages.Account.Manage
     public class EmailModel : PageModel
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly IEmailSender emailSender;
-        private readonly ApplicationDbContext repo;
+        private readonly Microsoft.AspNetCore.Identity.UI.Services.IEmailSender _emailSender;
+        private readonly ApplicationDbContext dbContext;
 
         public EmailModel(
-            UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager,
-            IEmailSender emailSender,
-            ApplicationDbContext repo)
+            UserManager<ApplicationUser> _userManager,
+            Microsoft.AspNetCore.Identity.UI.Services.IEmailSender _emailSender,
+            ApplicationDbContext dbContext)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
-            this.emailSender = emailSender;
-            this.repo = repo;
+            this._userManager = _userManager;
+            this._emailSender = _emailSender;
+            this.dbContext = dbContext;
         }
 
         /// <summary>
@@ -120,24 +113,11 @@ namespace CarWorld.Web.Areas.Identity.Pages.Account.Manage
             var email = await _userManager.GetEmailAsync(user);
             if (Input.NewEmail != email)
             {
-                var userWithNewEmail = repo.Users
-               .FirstOrDefault(u => u.Email == Input.NewEmail);
+                user.Email = Input.NewEmail;
 
-                if (userWithNewEmail != null)
-                {
-                    StatusMessage = "The email is already used.";
-                    return RedirectToPage();
-                }
+                dbContext.SaveChanges();
 
-                var userId = await _userManager.GetUserIdAsync(user);
-                var token = await _userManager.GenerateChangeEmailTokenAsync(user, Input.NewEmail);
-                token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
-
-                var confirmationLink = Url.Action("ConfirmEmailChange", "Users", new { Area = "", userId = user.Id, token = token, oldEmail = email, newEmail = Input.NewEmail }, Request.Scheme);
-
-                await emailSender.SendEmailAsync("bdimitorv@gmail.com", "Admin", Input.NewEmail, "Email change confirmation", $"Confirm your new email in Car World by clicking this link <a href=\"{confirmationLink}\"> Confirm email</a>");
-
-                StatusMessage = "Confirmation link to change email sent. Please check your email.";
+                StatusMessage = "Your email has been succesfully changed.";
                 return RedirectToPage();
             }
 
