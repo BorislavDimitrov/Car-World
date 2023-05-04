@@ -19,21 +19,18 @@
         private readonly IModelsService modelsService;
         private readonly ICarsService carsService;
         private readonly IWebHostEnvironment webHostEnvironment;
-        private readonly IEmailSender emailSender;
 
         public CarsController(IMakesService makesService,
             IRegionsService regionsService,
             IModelsService modelsService,
             ICarsService carsService,
-            IWebHostEnvironment webHostEnvironment,
-            IEmailSender emailSender)
+            IWebHostEnvironment webHostEnvironment)
         {
             this.makesService = makesService;
             this.regionsService = regionsService;
             this.modelsService = modelsService;
             this.carsService = carsService;
             this.webHostEnvironment = webHostEnvironment;
-            this.emailSender = emailSender;
         }
 
         [Authorize]

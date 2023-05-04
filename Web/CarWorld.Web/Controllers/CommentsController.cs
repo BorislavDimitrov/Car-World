@@ -19,7 +19,6 @@ namespace CarWorld.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateCommentInputModel model)
         {
-            //var parentId = model.ParentId == 0 ? (int?)null : model.ParentId;
 
             if (model.ParentId != null)
             {
