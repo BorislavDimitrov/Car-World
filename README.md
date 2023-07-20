@@ -1,20 +1,14 @@
 
-# Car World
 
-Web Application for buy/sell car ads including Forum system made with educational purpose.
+Web API that recieves Swift MT799 message, process the message and saves it into Database.
 
 
 ## Made with :
 
-- ASP.NET Core
-- Entity Framework Core (underlying MSSQL)
-- HTML Sanitizer
-- TinyMCE
+- ASP.NET Core 7
+- SQLite
+- Entity Framework Core 
 - AutoMapper
-- Bootstrap
-- Sendgrid
-- NUnit
+- Serilog (Logging into console and file)
 
-# Additional info 
-To run the project is needed installed MS SQL database. With the initial run of the project database is being seeded with alot of things.
-The admin account is also made with the initial seeding - account: Admin password - 123456. Big part of the functionality is in the Admin area.
+
