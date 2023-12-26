@@ -18,4 +18,4 @@ Web Application for buy/sell car ads including Forum system made with educationa
 
 # Additional info 
 To run the project is needed installed MS SQL database. With the initial run of the project database is being seeded with alot of things.
-The admin account is also made with the initial seeding - account: Admin password - 123456. Big part of the functionality is in the Admin area.
+The admin account is also made with the initial seeding - account: Admin password - 123456. 
