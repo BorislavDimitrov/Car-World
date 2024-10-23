@@ -2,7 +2,7 @@
 
 # Car World
 
-Web Application for buy/sell car ads including Forum system made with educational purpose.
+Web Application for buy/sell car ads including Forum system.
 
 ## Made with :
 
